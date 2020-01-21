@@ -3,6 +3,7 @@ package edu.byu.cs.tweeter.presenter;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.net.Server;
 import edu.byu.cs.tweeter.model.net.ServerProxy;
 import edu.byu.cs.tweeter.model.net.request.FollowingRequest;
@@ -37,7 +38,7 @@ public class FollowingPresenter {
         registeredViews.add(view);
     }
 
-    public FollowingResponse getFollowing(FollowingRequest request) {
+    public FollowingResponse<User> getFollowing(FollowingRequest request) {
         Server server = new ServerProxy();
         return server.getFollowees(request);
     }

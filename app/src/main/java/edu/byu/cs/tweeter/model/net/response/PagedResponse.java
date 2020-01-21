@@ -4,12 +4,12 @@ public class PagedResponse extends Response {
 
     private final boolean hasMorePages;
 
-    protected PagedResponse(boolean success, boolean hasMorePages) {
+    PagedResponse(boolean success, boolean hasMorePages) {
         super(success);
         this.hasMorePages = hasMorePages;
     }
 
-    protected PagedResponse(boolean success, String message, boolean hasMorePages) {
+    PagedResponse(boolean success, String message, boolean hasMorePages) {
         super(success, message);
         this.hasMorePages = hasMorePages;
     }

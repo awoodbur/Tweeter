@@ -13,14 +13,13 @@ import edu.byu.cs.tweeter.model.net.response.FollowingResponse;
 import edu.byu.cs.tweeter.presenter.FollowingPresenter;
 import edu.byu.cs.tweeter.view.android.domain.User;
 import edu.byu.cs.tweeter.view.android.util.ImageUtils;
-import edu.byu.cs.tweeter.view.response.UIFollowingResponse;
 
-public class GetFollowingTask extends AsyncTask<FollowingRequest, Void, UIFollowingResponse> {
+public class GetFollowingTask extends AsyncTask<FollowingRequest, Void, FollowingResponse<User>> {
 
     private final GetFolloweesObserver observer;
 
     public interface GetFolloweesObserver {
-        void followeesRetrieved(UIFollowingResponse followingResponse);
+        void followeesRetrieved(FollowingResponse<User> followingResponse);
     }
 
     public GetFollowingTask(GetFolloweesObserver observer) {
@@ -28,10 +27,10 @@ public class GetFollowingTask extends AsyncTask<FollowingRequest, Void, UIFollow
     }
 
     @Override
-    protected UIFollowingResponse doInBackground(FollowingRequest... followingRequests) {
-        FollowingResponse followingResponse = FollowingPresenter.getInstance().getFollowing(followingRequests[0]);
+    protected FollowingResponse<User> doInBackground(FollowingRequest... followingRequests) {
+        FollowingResponse<edu.byu.cs.tweeter.model.domain.User> followingResponse = FollowingPresenter.getInstance().getFollowing(followingRequests[0]);
         List<User> users = getAndroidUsersFromDomainUsers(followingResponse.getFollowees());
-        return new UIFollowingResponse(users, followingResponse.hasMorePages());
+        return new FollowingResponse<>(users, followingResponse.hasMorePages());
     }
 
     private List<User> getAndroidUsersFromDomainUsers(List<edu.byu.cs.tweeter.model.domain.User> domainUsers) {
@@ -55,10 +54,10 @@ public class GetFollowingTask extends AsyncTask<FollowingRequest, Void, UIFollow
     }
 
     @Override
-    protected void onPostExecute(UIFollowingResponse uiFollowingResponse) {
+    protected void onPostExecute(FollowingResponse<User> followingResponse) {
 
         if(observer != null) {
-            observer.followeesRetrieved(uiFollowingResponse);
+            observer.followeesRetrieved(followingResponse);
         }
     }
 }

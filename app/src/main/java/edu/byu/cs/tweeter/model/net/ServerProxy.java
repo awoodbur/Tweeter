@@ -15,7 +15,7 @@ public class ServerProxy implements Server {
     private static Map<User, List<User>> followeesByFollower;
 
     @Override
-    public FollowingResponse getFollowees(FollowingRequest request) {
+    public FollowingResponse<User> getFollowees(FollowingRequest request) {
 
         assert request.getLimit() >= 0;
         assert request.getFollower() != null;
@@ -41,7 +41,7 @@ public class ServerProxy implements Server {
             }
         }
 
-        return new FollowingResponse(responseFollowees, hasMorePages);
+        return new FollowingResponse<>(responseFollowees, hasMorePages);
     }
 
     private int getFolloweesStartingIndex(User lastFollowee, List<User> allFollowees) {

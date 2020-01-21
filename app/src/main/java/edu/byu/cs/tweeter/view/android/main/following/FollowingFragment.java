@@ -20,10 +20,10 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.net.request.FollowingRequest;
+import edu.byu.cs.tweeter.model.net.response.FollowingResponse;
 import edu.byu.cs.tweeter.view.android.domain.User;
 import edu.byu.cs.tweeter.view.android.asyncTasks.GetFollowingTask;
 import edu.byu.cs.tweeter.view.cache.DataCache;
-import edu.byu.cs.tweeter.view.response.UIFollowingResponse;
 
 public class FollowingFragment extends Fragment {
 
@@ -148,7 +148,7 @@ public class FollowingFragment extends Fragment {
         }
 
         @Override
-        public void followeesRetrieved(UIFollowingResponse followingResponse) {
+        public void followeesRetrieved(FollowingResponse<User> followingResponse) {
             List<User> followees = followingResponse.getFollowees();
 
             lastFollowee = (followees.size() > 0) ? followees.get(followees.size() -1).getDomainUser() : null;
