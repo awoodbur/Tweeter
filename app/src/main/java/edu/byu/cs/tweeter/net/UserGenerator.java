@@ -16,7 +16,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 /**
  * A temporary class that generates and returns {@link User} objects. This class may be removed when
- * the server is created and the ServerProxy no longer needs to return dummy data.
+ * the server is created and the ServerFacade no longer needs to return dummy data.
  */
 public class UserGenerator {
 

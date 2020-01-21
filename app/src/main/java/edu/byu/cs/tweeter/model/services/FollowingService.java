@@ -1,7 +1,6 @@
 package edu.byu.cs.tweeter.model.services;
 
-import edu.byu.cs.tweeter.net.Server;
-import edu.byu.cs.tweeter.net.ServerProxy;
+import edu.byu.cs.tweeter.net.ServerFacade;
 import edu.byu.cs.tweeter.net.request.FollowingRequest;
 import edu.byu.cs.tweeter.net.response.FollowingResponse;
 
@@ -9,7 +8,7 @@ public class FollowingService {
 
     private static FollowingService instance;
 
-    private final Server server;
+    private final ServerFacade serverFacade;
 
     public static FollowingService getInstance() {
         if(instance == null) {
@@ -20,10 +19,10 @@ public class FollowingService {
     }
 
     private FollowingService() {
-        server = new ServerProxy();
+        serverFacade = new ServerFacade();
     }
 
     public FollowingResponse getFollowees(FollowingRequest request) {
-        return server.getFollowees(request);
+        return serverFacade.getFollowees(request);
     }
 }

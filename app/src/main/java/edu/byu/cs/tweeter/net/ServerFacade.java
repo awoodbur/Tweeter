@@ -10,11 +10,10 @@ import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.net.request.FollowingRequest;
 import edu.byu.cs.tweeter.net.response.FollowingResponse;
 
-public class ServerProxy implements Server {
+public class ServerFacade {
 
     private static Map<User, List<User>> followeesByFollower;
 
-    @Override
     public FollowingResponse getFollowees(FollowingRequest request) {
 
         assert request.getLimit() >= 0;

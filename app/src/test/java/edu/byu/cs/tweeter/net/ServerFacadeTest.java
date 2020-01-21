@@ -13,7 +13,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.net.request.FollowingRequest;
 import edu.byu.cs.tweeter.net.response.FollowingResponse;
 
-class ServerProxyTest {
+class ServerFacadeTest {
 
     private final User user1 = new User("Daffy", "Duck", "");
     private final User user2 = new User("Fred", "Flintstone", "");
@@ -53,23 +53,23 @@ class ServerProxyTest {
             follow7, follow8, follow9, follow10, follow11, follow12, follow13, follow14, follow15,
             follow16);
 
-    private ServerProxy serverProxySpy;
+    private ServerFacade serverFacadeSpy;
 
     @BeforeEach
     void setup() {
-        serverProxySpy = Mockito.spy(new ServerProxy());
+        serverFacadeSpy = Mockito.spy(new ServerFacade());
 
         FollowGenerator mockFollowGenerator = Mockito.mock(FollowGenerator.class);
         Mockito.when(mockFollowGenerator.generateUsersAndFollows(Mockito.anyInt(), Mockito.anyInt(), Mockito.anyInt(), (FollowGenerator.Sort) Mockito.any())).thenReturn(follows);
 
-        Mockito.when(serverProxySpy.getFollowGenerator()).thenReturn(mockFollowGenerator);
+        Mockito.when(serverFacadeSpy.getFollowGenerator()).thenReturn(mockFollowGenerator);
     }
 
     @Test
     void testGetFollowees_noFolloweesForUser() {
 
         FollowingRequest request = new FollowingRequest(user1, 10, null);
-        FollowingResponse response = serverProxySpy.getFollowees(request);
+        FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(0, response.getFollowees().size());
         Assertions.assertFalse(response.hasMorePages());
@@ -79,7 +79,7 @@ class ServerProxyTest {
     void testGetFollowees_oneFollowerForUser_limitGreaterThanUsers() {
 
         FollowingRequest request = new FollowingRequest(user9, 10, null);
-        FollowingResponse response = serverProxySpy.getFollowees(request);
+        FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(1, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user5));
@@ -90,7 +90,7 @@ class ServerProxyTest {
     void testGetFollowees_twoFollowersForUser_limitEqualsUsers() {
 
         FollowingRequest request = new FollowingRequest(user3, 2, null);
-        FollowingResponse response = serverProxySpy.getFollowees(request);
+        FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user1));
@@ -102,7 +102,7 @@ class ServerProxyTest {
     void testGetFollowees_limitLessThanUsers_endsOnPageBoundary() {
 
         FollowingRequest request = new FollowingRequest(user5, 2, null);
-        FollowingResponse response = serverProxySpy.getFollowees(request);
+        FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
         // Verify first page
         Assertions.assertEquals(2, response.getFollowees().size());
@@ -112,7 +112,7 @@ class ServerProxyTest {
 
         // Get and verify second page
         request = new FollowingRequest(user5, 2, response.getFollowees().get(1));
-        response = serverProxySpy.getFollowees(request);
+        response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user1));
@@ -121,7 +121,7 @@ class ServerProxyTest {
 
         // Get and verify third page
         request = new FollowingRequest(user5, 2, response.getFollowees().get(1));
-        response = serverProxySpy.getFollowees(request);
+        response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user4));
@@ -134,7 +134,7 @@ class ServerProxyTest {
     void testGetFollowees_limitLessThanUsers_notEndsOnPageBoundary() {
 
         FollowingRequest request = new FollowingRequest(user6, 2, null);
-        FollowingResponse response = serverProxySpy.getFollowees(request);
+        FollowingResponse response = serverFacadeSpy.getFollowees(request);
 
         // Verify first page
         Assertions.assertEquals(2, response.getFollowees().size());
@@ -144,7 +144,7 @@ class ServerProxyTest {
 
         // Get and verify second page
         request = new FollowingRequest(user6, 2, response.getFollowees().get(1));
-        response = serverProxySpy.getFollowees(request);
+        response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user1));
@@ -153,7 +153,7 @@ class ServerProxyTest {
 
         // Get and verify third page
         request = new FollowingRequest(user6, 2, response.getFollowees().get(1));
-        response = serverProxySpy.getFollowees(request);
+        response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user10));
@@ -162,7 +162,7 @@ class ServerProxyTest {
 
         // Get and verify fourth page
         request = new FollowingRequest(user6, 2, response.getFollowees().get(1));
-        response = serverProxySpy.getFollowees(request);
+        response = serverFacadeSpy.getFollowees(request);
 
         Assertions.assertEquals(1, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user4));
