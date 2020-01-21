@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Tweeter</string>
+
+    <string name="homePageTitle">Home</string>
+
+    <string name="title_activity_main">MainActivity</string>
+    <string name="loadingData">Loading More Data…</string>
+    <string name="feedTabTitle">Feed</string>
+    <string name="storyTabTitle">Story</string>
+    <string name="followingTabTitle">Following</string>
+    <string name="followersTabTitle">Followers</string>
+
+
+
+    <string name="sampleHandle">"@UserHandle"</string>
+    <string name="sampleUserName">The User</string>
+</resources>
