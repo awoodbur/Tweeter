@@ -56,20 +56,20 @@ public class FollowingFragment extends Fragment {
     private class FollowingHolder extends RecyclerView.ViewHolder {
 
         private final ImageView userImage;
-        private final TextView userHandle;
+        private final TextView userAlias;
         private final TextView userName;
 
         FollowingHolder(@NonNull View itemView) {
             super(itemView);
 
             userImage = itemView.findViewById(R.id.userImage);
-            userHandle = itemView.findViewById(R.id.userHandle);
+            userAlias = itemView.findViewById(R.id.userAlias);
             userName = itemView.findViewById(R.id.userName);
         }
 
         void bindUser(User user) {
             userImage.setImageDrawable(user.getImage());
-            userHandle.setText(user.getHandle());
+            userAlias.setText(user.getAlias());
             userName.setText(user.getName());
         }
     }

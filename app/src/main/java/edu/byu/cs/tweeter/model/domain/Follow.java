@@ -40,8 +40,8 @@ public class Follow {
     @Override
     public String toString() {
         return "Follow{" +
-                "follower=" + follower.getHandle() +
-                ", followee=" + followee.getHandle() +
+                "follower=" + follower.getAlias() +
+                ", followee=" + followee.getAlias() +
                 '}';
     }
 }

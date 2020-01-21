@@ -66,8 +66,8 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
         TextView userName = findViewById(R.id.userName);
         userName.setText(user.getName());
 
-        TextView userHandle = findViewById(R.id.userHandle);
-        userHandle.setText(user.getHandle());
+        TextView userAlias = findViewById(R.id.userAlias);
+        userAlias.setText(user.getAlias());
     }
 
     @Override

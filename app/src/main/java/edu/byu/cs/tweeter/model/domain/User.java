@@ -8,17 +8,17 @@ public class User implements Comparable<User> {
 
     private final String firstName;
     private final String lastName;
-    private final String handle;
+    private final String alias;
     private final String imageUrl;
 
     public User(@NotNull String firstName, @NotNull String lastName, String imageURL) {
         this(firstName, lastName, String.format("@%s%s", firstName, lastName), imageURL);
     }
 
-    public User(@NotNull String firstName, @NotNull String lastName, @NotNull String handle, String imageURL) {
+    public User(@NotNull String firstName, @NotNull String lastName, @NotNull String alias, String imageURL) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.handle = handle;
+        this.alias = alias;
         this.imageUrl = imageURL;
     }
 
@@ -34,8 +34,8 @@ public class User implements Comparable<User> {
         return String.format("%s %s", firstName, lastName);
     }
 
-    public String getHandle() {
-        return handle;
+    public String getAlias() {
+        return alias;
     }
 
     public String getImageUrl() {
@@ -47,12 +47,12 @@ public class User implements Comparable<User> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return handle.equals(user.handle);
+        return alias.equals(user.alias);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(handle);
+        return Objects.hash(alias);
     }
 
     @NotNull
@@ -61,13 +61,13 @@ public class User implements Comparable<User> {
         return "User{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", handle='" + handle + '\'' +
+                ", alias='" + alias + '\'' +
                 ", imageUrl='" + imageUrl + '\'' +
                 '}';
     }
 
     @Override
     public int compareTo(User user) {
-        return this.getHandle().compareTo(user.getHandle());
+        return this.getAlias().compareTo(user.getAlias());
     }
 }

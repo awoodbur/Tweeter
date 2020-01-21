@@ -23,8 +23,8 @@ public class FollowGenerator {
 
     /**
      * An enum used to specify the sort order of {@link Follow} object returned by this generator.
-     * {@link #FOLLOWER_FOLLOWEE} specifies a primary sort by follower handle with a secondary sort
-     * of followee handle. {@link #FOLLOWEE_FOLLOWER} specifies the opposite.
+     * {@link #FOLLOWER_FOLLOWEE} specifies a primary sort by follower alias with a secondary sort
+     * of followee alias. {@link #FOLLOWEE_FOLLOWER} specifies the opposite.
      */
     public enum Sort {
         FOLLOWER_FOLLOWEE, FOLLOWEE_FOLLOWER

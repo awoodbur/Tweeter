@@ -12,6 +12,6 @@
 
 
 
-    <string name="sampleHandle">"@UserHandle"</string>
+    <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
 </resources>
