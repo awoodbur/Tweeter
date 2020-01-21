@@ -107,7 +107,6 @@ public class UserGenerator {
         return names == null ? null : names.getNames();
     }
 
-
     /**
      * Generates the specified number of users with names randomly selected from the json files.
      *

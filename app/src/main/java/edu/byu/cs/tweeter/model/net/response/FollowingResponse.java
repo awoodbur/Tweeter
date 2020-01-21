@@ -2,7 +2,9 @@ package edu.byu.cs.tweeter.model.net.response;
 
 import java.util.List;
 
-public class FollowingResponse<T> extends PagedResponse {
+import edu.byu.cs.tweeter.model.domain.User;
+
+public class FollowingResponse<T extends User> extends PagedResponse {
 
     private List<T> followees;
 
