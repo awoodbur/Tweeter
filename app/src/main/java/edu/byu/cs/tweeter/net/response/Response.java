@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.model.net.response;
+package edu.byu.cs.tweeter.net.response;
 
 class Response {
 

@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.model.net;
+package edu.byu.cs.tweeter.net;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,15 +7,15 @@ import java.util.Map;
 
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.net.request.FollowingRequest;
-import edu.byu.cs.tweeter.model.net.response.FollowingResponse;
+import edu.byu.cs.tweeter.net.request.FollowingRequest;
+import edu.byu.cs.tweeter.net.response.FollowingResponse;
 
 public class ServerProxy implements Server {
 
     private static Map<User, List<User>> followeesByFollower;
 
     @Override
-    public FollowingResponse<User> getFollowees(FollowingRequest request) {
+    public FollowingResponse getFollowees(FollowingRequest request) {
 
         assert request.getLimit() >= 0;
         assert request.getFollower() != null;
@@ -41,7 +41,7 @@ public class ServerProxy implements Server {
             }
         }
 
-        return new FollowingResponse<>(responseFollowees, hasMorePages);
+        return new FollowingResponse(responseFollowees, hasMorePages);
     }
 
     private int getFolloweesStartingIndex(User lastFollowee, List<User> allFollowees) {

@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.android.main.following;
+package edu.byu.cs.tweeter.view.main.following;
 
 import android.os.Bundle;
 
@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -19,18 +20,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.model.net.request.FollowingRequest;
-import edu.byu.cs.tweeter.model.net.response.FollowingResponse;
-import edu.byu.cs.tweeter.view.android.domain.User;
-import edu.byu.cs.tweeter.view.android.asyncTasks.GetFollowingTask;
-import edu.byu.cs.tweeter.view.cache.DataCache;
+import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.net.request.FollowingRequest;
+import edu.byu.cs.tweeter.net.response.FollowingResponse;
+import edu.byu.cs.tweeter.presenter.FollowingPresenter;
+import edu.byu.cs.tweeter.view.asyncTasks.GetFollowingTask;
+import edu.byu.cs.tweeter.view.cache.ImageCache;
 
-public class FollowingFragment extends Fragment {
+public class FollowingFragment extends Fragment implements FollowingPresenter.View {
 
     private static final int LOADING_DATA_VIEW = 0;
     private static final int ITEM_VIEW = 1;
 
     private static final int PAGE_SIZE = 10;
+
+    private FollowingPresenter presenter;
 
     private FollowingRecyclerViewAdapter followingRecyclerViewAdapter;
 
@@ -38,6 +42,8 @@ public class FollowingFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_following, container, false);
+
+        presenter = new FollowingPresenter(this);
 
         RecyclerView followingRecyclerView = view.findViewById(R.id.followingRecyclerView);
 
@@ -65,10 +71,17 @@ public class FollowingFragment extends Fragment {
             userImage = itemView.findViewById(R.id.userImage);
             userAlias = itemView.findViewById(R.id.userAlias);
             userName = itemView.findViewById(R.id.userName);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getContext(), "You selected '" + userName.getText() + "'.", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         void bindUser(User user) {
-            userImage.setImageDrawable(user.getImage());
+            userImage.setImageDrawable(ImageCache.getInstance().getImageDrawable(user));
             userAlias.setText(user.getAlias());
             userName.setText(user.getName());
         }
@@ -142,16 +155,16 @@ public class FollowingFragment extends Fragment {
             isLoading = true;
             addLoadingFooter();
 
-            GetFollowingTask getFollowingTask = new GetFollowingTask(this);
-            FollowingRequest request = new FollowingRequest(DataCache.getInstance().getUser().getModelUser(), PAGE_SIZE, lastFollowee);
+            GetFollowingTask getFollowingTask = new GetFollowingTask(presenter, this);
+            FollowingRequest request = new FollowingRequest(presenter.getCurrentUser(), PAGE_SIZE, lastFollowee);
             getFollowingTask.execute(request);
         }
 
         @Override
-        public void followeesRetrieved(FollowingResponse<User> followingResponse) {
+        public void followeesRetrieved(FollowingResponse followingResponse) {
             List<User> followees = followingResponse.getFollowees();
 
-            lastFollowee = (followees.size() > 0) ? followees.get(followees.size() -1).getModelUser() : null;
+            lastFollowee = (followees.size() > 0) ? followees.get(followees.size() -1) : null;
             hasMorePages = followingResponse.hasMorePages();
 
             isLoading = false;

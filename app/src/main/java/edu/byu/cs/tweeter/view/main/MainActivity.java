@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.android.main;
+package edu.byu.cs.tweeter.view.main;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -15,12 +15,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.view.android.domain.User;
-import edu.byu.cs.tweeter.view.android.asyncTasks.LoadImageTask;
-import edu.byu.cs.tweeter.view.cache.DataCache;
+import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.presenter.MainPresenter;
+import edu.byu.cs.tweeter.view.asyncTasks.LoadImageTask;
+import edu.byu.cs.tweeter.view.cache.ImageCache;
 
-public class MainActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver {
+public class MainActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, MainPresenter.View {
 
+    private MainPresenter presenter;
+    private User user;
     private ImageView userImageView;
 
     @Override
@@ -28,11 +31,7 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: Remove this when the login functionality is created to log in and set the user
-        User user = new User("Test", "User",
-                "https://faculty.cs.byu.edu/~jwilkerson/cs340/tweeter/images/donald_duck.png");
-        DataCache.getInstance().setUser(user);
-
+        presenter = new MainPresenter(this);
 
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
@@ -49,19 +48,13 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
             }
         });
 
-        // Asynchronously load the user's image
         userImageView = findViewById(R.id.userImage);
 
-        // TODO: Keep this after the above code to set it is replaced by the login functionality
-        user = DataCache.getInstance().getUser();
+        user = presenter.getCurrentUser();
 
-        Drawable userImage = user.getImage();
-        if(userImage == null) {
-            LoadImageTask loadImageTask = new LoadImageTask(this);
-            loadImageTask.execute(DataCache.getInstance().getUser().getImageUrl());
-        } else {
-            userImageView.setImageDrawable(userImage);
-        }
+        // Asynchronously load the user's image
+        LoadImageTask loadImageTask = new LoadImageTask(this);
+        loadImageTask.execute(presenter.getCurrentUser().getImageUrl());
 
         TextView userName = findViewById(R.id.userName);
         userName.setText(user.getName());
@@ -77,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
 
     @Override
     public void imagesLoaded(Drawable[] drawables) {
-        DataCache.getInstance().getUser().setImage(drawables[0]);
+        ImageCache.getInstance().cacheImage(user, drawables[0]);
 
         if(drawables[0] != null) {
             userImageView.setImageDrawable(drawables[0]);

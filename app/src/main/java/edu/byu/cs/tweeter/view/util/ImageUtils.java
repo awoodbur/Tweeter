@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.android.util;
+package edu.byu.cs.tweeter.view.util;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

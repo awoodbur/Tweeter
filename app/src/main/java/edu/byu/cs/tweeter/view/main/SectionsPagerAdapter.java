@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.android.main;
+package edu.byu.cs.tweeter.view.main;
 
 import android.content.Context;
 
@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.view.android.main.following.FollowingFragment;
+import edu.byu.cs.tweeter.view.main.following.FollowingFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to

@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.android.main;
+package edu.byu.cs.tweeter.view.main;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

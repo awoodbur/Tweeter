@@ -10,8 +10,6 @@
     <string name="followingTabTitle">Following</string>
     <string name="followersTabTitle">Followers</string>
 
-
-
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
 </resources>

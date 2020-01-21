@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.model.net;
+package edu.byu.cs.tweeter.net;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -10,8 +10,8 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.net.request.FollowingRequest;
-import edu.byu.cs.tweeter.model.net.response.FollowingResponse;
+import edu.byu.cs.tweeter.net.request.FollowingRequest;
+import edu.byu.cs.tweeter.net.response.FollowingResponse;
 
 class ServerProxyTest {
 
@@ -102,7 +102,7 @@ class ServerProxyTest {
     void testGetFollowees_limitLessThanUsers_endsOnPageBoundary() {
 
         FollowingRequest request = new FollowingRequest(user5, 2, null);
-        FollowingResponse<User> response = serverProxySpy.getFollowees(request);
+        FollowingResponse response = serverProxySpy.getFollowees(request);
 
         // Verify first page
         Assertions.assertEquals(2, response.getFollowees().size());
@@ -134,7 +134,7 @@ class ServerProxyTest {
     void testGetFollowees_limitLessThanUsers_notEndsOnPageBoundary() {
 
         FollowingRequest request = new FollowingRequest(user6, 2, null);
-        FollowingResponse<User> response = serverProxySpy.getFollowees(request);
+        FollowingResponse response = serverProxySpy.getFollowees(request);
 
         // Verify first page
         Assertions.assertEquals(2, response.getFollowees().size());

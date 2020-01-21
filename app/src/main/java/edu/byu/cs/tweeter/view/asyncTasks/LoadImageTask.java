@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.android.asyncTasks;
+package edu.byu.cs.tweeter.view.asyncTasks;
 
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -6,7 +6,7 @@ import android.util.Log;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.view.android.util.ImageUtils;
+import edu.byu.cs.tweeter.view.util.ImageUtils;
 
 public class LoadImageTask extends AsyncTask<String, Integer, Drawable []> {
 
