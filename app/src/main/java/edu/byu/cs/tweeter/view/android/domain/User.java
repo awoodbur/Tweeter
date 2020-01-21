@@ -15,7 +15,7 @@ public class User extends edu.byu.cs.tweeter.model.domain.User {
         this.image = image;
     }
 
-    public edu.byu.cs.tweeter.model.domain.User getDomainUser() {
+    public edu.byu.cs.tweeter.model.domain.User getModelUser() {
         return new edu.byu.cs.tweeter.model.domain.User(getFirstName(), getLastName(), getImageUrl());
     }
 

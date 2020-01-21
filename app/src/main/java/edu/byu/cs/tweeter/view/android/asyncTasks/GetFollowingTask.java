@@ -29,25 +29,25 @@ public class GetFollowingTask extends AsyncTask<FollowingRequest, Void, Followin
     @Override
     protected FollowingResponse<User> doInBackground(FollowingRequest... followingRequests) {
         FollowingResponse<edu.byu.cs.tweeter.model.domain.User> followingResponse = FollowingPresenter.getInstance().getFollowing(followingRequests[0]);
-        List<User> users = getAndroidUsersFromDomainUsers(followingResponse.getFollowees());
+        List<User> users = getAndroidUsersFromModelUsers(followingResponse.getFollowees());
         return new FollowingResponse<>(users, followingResponse.hasMorePages());
     }
 
-    private List<User> getAndroidUsersFromDomainUsers(List<edu.byu.cs.tweeter.model.domain.User> domainUsers) {
-        List<User> users = new ArrayList<>(domainUsers.size());
+    private List<User> getAndroidUsersFromModelUsers(List<edu.byu.cs.tweeter.model.domain.User> modelUsers) {
+        List<User> users = new ArrayList<>(modelUsers.size());
 
-        for(edu.byu.cs.tweeter.model.domain.User domainUser : domainUsers) {
+        for(edu.byu.cs.tweeter.model.domain.User modelUser : modelUsers) {
 
             Drawable drawable;
 
             try {
-                drawable = ImageUtils.drawableFromUrl(domainUser.getImageUrl());
+                drawable = ImageUtils.drawableFromUrl(modelUser.getImageUrl());
             } catch (IOException e) {
                 Log.e(this.getClass().getName(), e.toString(), e);
                 drawable = null;
             }
 
-            users.add( new User(domainUser.getFirstName(), domainUser.getLastName(), domainUser.getImageUrl(), drawable) );
+            users.add( new User(modelUser.getFirstName(), modelUser.getLastName(), modelUser.getImageUrl(), drawable) );
         }
 
         return users;

@@ -143,7 +143,7 @@ public class FollowingFragment extends Fragment {
             addLoadingFooter();
 
             GetFollowingTask getFollowingTask = new GetFollowingTask(this);
-            FollowingRequest request = new FollowingRequest(DataCache.getInstance().getUser().getDomainUser(), PAGE_SIZE, lastFollowee);
+            FollowingRequest request = new FollowingRequest(DataCache.getInstance().getUser().getModelUser(), PAGE_SIZE, lastFollowee);
             getFollowingTask.execute(request);
         }
 
@@ -151,7 +151,7 @@ public class FollowingFragment extends Fragment {
         public void followeesRetrieved(FollowingResponse<User> followingResponse) {
             List<User> followees = followingResponse.getFollowees();
 
-            lastFollowee = (followees.size() > 0) ? followees.get(followees.size() -1).getDomainUser() : null;
+            lastFollowee = (followees.size() > 0) ? followees.get(followees.size() -1).getModelUser() : null;
             hasMorePages = followingResponse.hasMorePages();
 
             isLoading = false;
