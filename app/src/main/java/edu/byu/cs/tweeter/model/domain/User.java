@@ -4,6 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Represents a user in the system.
+ */
 public class User implements Comparable<User> {
 
     private final String firstName;

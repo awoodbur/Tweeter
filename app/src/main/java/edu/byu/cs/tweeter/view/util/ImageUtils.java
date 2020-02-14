@@ -11,8 +11,18 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Contains utility methods for working with images in an Android application.
+ */
 public class ImageUtils {
 
+    /**
+     * Reads image data from the specified urlString and creates an Android Drawable object.
+     *
+     * @param urlString the url where the image data resides.
+     * @return the image.
+     * @throws IOException if an I/O error occurs while attempting to read the image data.
+     */
     public static Drawable drawableFromUrl(String urlString) throws IOException {
 
         URL url = new URL(urlString);

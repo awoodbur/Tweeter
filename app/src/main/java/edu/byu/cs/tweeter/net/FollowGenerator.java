@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import edu.byu.cs.tweeter.BuildConfig;
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -88,8 +89,16 @@ public class FollowGenerator {
             return follows;
         }
 
-        assert minFollowersPerUser >= 0 : minFollowersPerUser;
-        assert maxFollowersPerUser < users.size() : maxFollowersPerUser;
+        // Used in place of assert statements because Android doesn't support assertions.
+        if(BuildConfig.DEBUG) {
+            if (minFollowersPerUser < 0) {
+                throw new AssertionError(minFollowersPerUser);
+            }
+
+            if(maxFollowersPerUser >= users.size()) {
+                throw new AssertionError(maxFollowersPerUser);
+            }
+        }
 
         // For each user, generate a random number of followers between the specified min and max
         Random random = new Random();
@@ -144,7 +153,10 @@ public class FollowGenerator {
                 break;
             default:
                 // It should be impossible to get here
-                assert false;
+                // Used in place of "assert false;" because Android doesn't support assertions
+                if(BuildConfig.DEBUG) {
+                    throw new AssertionError();
+                }
         }
 
 

@@ -12,8 +12,8 @@ import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.view.main.following.FollowingFragment;
 
 /**
- * A [FragmentPagerAdapter] that returns a fragment corresponding to
- * one of the sections/tabs/pages.
+ * A [FragmentPagerAdapter] that returns a fragment corresponding to one of the sections/tabs/pages
+ * of the Main Activity.
  */
 class SectionsPagerAdapter extends FragmentPagerAdapter {
 

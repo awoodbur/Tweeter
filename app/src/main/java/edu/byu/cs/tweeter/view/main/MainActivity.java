@@ -20,6 +20,9 @@ import edu.byu.cs.tweeter.presenter.MainPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.LoadImageTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
 
+/**
+ * The main activity for the application. Contains tabs for feed, story, following, and followers.
+ */
 public class MainActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, MainPresenter.View {
 
     private MainPresenter presenter;
@@ -68,6 +71,12 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
         // We're just loading one image. No need to indicate progress.
     }
 
+    /**
+     * A callback that indicates that the image for the user being displayed on this activity has
+     * been loaded.
+     *
+     * @param drawables the drawables (there will only be one).
+     */
     @Override
     public void imagesLoaded(Drawable[] drawables) {
         ImageCache.getInstance().cacheImage(user, drawables[0]);

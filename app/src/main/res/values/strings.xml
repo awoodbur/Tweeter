@@ -2,6 +2,7 @@
     <string name="app_name">Tweeter</string>
 
     <string name="homePageTitle">Home</string>
+    <string name="userImageContentDescription">The user\'s image</string>
 
     <string name="title_activity_main">MainActivity</string>
     <string name="loadingData">Loading More Data…</string>

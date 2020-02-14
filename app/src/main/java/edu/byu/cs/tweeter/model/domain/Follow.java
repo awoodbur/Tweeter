@@ -4,6 +4,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
+/**
+ * Represents a follow relationship.
+ */
 public class Follow {
 
     private final User follower;
