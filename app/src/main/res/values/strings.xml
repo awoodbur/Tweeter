@@ -13,4 +13,5 @@
 
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
+    <string name="recycler_profile_desc">Profile</string>
 </resources>

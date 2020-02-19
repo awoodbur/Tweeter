@@ -44,11 +44,11 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_following, container, false);
+        View view = inflater.inflate(R.layout.fragment_recycler_list, container, false);
 
         presenter = new FollowingPresenter(this);
 
-        RecyclerView followingRecyclerView = view.findViewById(R.id.followingRecyclerView);
+        RecyclerView followingRecyclerView = view.findViewById(R.id.recycler_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         followingRecyclerView.setLayoutManager(layoutManager);
@@ -69,13 +69,17 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         private final ImageView userImage;
         private final TextView userAlias;
         private final TextView userName;
+        private final TextView tweetDate;
+        private final TextView tweetContent;
 
         FollowingHolder(@NonNull View itemView) {
             super(itemView);
 
-            userImage = itemView.findViewById(R.id.userImage);
-            userAlias = itemView.findViewById(R.id.userAlias);
-            userName = itemView.findViewById(R.id.userName);
+            userImage = itemView.findViewById(R.id.recycler_item_icon);
+            userAlias = itemView.findViewById(R.id.recycler_item_alias);
+            userName = itemView.findViewById(R.id.recycler_item_name);
+            tweetDate = itemView.findViewById(R.id.recycler_item_date);
+            tweetContent = itemView.findViewById(R.id.recycler_item_content);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -89,6 +93,8 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             userImage.setImageDrawable(ImageCache.getInstance().getImageDrawable(user));
             userAlias.setText(user.getAlias());
             userName.setText(user.getName());
+            tweetDate.setText("Aug 14");
+            tweetContent.setText("my first tweet");
         }
     }
 
@@ -164,7 +170,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
                 view =layoutInflater.inflate(R.layout.loading_row, parent, false);
 
             } else {
-                view = layoutInflater.inflate(R.layout.user_row, parent, false);
+                view = layoutInflater.inflate(R.layout.recycler_item, parent, false);
             }
 
             return new FollowingHolder(view);

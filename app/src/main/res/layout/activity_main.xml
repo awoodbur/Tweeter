@@ -46,14 +46,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/homePageTitle"
-                    android:textSize="24sp"/>
+                    android:textSize="24sp"
+                    tools:layout_conversion_absoluteHeight="32dp"
+                    tools:layout_editor_absoluteY="77dp"
+                    tools:layout_editor_absoluteX="100dp"
+                    tools:layout_conversion_absoluteWidth="64dp" />
 
                 <TextView
                     android:id="@+id/userAlias"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/homePageTitle"
-                    android:textSize="24sp"/>
+                    android:textSize="24sp"
+                    tools:layout_conversion_absoluteHeight="32dp"
+                    tools:layout_editor_absoluteY="109dp"
+                    tools:layout_editor_absoluteX="100dp"
+                    tools:layout_conversion_absoluteWidth="64dp" />
 
             </LinearLayout>
 

@@ -17,7 +17,10 @@ import edu.byu.cs.tweeter.view.main.following.FollowingFragment;
  */
 class SectionsPagerAdapter extends FragmentPagerAdapter {
 
+    private static final int FEED_FRAGMENT_POSITION = 0;
+    private static final int STORY_FRAGMENT_POSITION = 1;
     private static final int FOLLOWING_FRAGMENT_POSITION = 2;
+    private static final int FOLLOWERS_FRAGMENT_POSITION = 3;
 
     @StringRes
     private static final int[] TAB_TITLES = new int[]{R.string.feedTabTitle, R.string.storyTabTitle, R.string.followingTabTitle, R.string.followersTabTitle};
@@ -35,6 +38,18 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
         } else {
             return PlaceholderFragment.newInstance(position + 1);
         }
+//        switch (position) {
+//            case FEED_FRAGMENT_POSITION:
+//                return new FeedFragment();
+//            case STORY_FRAGMENT_POSITION:
+//                return new StoryFragment();
+//            case FOLLOWING_FRAGMENT_POSITION:
+//                return new FollowingFragment();
+//            case FOLLOWERS_FRAGMENT_POSITION:
+//                return new FollowersFragment();
+//            default:
+//                return PlaceholderFragment.newInstance(position + 1);
+//        }
     }
 
     @Nullable
