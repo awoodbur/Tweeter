@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.view.main;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -42,6 +43,14 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
+        findViewById(R.id.activity_main_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,19 +60,24 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
             }
         });
 
-        userImageView = findViewById(R.id.userImage);
+        userImageView = findViewById(R.id.activity_main_profile);
 
         user = presenter.getCurrentUser();
 
-        // Asynchronously load the user's image
-        LoadImageTask loadImageTask = new LoadImageTask(this);
-        loadImageTask.execute(presenter.getCurrentUser().getImageUrl());
+        if (user == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        } else {
+            // Asynchronously load the user's image
+            LoadImageTask loadImageTask = new LoadImageTask(this);
+            loadImageTask.execute(presenter.getCurrentUser().getImageUrl());
+        }
 
-        TextView userName = findViewById(R.id.userName);
-        userName.setText(user.getName());
-
-        TextView userAlias = findViewById(R.id.userAlias);
-        userAlias.setText(user.getAlias());
+//        TextView userName = findViewById(R.id.userName);
+//        userName.setText(user.getName());
+//
+//        TextView userAlias = findViewById(R.id.userAlias);
+//        userAlias.setText(user.getAlias());
     }
 
     @Override

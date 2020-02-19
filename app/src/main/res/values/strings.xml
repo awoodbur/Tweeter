@@ -10,8 +10,19 @@
     <string name="storyTabTitle">Story</string>
     <string name="followingTabTitle">Following</string>
     <string name="followersTabTitle">Followers</string>
+    <string name="signInTabTitle">Sign In</string>
+    <string name="signUpTabTitle">Sign Up</string>
 
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
-    <string name="recycler_profile_desc">Profile</string>
+    <string name="profile_desc">Profile</string>
+    <string name="icon_desc">Icon</string>
+    <string name="search_desc">Search</string>
+
+    <string name="input_handle">handle</string>
+    <string name="input_password">password</string>
+    <string name="input_first_name">first name</string>
+    <string name="input_last_name">last_name</string>
+    <string name="button_sign_in">Sign In</string>
+    <string name="button_sign_up">Sign Up</string>
 </resources>
