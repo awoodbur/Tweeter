@@ -1,10 +1,9 @@
-package edu.byu.cs.tweeter.view.main.story;
+package edu.byu.cs.tweeter.view.main;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,7 +24,7 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
     private ImageView userImageView;
 
 
-    private static final String EXTRA_USER = "edu.byu.cs.tweeter.view.main.story.UserActivity.user";
+    private static final String EXTRA_USER = "edu.byu.cs.tweeter.view.main.UserActivity.user";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

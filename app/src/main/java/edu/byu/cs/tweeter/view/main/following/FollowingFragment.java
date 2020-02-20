@@ -69,8 +69,6 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         private final ImageView userImage;
         private final TextView userAlias;
         private final TextView userName;
-        private final TextView tweetDate;
-        private final TextView tweetContent;
 
         FollowingHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,8 +76,6 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             userImage = itemView.findViewById(R.id.recycler_item_icon);
             userAlias = itemView.findViewById(R.id.recycler_item_alias);
             userName = itemView.findViewById(R.id.recycler_item_name);
-            tweetDate = itemView.findViewById(R.id.recycler_item_date);
-            tweetContent = itemView.findViewById(R.id.recycler_item_content);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,8 +89,6 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             userImage.setImageDrawable(ImageCache.getInstance().getImageDrawable(user));
             userAlias.setText(user.getAlias());
             userName.setText(user.getName());
-            tweetDate.setText("Aug 14");
-            tweetContent.setText("my first tweet");
         }
     }
 

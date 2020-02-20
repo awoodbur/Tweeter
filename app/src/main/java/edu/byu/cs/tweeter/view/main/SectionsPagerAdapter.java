@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.view.main.following.FollowingFragment;
+import edu.byu.cs.tweeter.view.main.story.StoryFragment;
 
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to one of the sections/tabs/pages
@@ -33,23 +34,18 @@ class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        if (position == FOLLOWING_FRAGMENT_POSITION) {
-            return new FollowingFragment();
-        } else {
-            return PlaceholderFragment.newInstance(position + 1);
-        }
-//        switch (position) {
+        switch (position) {
 //            case FEED_FRAGMENT_POSITION:
 //                return new FeedFragment();
-//            case STORY_FRAGMENT_POSITION:
-//                return new StoryFragment();
-//            case FOLLOWING_FRAGMENT_POSITION:
-//                return new FollowingFragment();
+            case STORY_FRAGMENT_POSITION:
+                return new StoryFragment();
+            case FOLLOWING_FRAGMENT_POSITION:
+                return new FollowingFragment();
 //            case FOLLOWERS_FRAGMENT_POSITION:
 //                return new FollowersFragment();
-//            default:
-//                return PlaceholderFragment.newInstance(position + 1);
-//        }
+            default:
+                return PlaceholderFragment.newInstance(position + 1);
+        }
     }
 
     @Nullable

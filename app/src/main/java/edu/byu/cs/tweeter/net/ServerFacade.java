@@ -7,11 +7,14 @@ import java.util.Map;
 
 import edu.byu.cs.tweeter.BuildConfig;
 import edu.byu.cs.tweeter.model.domain.Follow;
+import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.net.request.AuthRequest;
 import edu.byu.cs.tweeter.net.request.FollowingRequest;
+import edu.byu.cs.tweeter.net.request.StoryRequest;
 import edu.byu.cs.tweeter.net.response.FollowingResponse;
 import edu.byu.cs.tweeter.net.response.AuthResponse;
+import edu.byu.cs.tweeter.net.response.StoryResponse;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
@@ -19,9 +22,13 @@ import edu.byu.cs.tweeter.net.response.AuthResponse;
  */
 public class ServerFacade {
 
+    private static List<Tweet> allTweets;
+
     private static Map<User, List<User>> followeesByFollower;
 
     private static Map<User, String> users;
+
+    private static User kirk;
 
     public AuthResponse signIn(AuthRequest request) {
         if (users == null) {
@@ -54,6 +61,40 @@ public class ServerFacade {
         }
     }
 
+    public StoryResponse getStory(StoryRequest request) {
+
+        // Used in place of assert statements because Android does not support them
+        if(BuildConfig.DEBUG) {
+            if(request.getLimit() < 0) {
+                throw new AssertionError();
+            }
+
+            if(request.getUser() == null) {
+                throw new AssertionError();
+            }
+        }
+
+        if (allTweets == null) {
+            allTweets = initializeTweets();
+        }
+
+        List<Tweet> responseTweets = new ArrayList<>(request.getLimit());
+
+        boolean hasMorePages = false;
+
+        if (request.getLimit() > 0) {
+            int tweetIndex = getStoryStartingIndex(request.getLastTweet());
+
+            for(int limitCounter = 0; tweetIndex < allTweets.size() && limitCounter < request.getLimit(); tweetIndex++, limitCounter++) {
+                responseTweets.add(allTweets.get(tweetIndex));
+            }
+
+            hasMorePages = tweetIndex < allTweets.size();
+        }
+
+        return new StoryResponse(responseTweets, hasMorePages);
+    }
+
     /**
      * Returns the users that the user specified in the request is following. Uses information in
      * the request object to limit the number of followees returned and to return the next set of
@@ -81,6 +122,10 @@ public class ServerFacade {
             followeesByFollower = initializeFollowees();
         }
 
+        if(users == null) {
+            users = initializeUsers();
+        }
+
         List<User> allFollowees = followeesByFollower.get(request.getFollower());
         List<User> responseFollowees = new ArrayList<>(request.getLimit());
 
@@ -99,6 +144,21 @@ public class ServerFacade {
         }
 
         return new FollowingResponse(responseFollowees, hasMorePages);
+    }
+
+    private int getStoryStartingIndex(Tweet lastTweet) {
+
+        int tweetIndex = 0;
+
+        if (lastTweet != null) {
+            for (int i = 0; i < allTweets.size(); ++i) {
+                if (lastTweet.equals(allTweets.get(i))) {
+                    tweetIndex = i + 1;
+                }
+            }
+        }
+
+        return tweetIndex;
     }
 
     /**
@@ -130,6 +190,16 @@ public class ServerFacade {
         return followeesIndex;
     }
 
+    private List<Tweet> initializeTweets() {
+        List<Tweet> tweets = new ArrayList<>();
+
+        for (int i = 0; i < 25; ++i) {
+            tweets.add(new Tweet(kirk, "This is my tweet " + i, "Aug 14"));
+        }
+
+        return tweets;
+    }
+
     /**
      * Generates the followee data.
      */
@@ -157,7 +227,8 @@ public class ServerFacade {
 
     private Map<User, String> initializeUsers() {
         Map<User, String> users = new HashMap<>();
-        users.put(new User("James", "Kirk", "kirk", "https://www.writeups.org/wp-content/uploads/James-Tiberius-Kirk-Star-Trek-William-Shatner.jpg"), "password");
+        kirk = new User("James", "Kirk", "kirk", "https://www.writeups.org/wp-content/uploads/James-Tiberius-Kirk-Star-Trek-William-Shatner.jpg");
+        users.put(kirk, "password");
         return users;
     }
 
