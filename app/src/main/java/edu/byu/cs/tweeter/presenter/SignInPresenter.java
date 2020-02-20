@@ -1,6 +1,6 @@
 package edu.byu.cs.tweeter.presenter;
 
-import edu.byu.cs.tweeter.model.services.LoginService;
+import edu.byu.cs.tweeter.model.services.UserService;
 import edu.byu.cs.tweeter.net.request.AuthRequest;
 import edu.byu.cs.tweeter.net.response.AuthResponse;
 
@@ -28,6 +28,6 @@ public class SignInPresenter extends Presenter {
     }
 
     public AuthResponse signIn(AuthRequest request) {
-        return LoginService.getInstance().signIn(request);
+        return UserService.getInstance().signIn(request);
     }
 }

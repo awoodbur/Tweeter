@@ -39,7 +39,7 @@
         tools:text="Mark Zuck" />
 
     <TextView
-        android:id="@+id/activity_user_handle"
+        android:id="@+id/activity_user_alias"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -56,11 +56,12 @@
         android:background="?attr/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/activity_user_handle" />
+        app:layout_constraintTop_toBottomOf="@+id/activity_user_alias" />
 
     <androidx.viewpager.widget.ViewPager
-        android:layout_width="409dp"
-        android:layout_height="561dp"
+        android:id="@+id/view_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

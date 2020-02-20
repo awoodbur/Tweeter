@@ -20,7 +20,7 @@ public class User implements Comparable<User>, Serializable {
     }
 
     public User(@NotNull String firstName, @NotNull String lastName, String imageURL) {
-        this(firstName, lastName, String.format("@%s%s", firstName, lastName), imageURL);
+        this(firstName, lastName, String.format("%s%s", firstName, lastName), imageURL);
     }
 
     public User(@NotNull String firstName, @NotNull String lastName, @NotNull String alias, String imageURL) {
@@ -45,6 +45,8 @@ public class User implements Comparable<User>, Serializable {
     public String getAlias() {
         return alias;
     }
+
+    public String getAliasAt() { return "@" + alias; }
 
     public String getImageUrl() {
         return imageUrl;

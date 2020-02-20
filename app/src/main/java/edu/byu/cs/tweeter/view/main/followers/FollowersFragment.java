@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.main.story;
+package edu.byu.cs.tweeter.view.main.followers;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,99 +19,92 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.net.request.StoryRequest;
-import edu.byu.cs.tweeter.net.response.StoryResponse;
-import edu.byu.cs.tweeter.presenter.StoryPresenter;
-import edu.byu.cs.tweeter.view.asyncTasks.GetStoryTask;
+import edu.byu.cs.tweeter.net.request.FollowersRequest;
+import edu.byu.cs.tweeter.net.response.FollowersResponse;
+import edu.byu.cs.tweeter.presenter.FollowersPresenter;
+import edu.byu.cs.tweeter.view.asyncTasks.GetFollowersTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
+import edu.byu.cs.tweeter.view.main.UserActivity;
 
-public class StoryFragment extends Fragment implements StoryPresenter.View {
+public class FollowersFragment extends Fragment implements FollowersPresenter.View {
 
     private static final int LOADING_DATA_VIEW = 0;
     private static final int ITEM_VIEW = 1;
 
     private static final int PAGE_SIZE = 10;
 
-    private StoryPresenter presenter;
+    private FollowersPresenter presenter;
 
-    private StoryRecyclerViewAdapter storyRecyclerViewAdapter;
+    private FollowersRecyclerViewAdapter followersRecyclerViewAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_recycler_list, container, false);
 
-        presenter = new StoryPresenter(this);
+        presenter = new FollowersPresenter(this);
 
-        RecyclerView storyRecyclerView = view.findViewById(R.id.recycler_view);
+        RecyclerView followersRecyclerView = view.findViewById(R.id.recycler_view);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
-        storyRecyclerView.setLayoutManager(layoutManager);
+        followersRecyclerView.setLayoutManager(layoutManager);
 
-        storyRecyclerViewAdapter = new StoryRecyclerViewAdapter();
-        storyRecyclerView.setAdapter(storyRecyclerViewAdapter);
+        followersRecyclerViewAdapter = new FollowersRecyclerViewAdapter();
+        followersRecyclerView.setAdapter(followersRecyclerViewAdapter);
 
-        storyRecyclerView.addOnScrollListener(new StoryRecyclerViewPaginationScrollListener(layoutManager));
+        followersRecyclerView.addOnScrollListener(new FollowersRecyclerViewPaginationScrollListener(layoutManager));
 
         return view;
     }
 
     /**
-     * The ViewHolder for the RecyclerView that displays the Story data.
+     * The ViewHolder for the RecyclerView that displays the Followers data.
      */
-    private class StoryHolder extends RecyclerView.ViewHolder {
+    private class FollowersHolder extends RecyclerView.ViewHolder {
 
         private final ImageView userImage;
         private final TextView userAlias;
         private final TextView userName;
-        private final TextView tweetDate;
-        private final TextView tweetContent;
 
-        StoryHolder(@NonNull View itemView) {
+        FollowersHolder(@NonNull View itemView) {
             super(itemView);
 
             userImage = itemView.findViewById(R.id.recycler_item_icon);
             userAlias = itemView.findViewById(R.id.recycler_item_alias);
             userName = itemView.findViewById(R.id.recycler_item_name);
-            tweetDate = itemView.findViewById(R.id.recycler_item_date);
-            tweetContent = itemView.findViewById(R.id.recycler_item_content);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "You selected '" + userName.getText() + "'.", Toast.LENGTH_SHORT).show();
+                    startActivity(UserActivity.newIntent(getActivity(), presenter.getUserByAlias(userAlias.getText().toString())));
                 }
             });
         }
 
-        void bindTweet(Tweet tweet) {
-            User user = tweet.getAuthor();
+        void bindUser(User user) {
             userImage.setImageDrawable(ImageCache.getInstance().getImageDrawable(user));
             userAlias.setText(user.getAliasAt());
             userName.setText(user.getName());
-            tweetDate.setText(tweet.getDate());
-            tweetContent.setText(tweet.getContent());
         }
     }
 
     /**
-     * The adapter for the RecyclerView that displays the Story data.
+     * The adapter for the RecyclerView that displays the Followers data.
      */
-    private class StoryRecyclerViewAdapter extends RecyclerView.Adapter<StoryHolder> implements GetStoryTask.GetTweetsObserver {
+    private class FollowersRecyclerViewAdapter extends RecyclerView.Adapter<FollowersHolder> implements GetFollowersTask.GetFollowersObserver {
 
-        private final List<Tweet> tweets = new ArrayList<>();
+        private final List<User> users = new ArrayList<>();
 
-        private edu.byu.cs.tweeter.model.domain.Tweet lastTweet;
+        private edu.byu.cs.tweeter.model.domain.User lastFollower;
 
         private boolean hasMorePages;
         private boolean isLoading = false;
 
         /**
-         * Creates an instance and loads the first page of story data.
+         * Creates an instance and loads the first page of followers data.
          */
-        StoryRecyclerViewAdapter() {
+        FollowersRecyclerViewAdapter() {
             loadMoreItems();
         }
 
@@ -119,39 +112,39 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
          * Adds new users to the list from which the RecyclerView retrieves the users it displays
          * and notifies the RecyclerView that items have been added.
          *
-         * @param newTweets the users to add.
+         * @param newUsers the users to add.
          */
-        void addItems(List<Tweet> newTweets) {
-            int startInsertPosition = tweets.size();
-            tweets.addAll(newTweets);
-            this.notifyItemRangeInserted(startInsertPosition, newTweets.size());
+        void addItems(List<User> newUsers) {
+            int startInsertPosition = users.size();
+            users.addAll(newUsers);
+            this.notifyItemRangeInserted(startInsertPosition, newUsers.size());
         }
 
         /**
          * Adds a single user to the list from which the RecyclerView retrieves the users it
          * displays and notifies the RecyclerView that an item has been added.
          *
-         * @param tweet the user to add.
+         * @param user the user to add.
          */
-        void addItem(Tweet tweet) {
-            tweets.add(tweet);
-            this.notifyItemInserted(tweets.size() - 1);
+        void addItem(User user) {
+            users.add(user);
+            this.notifyItemInserted(users.size() - 1);
         }
 
         /**
          * Removes a user from the list from which the RecyclerView retrieves the users it displays
          * and notifies the RecyclerView that an item has been removed.
          *
-         * @param tweet the user to remove.
+         * @param user the user to remove.
          */
-        void removeItem(Tweet tweet) {
-            int position = tweets.indexOf(tweet);
-            tweets.remove(position);
+        void removeItem(User user) {
+            int position = users.indexOf(user);
+            users.remove(position);
             this.notifyItemRemoved(position);
         }
 
         /**
-         *  Creates a view holder for a tweet to be displayed in the RecyclerView or for a message
+         *  Creates a view holder for a follower to be displayed in the RecyclerView or for a message
          *  indicating that new rows are being loaded if we are waiting for rows to load.
          *
          * @param parent the parent view.
@@ -160,8 +153,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
          */
         @NonNull
         @Override
-        public StoryHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            LayoutInflater layoutInflater = LayoutInflater.from(StoryFragment.this.getContext());
+        public FollowersHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(FollowersFragment.this.getContext());
             View view;
 
             if(viewType == LOADING_DATA_VIEW) {
@@ -171,31 +164,31 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
                 view = layoutInflater.inflate(R.layout.recycler_item, parent, false);
             }
 
-            return new StoryHolder(view);
+            return new FollowersHolder(view);
         }
 
         /**
-         * Binds the tweet at the specified position unless we are currently loading new data. If
+         * Binds the follower at the specified position unless we are currently loading new data. If
          * we are loading new data, the display at that position will be the data loading footer.
          *
-         * @param storyHolder the ViewHolder to which the tweet should be bound.
-         * @param position the position (in the list of tweets) that contains the tweet to be
+         * @param followersHolder the ViewHolder to which the follower should be bound.
+         * @param position the position (in the list of followers) that contains the follower to be
          *                 bound.
          */
         @Override
-        public void onBindViewHolder(@NonNull StoryHolder storyHolder, int position) {
+        public void onBindViewHolder(@NonNull FollowersHolder followersHolder, int position) {
             if(!isLoading) {
-                storyHolder.bindTweet(tweets.get(position));
+                followersHolder.bindUser(users.get(position));
             }
         }
 
         /**
-         * Returns the current number of tweets available for display.
-         * @return the number of tweets available for display.
+         * Returns the current number of followers available for display.
+         * @return the number of followers available for display.
          */
         @Override
         public int getItemCount() {
-            return tweets.size();
+            return users.size();
         }
 
         /**
@@ -207,38 +200,38 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
          */
         @Override
         public int getItemViewType(int position) {
-            return (position == tweets.size() - 1 && isLoading) ? LOADING_DATA_VIEW : ITEM_VIEW;
+            return (position == users.size() - 1 && isLoading) ? LOADING_DATA_VIEW : ITEM_VIEW;
         }
 
         /**
-         * Causes the Adapter to display a loading footer and make a request to get more story
+         * Causes the Adapter to display a loading footer and make a request to get more followers
          * data.
          */
         void loadMoreItems() {
             isLoading = true;
             addLoadingFooter();
 
-            GetStoryTask getStoryTask = new GetStoryTask(presenter, this);
-            StoryRequest request = new StoryRequest(presenter.getDisplayUser(), PAGE_SIZE, lastTweet);
-            getStoryTask.execute(request);
+            GetFollowersTask getFollowersTask = new GetFollowersTask(presenter, this);
+            FollowersRequest request = new FollowersRequest(presenter.getDisplayUser(), PAGE_SIZE, lastFollower);
+            getFollowersTask.execute(request);
         }
 
         /**
-         * A callback indicating more story data has been received. Loads the new tweets
+         * A callback indicating more followers data has been received. Loads the new followers
          * and removes the loading footer.
          *
-         * @param storyResponse the asynchronous response to the request to load more items.
+         * @param followersResponse the asynchronous response to the request to load more items.
          */
         @Override
-        public void tweetsRetrieved(StoryResponse storyResponse) {
-            List<Tweet> tweets = storyResponse.getTweets();
+        public void followersRetrieved(FollowersResponse followersResponse) {
+            List<User> followers = followersResponse.getFollowers();
 
-            lastTweet = (tweets.size() > 0) ? tweets.get(tweets.size() -1) : null;
-            hasMorePages = storyResponse.hasMorePages();
+            lastFollower = (followers.size() > 0) ? followers.get(followers.size() -1) : null;
+            hasMorePages = followersResponse.hasMorePages();
 
             isLoading = false;
             removeLoadingFooter();
-            storyRecyclerViewAdapter.addItems(tweets);
+            followersRecyclerViewAdapter.addItems(followers);
         }
 
         /**
@@ -246,7 +239,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
          * loading footer view) at the bottom of the list.
          */
         private void addLoadingFooter() {
-            addItem(new Tweet(new User("Dummy", "User", ""), "Dummy tweet", "Some date"));
+            addItem(new User("Dummy", "User", ""));
         }
 
         /**
@@ -254,7 +247,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
          * the loading footer at the bottom of the list.
          */
         private void removeLoadingFooter() {
-            removeItem(tweets.get(tweets.size() - 1));
+            removeItem(users.get(users.size() - 1));
         }
     }
 
@@ -262,7 +255,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
      * A scroll listener that detects when the user has scrolled to the bottom of the currently
      * available data.
      */
-    private class StoryRecyclerViewPaginationScrollListener extends RecyclerView.OnScrollListener {
+    private class FollowersRecyclerViewPaginationScrollListener extends RecyclerView.OnScrollListener {
 
         private final LinearLayoutManager layoutManager;
 
@@ -271,7 +264,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
          *
          * @param layoutManager the layout manager being used by the RecyclerView.
          */
-        StoryRecyclerViewPaginationScrollListener(LinearLayoutManager layoutManager) {
+        FollowersRecyclerViewPaginationScrollListener(LinearLayoutManager layoutManager) {
             this.layoutManager = layoutManager;
         }
 
@@ -292,10 +285,10 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
             int totalItemCount = layoutManager.getItemCount();
             int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
-            if (!storyRecyclerViewAdapter.isLoading && storyRecyclerViewAdapter.hasMorePages) {
+            if (!followersRecyclerViewAdapter.isLoading && followersRecyclerViewAdapter.hasMorePages) {
                 if ((visibleItemCount + firstVisibleItemPosition) >=
                         totalItemCount && firstVisibleItemPosition >= 0) {
-                    storyRecyclerViewAdapter.loadMoreItems();
+                    followersRecyclerViewAdapter.loadMoreItems();
                 }
             }
         }

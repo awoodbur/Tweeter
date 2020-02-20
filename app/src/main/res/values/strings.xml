@@ -19,7 +19,7 @@
     <string name="icon_desc">Icon</string>
     <string name="search_desc">Search</string>
 
-    <string name="input_handle">handle</string>
+    <string name="input_alias">alias</string>
     <string name="input_password">password</string>
     <string name="input_first_name">first name</string>
     <string name="input_last_name">last name</string>
@@ -31,6 +31,5 @@
     <string name="button_unfollow">Unfollow</string>
     <string name="button_logout">Logout</string>
 
-    <string name="text_name_full">%1$s %2$s</string>
-    <string name="text_handle">\@%1$s</string>
+    <string name="text_alias">\@%1$s</string>
 </resources>

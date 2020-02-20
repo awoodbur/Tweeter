@@ -7,14 +7,14 @@
     android:layout_height="match_parent">
 
     <EditText
-        android:id="@+id/fragment_signin_handle"
+        android:id="@+id/fragment_signin_alias"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:ems="10"
-        android:hint="@string/input_handle"
+        android:hint="@string/input_alias"
         android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
         android:inputType="textPersonName|textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment_signin_handle" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_signin_alias" />
 
     <Button
         android:id="@+id/fragment_signin_button"

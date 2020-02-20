@@ -26,6 +26,7 @@ import edu.byu.cs.tweeter.net.response.FollowingResponse;
 import edu.byu.cs.tweeter.presenter.FollowingPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.GetFollowingTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
+import edu.byu.cs.tweeter.view.main.UserActivity;
 
 /**
  * The fragment that displays on the 'Following' tab.
@@ -56,7 +57,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         followingRecyclerViewAdapter = new FollowingRecyclerViewAdapter();
         followingRecyclerView.setAdapter(followingRecyclerViewAdapter);
 
-        followingRecyclerView.addOnScrollListener(new FollowRecyclerViewPaginationScrollListener(layoutManager));
+        followingRecyclerView.addOnScrollListener(new FollowingRecyclerViewPaginationScrollListener(layoutManager));
 
         return view;
     }
@@ -80,14 +81,14 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "You selected '" + userName.getText() + "'.", Toast.LENGTH_SHORT).show();
+                    startActivity(UserActivity.newIntent(getActivity(), presenter.getUserByAlias(userAlias.getText().toString())));
                 }
             });
         }
 
         void bindUser(User user) {
             userImage.setImageDrawable(ImageCache.getInstance().getImageDrawable(user));
-            userAlias.setText(user.getAlias());
+            userAlias.setText(user.getAliasAt());
             userName.setText(user.getName());
         }
     }
@@ -215,7 +216,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             addLoadingFooter();
 
             GetFollowingTask getFollowingTask = new GetFollowingTask(presenter, this);
-            FollowingRequest request = new FollowingRequest(presenter.getCurrentUser(), PAGE_SIZE, lastFollowee);
+            FollowingRequest request = new FollowingRequest(presenter.getDisplayUser(), PAGE_SIZE, lastFollowee);
             getFollowingTask.execute(request);
         }
 
@@ -258,7 +259,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
      * A scroll listener that detects when the user has scrolled to the bottom of the currently
      * available data.
      */
-    private class FollowRecyclerViewPaginationScrollListener extends RecyclerView.OnScrollListener {
+    private class FollowingRecyclerViewPaginationScrollListener extends RecyclerView.OnScrollListener {
 
         private final LinearLayoutManager layoutManager;
 
@@ -267,7 +268,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
          *
          * @param layoutManager the layout manager being used by the RecyclerView.
          */
-        FollowRecyclerViewPaginationScrollListener(LinearLayoutManager layoutManager) {
+        FollowingRecyclerViewPaginationScrollListener(LinearLayoutManager layoutManager) {
             this.layoutManager = layoutManager;
         }
 

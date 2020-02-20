@@ -42,13 +42,12 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
             Intent intent = new Intent(this, LoginActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
             startActivity(intent);
-        }
-
-        SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
-        ViewPager viewPager = findViewById(R.id.view_pager);
-        viewPager.setAdapter(sectionsPagerAdapter);
-        TabLayout tabs = findViewById(R.id.tabs);
-        tabs.setupWithViewPager(viewPager);
+        } else {
+            SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
+            ViewPager viewPager = findViewById(R.id.view_pager);
+            viewPager.setAdapter(sectionsPagerAdapter);
+            TabLayout tabs = findViewById(R.id.tabs);
+            tabs.setupWithViewPager(viewPager);
 
 //        findViewById(R.id.activity_main_search).setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -58,34 +57,33 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
 //            }
 //        });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+            FloatingActionButton fab = findViewById(R.id.fab);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                }
+            });
 
-        userImageView = findViewById(R.id.activity_main_profile);
-        userImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(UserActivity.newIntent(MainActivity.this, user));
-            }
-        });
+            userImageView = findViewById(R.id.activity_main_profile);
+            userImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(UserActivity.newIntent(MainActivity.this, user));
+                }
+            });
 
-        if (user != null) {
             // Asynchronously load the user's image
             LoadImageTask loadImageTask = new LoadImageTask(this);
             loadImageTask.execute(user.getImageUrl());
-        }
 
 //        TextView userName = findViewById(R.id.userName);
 //        userName.setText(user.getName());
 //
 //        TextView userAlias = findViewById(R.id.userAlias);
 //        userAlias.setText(user.getAlias());
+        }
     }
 
     @Override
@@ -106,5 +104,11 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
         if(drawables[0] != null) {
             userImageView.setImageDrawable(drawables[0]);
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.setDisplayUser(presenter.getCurrentUser());
     }
 }

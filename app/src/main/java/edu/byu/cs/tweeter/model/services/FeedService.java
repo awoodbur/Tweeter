@@ -1,18 +1,18 @@
 package edu.byu.cs.tweeter.model.services;
 
 import edu.byu.cs.tweeter.net.ServerFacade;
-import edu.byu.cs.tweeter.net.request.FollowingRequest;
-import edu.byu.cs.tweeter.net.response.FollowingResponse;
+import edu.byu.cs.tweeter.net.request.FeedRequest;
+import edu.byu.cs.tweeter.net.response.FeedResponse;
 
 /**
- * Contains the business logic for getting the users a user is following.
+ * Contains the business logic for getting a users feed.
  */
-public class FollowingService {
+public class FeedService {
 
     /**
      * The singleton instance.
      */
-    private static FollowingService instance;
+    private static FeedService instance;
 
     private final ServerFacade serverFacade;
 
@@ -21,9 +21,9 @@ public class FollowingService {
      *
      * @return the instance.
      */
-    public static FollowingService getInstance() {
+    public static FeedService getInstance() {
         if(instance == null) {
-            instance = new FollowingService();
+            instance = new FeedService();
         }
 
         return instance;
@@ -33,7 +33,7 @@ public class FollowingService {
      * A private constructor created to ensure that this class is a singleton (i.e. that it
      * cannot be instantiated by external classes).
      */
-    private FollowingService() {
+    private FeedService() {
         serverFacade = new ServerFacade();
     }
 
@@ -46,7 +46,6 @@ public class FollowingService {
      * @param request contains the data required to fulfill the request.
      * @return the followees.
      */
-    public FollowingResponse getFollowees(FollowingRequest request) {
-        return serverFacade.getFollowing(request);
-    }
-}
+    public FeedResponse getFeed(FeedRequest request) {
+        return serverFacade.getFeed(request);
+    }}

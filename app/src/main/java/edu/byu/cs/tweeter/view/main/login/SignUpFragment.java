@@ -23,7 +23,7 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
 
     private EditText mFirstNameField;
     private EditText mLastNameField;
-    private EditText mHandle;
+    private EditText mAlias;
     private EditText mPassword;
     private EditText mImageURL;
     private Button mButton;
@@ -41,8 +41,8 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
         mFirstNameField.addTextChangedListener(watcher);
         mLastNameField = view.findViewById(R.id.fragment_signup_last_name);
         mLastNameField.addTextChangedListener(watcher);
-        mHandle = view.findViewById(R.id.fragment_signup_handle);
-        mHandle.addTextChangedListener(watcher);
+        mAlias = view.findViewById(R.id.fragment_signup_alias);
+        mAlias.addTextChangedListener(watcher);
         mPassword = view.findViewById(R.id.fragment_signup_password);
         mPassword.addTextChangedListener(watcher);
         mImageURL = view.findViewById(R.id.fragment_signup_image_url);
@@ -55,7 +55,7 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
             public void onClick(View v) {
                 AuthResponse response = presenter.signUp(new AuthRequest(mFirstNameField.getText().toString(),
                         mLastNameField.getText().toString(),
-                        mHandle.getText().toString(),
+                        mAlias.getText().toString(),
                         mPassword.getText().toString(), mImageURL.getText().toString()));
                 if (response.isSuccess()) {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -84,7 +84,7 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
         @Override
         public void afterTextChanged(Editable s) {
             if (mFirstNameField.getText().length() != 0 && mLastNameField.getText().length() != 0
-                    && mHandle.getText().length() != 0 && mPassword.getText().length() != 0
+                    && mAlias.getText().length() != 0 && mPassword.getText().length() != 0
                     && mImageURL.getText().length() != 0) {
                 mButton.setEnabled(true);
             } else {

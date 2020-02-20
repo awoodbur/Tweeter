@@ -1,7 +1,7 @@
 package edu.byu.cs.tweeter.presenter;
 
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.services.LoginService;
+import edu.byu.cs.tweeter.model.services.UserService;
 
 /**
  * A common base class for all presenters in the application.
@@ -14,6 +14,20 @@ public abstract class Presenter {
      * @return the user.
      */
     public User getCurrentUser() {
-        return LoginService.getInstance().getCurrentUser();
+        return UserService.getInstance().getCurrentUser();
+    }
+
+    public User getDisplayUser() { return UserService.getInstance().getDisplayUser(); }
+
+    public User getUserByAlias(String alias) {
+        return UserService.getInstance().getUserByAlias(alias);
+    }
+
+    public boolean doesUserFollowUser(User user1, User user2) {
+        return UserService.getInstance().doesUserFollowUser(user1, user2);
+    }
+
+    public void setDisplayUser(User user) {
+        UserService.getInstance().setDisplayUser(user);
     }
 }

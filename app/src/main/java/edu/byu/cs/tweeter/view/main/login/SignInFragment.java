@@ -21,7 +21,7 @@ import edu.byu.cs.tweeter.view.main.MainActivity;
 
 public class SignInFragment extends Fragment implements SignInPresenter.View {
 
-    private EditText mHandle;
+    private EditText mAlias;
     private EditText mPassword;
     private Button mButton;
 
@@ -34,8 +34,8 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
 
         presenter = new SignInPresenter(this);
 
-        mHandle = view.findViewById(R.id.fragment_signin_handle);
-        mHandle.addTextChangedListener(watcher);
+        mAlias = view.findViewById(R.id.fragment_signin_alias);
+        mAlias.addTextChangedListener(watcher);
         mPassword = view.findViewById(R.id.fragment_signin_password);
         mPassword.addTextChangedListener(watcher);
         mButton = view.findViewById(R.id.fragment_signin_button);
@@ -44,7 +44,7 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuthResponse response = presenter.signIn(new AuthRequest(mHandle.getText().toString(), mPassword.getText().toString()));
+                AuthResponse response = presenter.signIn(new AuthRequest(mAlias.getText().toString(), mPassword.getText().toString()));
                 if (response.isSuccess()) {
                     Intent intent = new Intent(getActivity(), MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
@@ -71,7 +71,7 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (mHandle.getText().length() != 0 && mPassword.getText().length() != 0) {
+            if (mAlias.getText().length() != 0 && mPassword.getText().length() != 0) {
                 mButton.setEnabled(true);
             } else {
                 mButton.setEnabled(false);
