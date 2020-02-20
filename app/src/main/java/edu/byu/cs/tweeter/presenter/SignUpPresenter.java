@@ -1,5 +1,9 @@
 package edu.byu.cs.tweeter.presenter;
 
+import edu.byu.cs.tweeter.model.services.LoginService;
+import edu.byu.cs.tweeter.net.request.AuthRequest;
+import edu.byu.cs.tweeter.net.response.AuthResponse;
+
 /**
  * The presenter for the "sign up" functionality of the application.
  */
@@ -21,5 +25,9 @@ public class SignUpPresenter extends Presenter {
      */
     public SignUpPresenter(View view) {
         this.view = view;
+    }
+
+    public AuthResponse signUp(AuthRequest request) {
+        return LoginService.getInstance().signUp(request);
     }
 }

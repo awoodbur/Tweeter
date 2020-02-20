@@ -22,7 +22,15 @@
     <string name="input_handle">handle</string>
     <string name="input_password">password</string>
     <string name="input_first_name">first name</string>
-    <string name="input_last_name">last_name</string>
+    <string name="input_last_name">last name</string>
+    <string name="input_image_url">image url</string>
+
     <string name="button_sign_in">Sign In</string>
     <string name="button_sign_up">Sign Up</string>
+    <string name="button_follow">Follow</string>
+    <string name="button_unfollow">Unfollow</string>
+    <string name="button_logout">Logout</string>
+
+    <string name="text_name_full">%1$s %2$s</string>
+    <string name="text_handle">\@%1$s</string>
 </resources>

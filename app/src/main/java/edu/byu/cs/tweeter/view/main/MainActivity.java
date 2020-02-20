@@ -20,6 +20,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.presenter.MainPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.LoadImageTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
+import edu.byu.cs.tweeter.view.main.story.UserActivity;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
@@ -37,19 +38,27 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
 
         presenter = new MainPresenter(this);
 
+        user = presenter.getCurrentUser();
+
+        if (user == null) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+            startActivity(intent);
+        }
+
         SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
         ViewPager viewPager = findViewById(R.id.view_pager);
         viewPager.setAdapter(sectionsPagerAdapter);
         TabLayout tabs = findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewPager);
 
-        findViewById(R.id.activity_main_search).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
+//        findViewById(R.id.activity_main_search).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//            }
+//        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -61,16 +70,17 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
         });
 
         userImageView = findViewById(R.id.activity_main_profile);
+        userImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(UserActivity.newIntent(MainActivity.this, user));
+            }
+        });
 
-        user = presenter.getCurrentUser();
-
-        if (user == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        } else {
+        if (user != null) {
             // Asynchronously load the user's image
             LoadImageTask loadImageTask = new LoadImageTask(this);
-            loadImageTask.execute(presenter.getCurrentUser().getImageUrl());
+            loadImageTask.execute(user.getImageUrl());
         }
 
 //        TextView userName = findViewById(R.id.userName);

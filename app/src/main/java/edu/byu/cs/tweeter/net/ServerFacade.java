@@ -8,8 +8,10 @@ import java.util.Map;
 import edu.byu.cs.tweeter.BuildConfig;
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.net.request.AuthRequest;
 import edu.byu.cs.tweeter.net.request.FollowingRequest;
 import edu.byu.cs.tweeter.net.response.FollowingResponse;
+import edu.byu.cs.tweeter.net.response.AuthResponse;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
@@ -18,6 +20,39 @@ import edu.byu.cs.tweeter.net.response.FollowingResponse;
 public class ServerFacade {
 
     private static Map<User, List<User>> followeesByFollower;
+
+    private static Map<User, String> users;
+
+    public AuthResponse signIn(AuthRequest request) {
+        if (users == null) {
+            users = initializeUsers();
+        }
+        for (Map.Entry<User, String> entry : users.entrySet()) {
+            User user = entry.getKey();
+            if (user.getAlias().equals(request.getHandle())) {
+                if (entry.getValue().equals(request.getPassword())) {
+                    return new AuthResponse(user);
+                } else {
+                    return new AuthResponse("Invalid password");
+                }
+            }
+        }
+        return new AuthResponse("User not found");
+    }
+
+    public AuthResponse signUp(AuthRequest request) {
+        if (users == null) {
+            users = initializeUsers();
+        }
+        User user = new User(request.getFirstName(), request.getLastName(), request.getHandle(), request.getImageURL());
+        String pass = users.get(user);
+        if (pass != null && !pass.isEmpty()) {
+            return new AuthResponse("User already exists");
+        } else {
+            users.put(user, request.getPassword());
+            return new AuthResponse(user);
+        }
+    }
 
     /**
      * Returns the users that the user specified in the request is following. Uses information in
@@ -118,6 +153,12 @@ public class ServerFacade {
         }
 
         return followeesByFollower;
+    }
+
+    private Map<User, String> initializeUsers() {
+        Map<User, String> users = new HashMap<>();
+        users.put(new User("James", "Kirk", "kirk", "https://www.writeups.org/wp-content/uploads/James-Tiberius-Kirk-Star-Trek-William-Shatner.jpg"), "password");
+        return users;
     }
 
     /**

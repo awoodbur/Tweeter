@@ -2,7 +2,6 @@ package edu.byu.cs.tweeter.view.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
