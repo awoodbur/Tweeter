@@ -12,6 +12,7 @@
     <string name="followersTabTitle">Followers</string>
     <string name="signInTabTitle">Sign In</string>
     <string name="signUpTabTitle">Sign Up</string>
+    <string name="title_compose_tweet">Compose tweet</string>
 
     <string name="sampleAlias">"@UserAlias"</string>
     <string name="sampleUserName">The User</string>
@@ -30,6 +31,6 @@
     <string name="button_follow">Follow</string>
     <string name="button_unfollow">Unfollow</string>
     <string name="button_logout">Logout</string>
-
-    <string name="text_alias">\@%1$s</string>
+    <string name="button_share">Share</string>
+    <string name="button_cancel">Cancel</string>
 </resources>

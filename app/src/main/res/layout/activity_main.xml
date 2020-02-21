@@ -23,21 +23,10 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:contentDescription="@string/icon_desc"
-        app:layout_constraintEnd_toStartOf="@+id/activity_main_search"
+        app:layout_constraintEnd_toStartOf="@+id/searchView"
         app:layout_constraintStart_toEndOf="@+id/activity_main_profile"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/twitter" />
-
-    <ImageView
-        android:id="@+id/activity_main_search"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="@string/search_desc"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/search" />
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
@@ -71,5 +60,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/feather" />
+
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

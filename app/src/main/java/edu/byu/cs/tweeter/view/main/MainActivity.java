@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.view.main;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -8,9 +9,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -39,9 +43,7 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
         user = presenter.getCurrentUser();
 
         if (user == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-            startActivity(intent);
+            startActivity(LoginActivity.newIntent(this));
         } else {
             SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
             ViewPager viewPager = findViewById(R.id.view_pager);
@@ -61,8 +63,7 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
+                    showTweetDialog();
                 }
             });
 
@@ -84,6 +85,12 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
 //        TextView userAlias = findViewById(R.id.userAlias);
 //        userAlias.setText(user.getAlias());
         }
+    }
+
+    private void showTweetDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        TweetDialogFragment tweetDialogFragment = TweetDialogFragment.newInstance();
+        tweetDialogFragment.show(fm, "fragment_alert");
     }
 
     @Override

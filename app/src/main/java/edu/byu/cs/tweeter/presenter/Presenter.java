@@ -27,6 +27,8 @@ public abstract class Presenter {
         return UserService.getInstance().doesUserFollowUser(user1, user2);
     }
 
+    public void setCurrentUser(User user) { UserService.getInstance().setCurrentUser(user); }
+
     public void setDisplayUser(User user) {
         UserService.getInstance().setDisplayUser(user);
     }

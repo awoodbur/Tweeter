@@ -21,6 +21,7 @@ import edu.byu.cs.tweeter.net.response.FollowersResponse;
 import edu.byu.cs.tweeter.net.response.FollowingResponse;
 import edu.byu.cs.tweeter.net.response.AuthResponse;
 import edu.byu.cs.tweeter.net.response.StoryResponse;
+import edu.byu.cs.tweeter.net.response.TweetResponse;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
@@ -96,6 +97,11 @@ public class ServerFacade {
         }
 
         return false;
+    }
+
+    public TweetResponse shareTweet(Tweet tweet) {
+        allTweets.add(tweet);
+        return new TweetResponse(true, "Tweet shared successfully.");
     }
 
     public StoryResponse getStory(StoryRequest request) {

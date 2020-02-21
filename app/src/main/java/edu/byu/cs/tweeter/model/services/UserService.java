@@ -62,7 +62,7 @@ public class UserService {
         return currentUser;
     }
 
-    private void setCurrentUser(User currentUser) {
+    public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
     }
 
