@@ -63,9 +63,12 @@ public class SignUpFragment extends Fragment implements SignUpTask.SignUpObserve
 //                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
 //                }
                 SignUpTask signUpTask = new SignUpTask(presenter, SignUpFragment.this);
+                String alias = mAlias.getText().toString();
+                if (alias.charAt(0) == '@') {
+                    alias = alias.substring(1);
+                }
                 AuthRequest request = new AuthRequest(mFirstNameField.getText().toString(),
-                        mLastNameField.getText().toString(),
-                        mAlias.getText().toString(),
+                        mLastNameField.getText().toString(), alias,
                         mPassword.getText().toString(), mImageURL.getText().toString());
                 signUpTask.execute(request);
             }

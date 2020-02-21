@@ -11,13 +11,11 @@ public class Tweet implements  Comparable<Tweet>, Serializable {
     private final User author;
     private final String content;
     private final Timestamp date;
-    private final long timestamp;
 
     public Tweet(@NotNull User author, @NotNull String content) {
         this.author = author;
         this.content = content;
         this.date = new Timestamp(System.currentTimeMillis());
-        this.timestamp = date.getTime();
     }
 
     public User getAuthor() { return author; }
@@ -25,8 +23,6 @@ public class Tweet implements  Comparable<Tweet>, Serializable {
     public String getContent() { return content; }
 
     public String getDate() { return date.toString(); }
-
-    public long getTimestamp() { return timestamp; }
 
     @Override
     public boolean equals(Object o) {

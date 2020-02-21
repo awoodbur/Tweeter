@@ -1,6 +1,11 @@
 package edu.byu.cs.tweeter.view.main.feed;
 
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +31,7 @@ import edu.byu.cs.tweeter.net.response.FeedResponse;
 import edu.byu.cs.tweeter.presenter.FeedPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.GetFeedTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
+import edu.byu.cs.tweeter.view.main.UserActivity;
 
 public class FeedFragment extends Fragment implements FeedPresenter.View {
 
@@ -81,7 +87,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "You selected '" + userName.getText() + "'.", Toast.LENGTH_SHORT).show();
+                    startActivity(UserActivity.newIntent(getActivity(), presenter.getUserByAlias(userAlias.getText().toString().substring(1))));
                 }
             });
         }
@@ -92,7 +98,47 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
             userAlias.setText(user.getAliasAt());
             userName.setText(user.getName());
             tweetDate.setText(tweet.getDate());
-            tweetContent.setText(tweet.getContent());
+            tweetContent.setText(parseAlias(tweet.getContent()));
+            tweetContent.setMovementMethod(LinkMovementMethod.getInstance());
+        }
+
+        private SpannableString parseAlias(String content) {
+            SpannableString clickableContent = new SpannableString(content);
+
+            int pos = 1;
+            int start = 0;
+            for (String word : content.split(" ")) {
+                int len = word.length();
+                if (word.charAt(0) == '@') {
+                    clickableContent.setSpan(new AliasClickableSpan(pos++), start, start + len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                }
+                start += len + 1;
+            }
+
+            return clickableContent;
+        }
+
+        public class AliasClickableSpan extends ClickableSpan {
+
+            int pos;
+            AliasClickableSpan(int pos) {
+                this.pos = pos;
+            }
+
+            @Override
+            public void onClick(@NonNull View widget) {
+                TextView text = (TextView) widget;
+                Spanned spanned = (Spanned) text.getText();
+                int start = spanned.getSpanStart(this);
+                int end = spanned.getSpanEnd(this);
+                String alias = spanned.subSequence(start+1, end).toString();
+                User user = presenter.getUserByAlias(alias);
+                if (user != null) {
+                    startActivity(UserActivity.newIntent(getActivity(), user));
+                } else {
+                    Toast.makeText(getActivity(), "Unable to find user.", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 

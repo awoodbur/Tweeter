@@ -52,7 +52,11 @@ public class SignInFragment extends Fragment implements SignInTask.SignInObserve
 //                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
 //                }
                 SignInTask signInTask = new SignInTask(presenter, SignInFragment.this);
-                AuthRequest request = new AuthRequest(mAlias.getText().toString(), mPassword.getText().toString());
+                String alias = mAlias.getText().toString();
+                if (alias.charAt(0) == '@') {
+                    alias = alias.substring(1);
+                }
+                AuthRequest request = new AuthRequest(alias, mPassword.getText().toString());
                 signInTask.execute(request);
             }
         });

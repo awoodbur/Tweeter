@@ -54,12 +54,12 @@ public class MainActivity extends AppCompatActivity implements SearchTask.Search
             TabLayout tabs = findViewById(R.id.tabs);
             tabs.setupWithViewPager(viewPager);
 
-        findViewById(R.id.activity_main_search).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onSearchRequested();
-            }
-        });
+            findViewById(R.id.activity_main_search).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onSearchRequested();
+                }
+            });
 
             FloatingActionButton fab = findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
