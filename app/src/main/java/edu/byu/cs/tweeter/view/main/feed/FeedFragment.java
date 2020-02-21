@@ -246,7 +246,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
          * loading footer view) at the bottom of the list.
          */
         private void addLoadingFooter() {
-            addItem(new Tweet(new User("Dummy", "User", ""), "Dummy tweet", "Some date"));
+            addItem(new Tweet(new User("Dummy", "User", ""), "Dummy tweet"));
         }
 
         /**

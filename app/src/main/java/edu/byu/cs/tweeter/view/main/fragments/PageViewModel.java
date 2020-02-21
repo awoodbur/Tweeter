@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.main;
+package edu.byu.cs.tweeter.view.main.fragments;
 
 import androidx.arch.core.util.Function;
 import androidx.lifecycle.LiveData;

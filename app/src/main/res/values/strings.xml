@@ -25,6 +25,7 @@
     <string name="input_first_name">first name</string>
     <string name="input_last_name">last name</string>
     <string name="input_image_url">image url</string>
+    <string name="input_search_hint">kirk</string>
 
     <string name="button_sign_in">Sign In</string>
     <string name="button_sign_up">Sign Up</string>

@@ -3,25 +3,30 @@ package edu.byu.cs.tweeter.model.domain;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 public class Tweet implements  Comparable<Tweet>, Serializable {
 
     private final User author;
     private final String content;
-    private final String date;
+    private final Timestamp date;
+    private final long timestamp;
 
-    public Tweet(@NotNull User author, @NotNull String content, @NotNull String date) {
+    public Tweet(@NotNull User author, @NotNull String content) {
         this.author = author;
         this.content = content;
-        this.date = date;
+        this.date = new Timestamp(System.currentTimeMillis());
+        this.timestamp = date.getTime();
     }
 
     public User getAuthor() { return author; }
 
     public String getContent() { return content; }
 
-    public String getDate() { return date; }
+    public String getDate() { return date.toString(); }
+
+    public long getTimestamp() { return timestamp; }
 
     @Override
     public boolean equals(Object o) {
@@ -46,9 +51,7 @@ public class Tweet implements  Comparable<Tweet>, Serializable {
     }
 
     @Override
-    // TODO: Fix
     public int compareTo(Tweet tweet) {
-        return this.getContent().compareTo(tweet.getContent())
-                & this.getAuthor().compareTo(tweet.getAuthor());
+        return this.getDate().compareTo(tweet.getDate());
     }
 }

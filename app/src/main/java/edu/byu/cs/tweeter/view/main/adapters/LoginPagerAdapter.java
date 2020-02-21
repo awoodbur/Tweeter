@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.main;
+package edu.byu.cs.tweeter.view.main.adapters;
 
 import android.content.Context;
 
@@ -9,6 +9,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
 import edu.byu.cs.tweeter.R;
+import edu.byu.cs.tweeter.view.main.fragments.PlaceholderFragment;
 import edu.byu.cs.tweeter.view.main.login.SignInFragment;
 import edu.byu.cs.tweeter.view.main.login.SignUpFragment;
 
@@ -16,7 +17,7 @@ import edu.byu.cs.tweeter.view.main.login.SignUpFragment;
  * A [FragmentPagerAdapter] that returns a fragment corresponding to one of the sections/tabs/pages
  * of the Main Activity.
  */
-class LoginPagerAdapter extends FragmentPagerAdapter {
+public class LoginPagerAdapter extends FragmentPagerAdapter {
 
     private static final int SIGNIN_FRAGMENT_POSITION = 0;
     private static final int SIGNUP_FRAGMENT_POSITION = 1;

@@ -1,33 +1,35 @@
 package edu.byu.cs.tweeter.view.main;
 
-import android.content.DialogInterface;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.presenter.MainPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.LoadImageTask;
+import edu.byu.cs.tweeter.view.asyncTasks.SearchTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
+import edu.byu.cs.tweeter.view.main.adapters.SectionsPagerAdapter;
+import edu.byu.cs.tweeter.view.main.fragments.TweetDialogFragment;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
-public class MainActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, MainPresenter.View {
+public class MainActivity extends AppCompatActivity implements SearchTask.SearchObserver, LoadImageTask.LoadImageObserver, MainPresenter.View {
 
     private MainPresenter presenter;
     private User user;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        handleIntent(getIntent());
 
         presenter = new MainPresenter(this);
 
@@ -51,13 +54,12 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
             TabLayout tabs = findViewById(R.id.tabs);
             tabs.setupWithViewPager(viewPager);
 
-//        findViewById(R.id.activity_main_search).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-//                startActivity(intent);
-//            }
-//        });
+        findViewById(R.id.activity_main_search).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onSearchRequested();
+            }
+        });
 
             FloatingActionButton fab = findViewById(R.id.fab);
             fab.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +86,21 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
 //
 //        TextView userAlias = findViewById(R.id.userAlias);
 //        userAlias.setText(user.getAlias());
+        }
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        handleIntent(intent);
+    }
+
+    private void handleIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String query = intent.getStringExtra(SearchManager.QUERY);
+            SearchTask searchTask = new SearchTask(presenter, this);
+            searchTask.execute(query);
         }
     }
 
@@ -117,5 +134,20 @@ public class MainActivity extends AppCompatActivity implements LoadImageTask.Loa
     protected void onResume() {
         super.onResume();
         presenter.setDisplayUser(presenter.getCurrentUser());
+    }
+
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return intent;
+    }
+
+    @Override
+    public void searchComplete(User user) {
+        if (user != null) {
+            startActivity(UserActivity.newIntent(this, user));
+        } else {
+            Toast.makeText(this, "Unable to find user.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

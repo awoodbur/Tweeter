@@ -1,5 +1,9 @@
 package edu.byu.cs.tweeter.presenter;
 
+import edu.byu.cs.tweeter.model.domain.Follow;
+import edu.byu.cs.tweeter.model.services.UserService;
+import edu.byu.cs.tweeter.net.response.Response;
+
 /**
  * The presenter for the user activity.
  */
@@ -21,5 +25,13 @@ public class UserPresenter extends Presenter {
      */
     public UserPresenter(View view) {
         this.view = view;
+    }
+
+    public Response followUser(Follow follow) {
+        return UserService.getInstance().followUser(follow);
+    }
+
+    public Response unfollowUser(Follow follow) {
+        return UserService.getInstance().unfollowUser(follow);
     }
 }

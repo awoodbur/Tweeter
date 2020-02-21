@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.presenter.LoginPresenter;
+import edu.byu.cs.tweeter.view.main.adapters.LoginPagerAdapter;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.View {
 
@@ -38,7 +39,7 @@ public class LoginActivity extends AppCompatActivity implements LoginPresenter.V
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         return intent;
     }
 }

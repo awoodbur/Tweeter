@@ -1,9 +1,11 @@
 package edu.byu.cs.tweeter.model.services;
 
+import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.net.ServerFacade;
 import edu.byu.cs.tweeter.net.request.AuthRequest;
 import edu.byu.cs.tweeter.net.response.AuthResponse;
+import edu.byu.cs.tweeter.net.response.Response;
 
 /**
  * Contains the business logic for login and sign up.
@@ -90,5 +92,13 @@ public class UserService {
 
     public boolean doesUserFollowUser(User user1, User user2) {
         return serverFacade.doesUserFollowUser(user1, user2);
+    }
+
+    public Response followUser(Follow follow) {
+        return serverFacade.followUser(follow);
+    }
+
+    public Response unfollowUser(Follow follow) {
+        return serverFacade.unfollowUser(follow);
     }
 }

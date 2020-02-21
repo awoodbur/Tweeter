@@ -2,7 +2,7 @@ package edu.byu.cs.tweeter.model.services;
 
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.net.ServerFacade;
-import edu.byu.cs.tweeter.net.response.TweetResponse;
+import edu.byu.cs.tweeter.net.response.Response;
 
 public class TweetService {
 
@@ -22,7 +22,7 @@ public class TweetService {
         serverFacade = new ServerFacade();
     }
 
-    public TweetResponse shareTweet(Tweet tweet) {
+    public Response shareTweet(Tweet tweet) {
         return serverFacade.shareTweet(tweet);
     }
 }

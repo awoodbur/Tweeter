@@ -17,9 +17,10 @@ import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.net.request.AuthRequest;
 import edu.byu.cs.tweeter.net.response.AuthResponse;
 import edu.byu.cs.tweeter.presenter.SignInPresenter;
+import edu.byu.cs.tweeter.view.asyncTasks.SignInTask;
 import edu.byu.cs.tweeter.view.main.MainActivity;
 
-public class SignInFragment extends Fragment implements SignInPresenter.View {
+public class SignInFragment extends Fragment implements SignInTask.SignInObserver, SignInPresenter.View {
 
     private EditText mAlias;
     private EditText mPassword;
@@ -44,14 +45,15 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuthResponse response = presenter.signIn(new AuthRequest(mAlias.getText().toString(), mPassword.getText().toString()));
-                if (response.isSuccess()) {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+//                AuthResponse response = presenter.signIn(new AuthRequest(mAlias.getText().toString(), mPassword.getText().toString()));
+//                if (response.isSuccess()) {
+//                    startActivity(MainActivity.newIntent(getActivity()));
+//                } else {
+//                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+                SignInTask signInTask = new SignInTask(presenter, SignInFragment.this);
+                AuthRequest request = new AuthRequest(mAlias.getText().toString(), mPassword.getText().toString());
+                signInTask.execute(request);
             }
         });
 
@@ -78,4 +80,13 @@ public class SignInFragment extends Fragment implements SignInPresenter.View {
             }
         }
     };
+
+    @Override
+    public void signInComplete(AuthResponse response) {
+        if (response.isSuccess()) {
+            startActivity(MainActivity.newIntent(getActivity()));
+        } else {
+            Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }

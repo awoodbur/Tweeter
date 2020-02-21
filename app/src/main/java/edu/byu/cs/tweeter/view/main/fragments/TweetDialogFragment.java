@@ -1,4 +1,4 @@
-package edu.byu.cs.tweeter.view.main;
+package edu.byu.cs.tweeter.view.main.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -6,20 +6,16 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import org.jetbrains.annotations.NotNull;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.Tweet;
-import edu.byu.cs.tweeter.net.response.TweetResponse;
+import edu.byu.cs.tweeter.net.response.Response;
 import edu.byu.cs.tweeter.presenter.TweetPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.ShareTweetTask;
 
@@ -55,7 +51,7 @@ public class TweetDialogFragment extends DialogFragment implements ShareTweetTas
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ShareTweetTask shareTweetTask = new ShareTweetTask(presenter, TweetDialogFragment.this);
-                Tweet tweet = new Tweet(presenter.getCurrentUser(), tweetTextbox.getText().toString(), "Feb 20");
+                Tweet tweet = new Tweet(presenter.getCurrentUser(), tweetTextbox.getText().toString());
                 shareTweetTask.execute(tweet);
             }
         });
@@ -70,7 +66,7 @@ public class TweetDialogFragment extends DialogFragment implements ShareTweetTas
     }
 
     @Override
-    public void tweetShared(TweetResponse response) {
+    public void tweetShared(Response response) {
         Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
     }
 

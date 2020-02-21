@@ -2,13 +2,16 @@ package edu.byu.cs.tweeter.net;
 
 import android.util.Log;
 
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import edu.byu.cs.tweeter.BuildConfig;
+import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.net.request.AuthRequest;
@@ -21,7 +24,7 @@ import edu.byu.cs.tweeter.net.response.FollowersResponse;
 import edu.byu.cs.tweeter.net.response.FollowingResponse;
 import edu.byu.cs.tweeter.net.response.AuthResponse;
 import edu.byu.cs.tweeter.net.response.StoryResponse;
-import edu.byu.cs.tweeter.net.response.TweetResponse;
+import edu.byu.cs.tweeter.net.response.Response;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
@@ -34,6 +37,8 @@ public class ServerFacade {
     private static Map<User, List<User>> allFollowers;
     private static Map<User, String> allUsers;
     private static boolean initialized;
+
+    private static final String HASH_ALGORITHM = "SHA-256";
 
     private static User kirk;
     private static User spock;
@@ -99,9 +104,51 @@ public class ServerFacade {
         return false;
     }
 
-    public TweetResponse shareTweet(Tweet tweet) {
+    public Response shareTweet(Tweet tweet) {
+        initializeAll();
+
         allTweets.add(tweet);
-        return new TweetResponse(true, "Tweet shared successfully.");
+        return new Response(true, "Tweet shared successfully.");
+    }
+
+    public Response followUser(Follow follow) {
+        initializeAll();
+
+        List<User> following = allFollowing.get(follow.getFollower());
+        if (following != null) {
+            following.add(follow.getFollowee());
+        } else {
+            following = new ArrayList<>();
+            following.add(follow.getFollowee());
+            allFollowing.put(follow.getFollower(), following);
+        }
+
+        List<User> followers = allFollowers.get(follow.getFollowee());
+        if (followers != null) {
+            followers.add(follow.getFollower());
+        } else {
+            followers = new ArrayList<>();
+            followers.add(follow.getFollower());
+            allFollowers.put(follow.getFollowee(), followers);
+        }
+
+        return new Response(true, "User followed successfully");
+    }
+
+    public Response unfollowUser(Follow follow) {
+        initializeAll();
+
+        List<User> following = allFollowing.get(follow.getFollower());
+        if (following != null) {
+            following.remove(follow.getFollowee());
+        }
+
+        List<User> followers = allFollowers.get(follow.getFollowee());
+        if (followers != null) {
+            followers.remove(follow.getFollower());
+        }
+
+        return new Response(true, "User unfollowed successfully");
     }
 
     public StoryResponse getStory(StoryRequest request) {
@@ -312,7 +359,7 @@ public class ServerFacade {
     }
 
     private void sortTweets() {
-
+        Collections.sort(allTweets, Collections.<Tweet>reverseOrder());
     }
 
     private void initializeAll() {
@@ -337,13 +384,27 @@ public class ServerFacade {
         scotty = new User("James", "Montgomery", "scotty", "https://www.startrek.com/sites/default/files/styles/content_full/public/images/2019-07/51425b752a0b402ed3effc83fc4bbb74.jpg?itok=ogw5GJPk");
         chekov = new User("Pavel", "Chekov", "chekov", "https://vignette.wikia.nocookie.net/memoryalpha/images/b/b2/Pavel_Chekov%2C_2268.jpg/revision/latest?cb=20090225005414&path-prefix=en");
 
-        allUsers.put(kirk, "password");
-        allUsers.put(spock, "password");
-        allUsers.put(bones, "password");
-        allUsers.put(sulu, "password");
-        allUsers.put(uhura, "password");
-        allUsers.put(scotty, "password");
-        allUsers.put(chekov, "password");
+        String password = encrpytPassword("password");
+
+        allUsers.put(kirk, password);
+        allUsers.put(spock, password);
+        allUsers.put(bones, password);
+        allUsers.put(sulu, password);
+        allUsers.put(uhura, password);
+        allUsers.put(scotty, password);
+        allUsers.put(chekov, password);
+    }
+
+    private String encrpytPassword(String password) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance(HASH_ALGORITHM);
+            messageDigest.update(password.getBytes());
+            return new String(messageDigest.digest());
+        }
+        catch (java.security.NoSuchAlgorithmException e) {
+            // Never
+        }
+        return null;
     }
 
     private void initializeTweets() {
@@ -352,7 +413,7 @@ public class ServerFacade {
         for (Map.Entry<User, String> entry : allUsers.entrySet()) {
             User user = entry.getKey();
             for (int i = 0; i < 25; i++) {
-                allTweets.add(new Tweet(user, user.getAlias() + " here with tweet #" + (i+1), "Aug 14"));
+                allTweets.add(new Tweet(user, user.getAlias() + " here with tweet #" + (i+1)));
             }
         }
     }

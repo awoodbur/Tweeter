@@ -2,7 +2,7 @@ package edu.byu.cs.tweeter.presenter;
 
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.services.TweetService;
-import edu.byu.cs.tweeter.net.response.TweetResponse;
+import edu.byu.cs.tweeter.net.response.Response;
 
 public class TweetPresenter extends Presenter {
 
@@ -14,7 +14,7 @@ public class TweetPresenter extends Presenter {
 
     public TweetPresenter(View view) { this.view = view; }
 
-    public TweetResponse shareTweet(Tweet tweet) {
+    public Response shareTweet(Tweet tweet) {
         return TweetService.getInstance().shareTweet(tweet);
     }
 }

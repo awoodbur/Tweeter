@@ -1,6 +1,5 @@
 package edu.byu.cs.tweeter.view.main.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,9 +16,10 @@ import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.net.request.AuthRequest;
 import edu.byu.cs.tweeter.net.response.AuthResponse;
 import edu.byu.cs.tweeter.presenter.SignUpPresenter;
+import edu.byu.cs.tweeter.view.asyncTasks.SignUpTask;
 import edu.byu.cs.tweeter.view.main.MainActivity;
 
-public class SignUpFragment extends Fragment implements SignUpPresenter.View {
+public class SignUpFragment extends Fragment implements SignUpTask.SignUpObserver, SignUpPresenter.View {
 
     private EditText mFirstNameField;
     private EditText mLastNameField;
@@ -53,17 +53,21 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AuthResponse response = presenter.signUp(new AuthRequest(mFirstNameField.getText().toString(),
+//                AuthResponse response = presenter.signUp(new AuthRequest(mFirstNameField.getText().toString(),
+//                        mLastNameField.getText().toString(),
+//                        mAlias.getText().toString(),
+//                        mPassword.getText().toString(), mImageURL.getText().toString()));
+//                if (response.isSuccess()) {
+//                    startActivity(MainActivity.newIntent(getActivity()));
+//                } else {
+//                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+//                }
+                SignUpTask signUpTask = new SignUpTask(presenter, SignUpFragment.this);
+                AuthRequest request = new AuthRequest(mFirstNameField.getText().toString(),
                         mLastNameField.getText().toString(),
                         mAlias.getText().toString(),
-                        mPassword.getText().toString(), mImageURL.getText().toString()));
-                if (response.isSuccess()) {
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+                        mPassword.getText().toString(), mImageURL.getText().toString());
+                signUpTask.execute(request);
             }
         });
 
@@ -92,4 +96,13 @@ public class SignUpFragment extends Fragment implements SignUpPresenter.View {
             }
         }
     };
+
+    @Override
+    public void signUpComplete(AuthResponse response) {
+        if (response.isSuccess()) {
+            startActivity(MainActivity.newIntent(getActivity()));
+        } else {
+            Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }
