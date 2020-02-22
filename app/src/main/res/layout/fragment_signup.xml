@@ -85,7 +85,7 @@
         android:ems="10"
         android:hint="@string/input_image_url"
         android:inputType="textPersonName"
-        android:text="https://cdn6.f-cdn.com/contestentries/1376995/30494909/5b566bc71d308_thumbCard.jpg"
+        android:text="https://i.ya-webdesign.com/images/profile-image-png-8.png"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragment_signup_password" />

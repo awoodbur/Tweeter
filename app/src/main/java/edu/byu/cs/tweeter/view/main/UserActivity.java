@@ -2,6 +2,7 @@ package edu.byu.cs.tweeter.view.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,16 +20,18 @@ import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.net.response.Response;
 import edu.byu.cs.tweeter.presenter.UserPresenter;
 import edu.byu.cs.tweeter.view.asyncTasks.FollowUserTask;
+import edu.byu.cs.tweeter.view.asyncTasks.LoadImageTask;
 import edu.byu.cs.tweeter.view.asyncTasks.LogoutTask;
 import edu.byu.cs.tweeter.view.asyncTasks.UnfollowUserTask;
 import edu.byu.cs.tweeter.view.cache.ImageCache;
 import edu.byu.cs.tweeter.view.main.adapters.UserPagerAdapter;
 
-public class UserActivity extends AppCompatActivity implements FollowUserTask.FollowUserObserver, UnfollowUserTask.UnfollowUserObserver, LogoutTask.LogoutObserver, UserPresenter.View {
+public class UserActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, FollowUserTask.FollowUserObserver, UnfollowUserTask.UnfollowUserObserver, LogoutTask.LogoutObserver, UserPresenter.View {
 
     private UserPresenter presenter;
     private User current_user;
     private User display_user;
+    private ImageView profileImage;
 
     private Button mButton;
 
@@ -47,8 +50,9 @@ public class UserActivity extends AppCompatActivity implements FollowUserTask.Fo
         current_user = presenter.getCurrentUser();
 
         if (display_user != null) {
-            ImageView profile = findViewById(R.id.activity_user_profile);
-            profile.setImageDrawable(ImageCache.getInstance().getImageDrawable(display_user));
+            profileImage = findViewById(R.id.activity_user_profile);
+            LoadImageTask loadImageTask = new LoadImageTask(this);
+            loadImageTask.execute(display_user.getImageUrl());
 
             TextView name = findViewById(R.id.activity_user_name);
             name.setText(display_user.getName());
@@ -125,5 +129,19 @@ public class UserActivity extends AppCompatActivity implements FollowUserTask.Fo
     @Override
     public void unfollowUserComplete(Response response) {
         mButton.setText(R.string.button_follow);
+    }
+
+    @Override
+    public void imageLoadProgressUpdated(Integer progress) {
+        // We're just loading one image. No need to indicate progress.
+    }
+
+    @Override
+    public void imagesLoaded(Drawable[] drawables) {
+        ImageCache.getInstance().cacheImage(display_user, drawables[0]);
+
+        if(drawables[0] != null) {
+            profileImage.setImageDrawable(drawables[0]);
+        }
     }
 }
