@@ -2,20 +2,24 @@ package edu.byu.cs.tweeter.client.net;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.model.service.request.CheckFollowRequest;
 import edu.byu.cs.tweeter.model.service.request.FeedRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowUserRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowersRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
+import edu.byu.cs.tweeter.model.service.request.GetUserRequest;
 import edu.byu.cs.tweeter.model.service.request.SignInRequest;
 import edu.byu.cs.tweeter.model.service.request.SignOutRequest;
 import edu.byu.cs.tweeter.model.service.request.SignUpRequest;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.request.ShareTweetRequest;
 import edu.byu.cs.tweeter.model.service.request.UnfollowUserRequest;
+import edu.byu.cs.tweeter.model.service.response.CheckFollowResponse;
 import edu.byu.cs.tweeter.model.service.response.FeedResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowUserResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowersResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
+import edu.byu.cs.tweeter.model.service.response.GetUserResponse;
 import edu.byu.cs.tweeter.model.service.response.SignInResponse;
 import edu.byu.cs.tweeter.model.service.response.SignOutResponse;
 import edu.byu.cs.tweeter.model.service.response.SignUpResponse;
@@ -92,6 +96,16 @@ public class ServerFacade {
         return clientCommunicator.doPost(urlPath, request, null, UnfollowUserResponse.class);
     }
 
+    public GetUserResponse getUser(GetUserRequest request, String urlPath) throws IOException {
+        ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
+        return clientCommunicator.doPost(urlPath, request, null, GetUserResponse.class);
+    }
+
+    public CheckFollowResponse checkFollow(CheckFollowRequest request, String urlPath) throws IOException {
+        ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
+        return clientCommunicator.doPost(urlPath, request, null, CheckFollowResponse.class);
+    }
+
     /////////////////////////
     // Old Code
     ////////////////
@@ -112,34 +126,7 @@ public class ServerFacade {
 //    private static User scotty;
 //    private static User chekov;
 //
-//    public AuthResponse signIn(AuthRequest request) {
-//        initializeAll();
-//
-//        for (Map.Entry<User, String> entry : allUsers.entrySet()) {
-//            User user = entry.getKey();
-//            if (user.getAlias().equals(request.getAlias())) {
-//                if (entry.getValue().equals(request.getPassword())) {
-//                    return new AuthResponse(user);
-//                } else {
-//                    return new AuthResponse("Invalid password");
-//                }
-//            }
-//        }
-//        return new AuthResponse("User not found");
-//    }
-//
-//    public AuthResponse signUp(AuthRequest request) {
-//        initializeAll();
-//
-//        User user = new User(request.getFirstName(), request.getLastName(), request.getAlias(), request.getImageURL());
-//        String pass = allUsers.get(user);
-//        if (pass != null && !pass.isEmpty()) {
-//            return new AuthResponse("User already exists");
-//        } else {
-//            allUsers.put(user, request.getPassword());
-//            return new AuthResponse(user);
-//        }
-//    }
+
 //
 //    public User getUserByAlias(String alias) {
 //        initializeAll();
@@ -166,260 +153,6 @@ public class ServerFacade {
 //        }
 //
 //        return false;
-//    }
-//
-//    public Response shareTweet(Tweet tweet) {
-//        initializeAll();
-//
-//        allTweets.add(tweet);
-//        return new Response(true, "Tweet shared successfully.");
-//    }
-//
-//    public Response followUser(Follow follow) {
-//        initializeAll();
-//
-//        List<User> following = allFollowing.get(follow.getFollower());
-//        if (following != null) {
-//            following.add(follow.getFollowee());
-//        } else {
-//            following = new ArrayList<>();
-//            following.add(follow.getFollowee());
-//            allFollowing.put(follow.getFollower(), following);
-//        }
-//
-//        List<User> followers = allFollowers.get(follow.getFollowee());
-//        if (followers != null) {
-//            followers.add(follow.getFollower());
-//        } else {
-//            followers = new ArrayList<>();
-//            followers.add(follow.getFollower());
-//            allFollowers.put(follow.getFollowee(), followers);
-//        }
-//
-//        return new Response(true, "User followed successfully");
-//    }
-//
-//    public Response unfollowUser(Follow follow) {
-//        initializeAll();
-//
-//        List<User> following = allFollowing.get(follow.getFollower());
-//        if (following != null) {
-//            following.remove(follow.getFollowee());
-//        }
-//
-//        List<User> followers = allFollowers.get(follow.getFollowee());
-//        if (followers != null) {
-//            followers.remove(follow.getFollower());
-//        }
-//
-//        return new Response(true, "User unfollowed successfully");
-//    }
-//
-//    public StoryResponse getStory(StoryRequest request) {
-//
-//        // Used in place of assert statements because Android does not support them
-//        if(BuildConfig.DEBUG) {
-//            if(request.getLimit() < 0) {
-//                throw new AssertionError("Invalid limit");
-//            }
-//
-//            if(request.getUser() == null) {
-//                throw new AssertionError("Null user");
-//            }
-//        }
-//
-//        initializeAll();
-//        sortTweets();
-//
-//        List<Tweet> responseTweets = new ArrayList<>(request.getLimit());
-//
-//        boolean hasMorePages = false;
-//
-//        if (request.getLimit() > 0) {
-//            int tweetIndex = getTweetsStartingIndex(request.getLastTweet());
-//
-//            int limitCounter = 0;
-//            while (tweetIndex < allTweets.size() && limitCounter < request.getLimit()) {
-//                Tweet tweet = allTweets.get(tweetIndex);
-//                if (tweet.getAuthor().equals(request.getUser())) {
-//                    responseTweets.add(tweet);
-//                    limitCounter++;
-//                }
-//                tweetIndex++;
-//            }
-//
-//            hasMorePages = tweetIndex < allTweets.size();
-//        }
-//
-//        return new StoryResponse(responseTweets, hasMorePages);
-//    }
-//
-//    public FeedResponse getFeed(FeedRequest request) {
-//
-//        // Used in place of assert statements because Android does not support them
-//        if(BuildConfig.DEBUG) {
-//            if(request.getLimit() < 0) {
-//                throw new AssertionError("Invalid limit");
-//            }
-//
-//            if(request.getUser() == null) {
-//                throw new AssertionError("Null user");
-//            }
-//        }
-//
-//        initializeAll();
-//        sortTweets();
-//
-//        List<User> following = allFollowing.get(request.getUser());
-//        List<Tweet> responseTweets = new ArrayList<>(request.getLimit());
-//
-//        boolean hasMorePages = false;
-//
-//        if (request.getLimit() > 0 && following != null) {
-//            int tweetIndex = getTweetsStartingIndex(request.getLastTweet());
-//
-//            int limitCounter = 0;
-//            while (tweetIndex < allTweets.size() && limitCounter < request.getLimit()) {
-//                Tweet tweet = allTweets.get(tweetIndex);
-//                for (User user : following) {
-//                    if (tweet.getAuthor().equals(user)) {
-//                        responseTweets.add(tweet);
-//                        limitCounter++;
-//                        break;
-//                    }
-//                }
-//
-//                tweetIndex++;
-//            }
-//
-//            hasMorePages = tweetIndex < allTweets.size();
-//        }
-//
-//        return new FeedResponse(responseTweets, hasMorePages);
-//    }
-//
-//    public FollowersResponse getFollowers(FollowersRequest request) {
-//
-//        // Used in place of assert statements because Android does not support them
-//        if(BuildConfig.DEBUG) {
-//            if(request.getLimit() < 0) {
-//                throw new AssertionError("Invalid limit");
-//            }
-//
-//            if(request.getFollowee() == null) {
-//                throw new AssertionError("Null user");
-//            }
-//        }
-//
-//        initializeAll();
-//
-//        List<User> followers = allFollowers.get(request.getFollowee());
-//        List<User> responseFollowers = new ArrayList<>(request.getLimit());
-//
-//        boolean hasMorePages = false;
-//
-//        if (request.getLimit() > 0) {
-//            if (followers != null) {
-//                int followersIndex = getFollowStartingIndex(request.getLastFollower(), followers);
-//
-//                for(int limitCounter = 0; followersIndex < followers.size() && limitCounter < request.getLimit(); followersIndex++, limitCounter++) {
-//                    responseFollowers.add(followers.get(followersIndex));
-//                }
-//
-//                hasMorePages = followersIndex < followers.size();
-//            }
-//        }
-//
-//        return new FollowersResponse(responseFollowers, hasMorePages);
-//    }
-//
-//    /**
-//     * Returns the allUsers that the user specified in the request is following. Uses information in
-//     * the request object to limit the number of followees returned and to return the next set of
-//     * followees after any that were returned in a previous request. The current implementation
-//     * returns generated data and doesn't actually make a network request.
-//     *
-//     * @param request contains information about the user whose followees are to be returned and any
-//     *                other information required to satisfy the request.
-//     * @return the followees.
-//     */
-//    public FollowingResponse getFollowing(FollowingRequest request) {
-//
-//        // Used in place of assert statements because Android does not support them
-//        if(BuildConfig.DEBUG) {
-//            if(request.getLimit() < 0) {
-//                throw new AssertionError("Invalid limit");
-//            }
-//
-//            if(request.getFollower() == null) {
-//                throw new AssertionError("Null user");
-//            }
-//        }
-//
-//        initializeAll();
-//
-//        List<User> followees = allFollowing.get(request.getFollower());
-//        List<User> responseFollowees = new ArrayList<>(request.getLimit());
-//
-//        boolean hasMorePages = false;
-//
-//        if(request.getLimit() > 0) {
-//            if (followees != null) {
-//                int followeesIndex = getFollowStartingIndex(request.getLastFollowee(), followees);
-//
-//                for(int limitCounter = 0; followeesIndex < followees.size() && limitCounter < request.getLimit(); followeesIndex++, limitCounter++) {
-//                    responseFollowees.add(followees.get(followeesIndex));
-//                }
-//
-//                hasMorePages = followeesIndex < followees.size();
-//            }
-//        }
-//
-//        return new FollowingResponse(responseFollowees, hasMorePages);
-//    }
-//
-//    private int getTweetsStartingIndex(Tweet lastTweet) {
-//
-//        int tweetIndex = 0;
-//
-//        if (lastTweet != null) {
-//            for (int i = 0; i < allTweets.size(); ++i) {
-//                if (lastTweet.equals(allTweets.get(i))) {
-//                    tweetIndex = i + 1;
-//                }
-//            }
-//        }
-//
-//        return tweetIndex;
-//    }
-//
-//    /**
-//     * Determines the index for the first followee in the specified 'allFollows' list that should
-//     * be returned in the current request. This will be the index of the next followee after the
-//     * specified 'lastFollow'.
-//     *
-//     * @param lastFollow the last followee that was returned in the previous request or null if
-//     *                     there was no previous request.
-//     * @param allFollows the generated list of followees from which we are returning paged results.
-//     * @return the index of the first followee to be returned.
-//     */
-//    private int getFollowStartingIndex(User lastFollow, List<User> allFollows) {
-//
-//        int followsIndex = 0;
-//
-//        if(lastFollow != null) {
-//            // This is a paged request for something after the first page. Find the first item
-//            // we should return
-//            for (int i = 0; i < allFollows.size(); i++) {
-//                if(lastFollow.equals(allFollows.get(i))) {
-//                    // We found the index of the last item returned last time. Increment to get
-//                    // to the first one we should return
-//                    followsIndex = i + 1;
-//                }
-//            }
-//        }
-//
-//        return followsIndex;
 //    }
 //
 //    private void sortTweets() {
@@ -457,18 +190,6 @@ public class ServerFacade {
 //        allUsers.put(uhura, password);
 //        allUsers.put(scotty, password);
 //        allUsers.put(chekov, password);
-//    }
-//
-//    private String encrpytPassword(String password) {
-//        try {
-//            MessageDigest messageDigest = MessageDigest.getInstance(HASH_ALGORITHM);
-//            messageDigest.update(password.getBytes());
-//            return new String(messageDigest.digest());
-//        }
-//        catch (java.security.NoSuchAlgorithmException e) {
-//            // Never
-//        }
-//        return null;
 //    }
 //
 //    private void initializeTweets() {
@@ -530,15 +251,5 @@ public class ServerFacade {
 //        }
 //
 //        return allFollowing;
-//    }
-
-//    /**
-//     * Returns an instance of FollowGenerator that can be used to generate Follow data. This is
-//     * written as a separate method to allow mocking of the generator.
-//     *
-//     * @return the generator.
-//     */
-//    FollowGenerator getFollowGenerator() {
-//        return FollowGenerator.getInstance();
 //    }
 }

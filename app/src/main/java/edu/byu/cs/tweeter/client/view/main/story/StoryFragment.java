@@ -24,9 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.byu.cs.tweeter.R;
+import edu.byu.cs.tweeter.client.view.asyncTasks.GetUserTask;
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.GetUserRequest;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
+import edu.byu.cs.tweeter.model.service.response.GetUserResponse;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 import edu.byu.cs.tweeter.client.presenter.StoryPresenter;
 import edu.byu.cs.tweeter.client.view.asyncTasks.GetStoryTask;
@@ -69,7 +72,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
     /**
      * The ViewHolder for the RecyclerView that displays the Story data.
      */
-    private class StoryHolder extends RecyclerView.ViewHolder {
+    private class StoryHolder extends RecyclerView.ViewHolder implements GetUserTask.GetUserObserver {
 
         private final ImageView userImage;
         private final TextView userAlias;
@@ -89,8 +92,9 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(UserActivity.newIntent(getActivity(), presenter.getUserByAlias(userAlias.getText().toString().substring(1))));
-                }
+                    GetUserTask getUserTask = new GetUserTask(presenter, StoryHolder.this);
+                    GetUserRequest request = new GetUserRequest(userAlias.getText().toString().substring(1));
+                    getUserTask.execute(request);                }
             });
         }
 
@@ -120,6 +124,22 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
             return clickableContent;
         }
 
+        @Override
+        public void getUserComplete(GetUserResponse response) {
+            User user = response.getUser();
+            if (user != null) {
+                startActivity(UserActivity.newIntent(getActivity(), user));
+            } else {
+                Toast.makeText(getActivity(), "Unable to find user.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void handleException(Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+
         public class AliasClickableSpan extends ClickableSpan {
 
             int pos;
@@ -134,12 +154,10 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
                 int start = spanned.getSpanStart(this);
                 int end = spanned.getSpanEnd(this);
                 String alias = spanned.subSequence(start+1, end).toString();
-                User user = presenter.getUserByAlias(alias);
-                if (user != null) {
-                    startActivity(UserActivity.newIntent(getActivity(), user));
-                } else {
-                    Toast.makeText(getActivity(), "Unable to find user.", Toast.LENGTH_SHORT).show();
-                }
+
+                GetUserTask getUserTask = new GetUserTask(presenter, StoryHolder.this);
+                GetUserRequest request = new GetUserRequest(alias);
+                getUserTask.execute(request);
             }
         }
     }

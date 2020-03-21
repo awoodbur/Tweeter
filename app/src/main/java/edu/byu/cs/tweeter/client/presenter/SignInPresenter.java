@@ -32,6 +32,8 @@ public class SignInPresenter extends Presenter {
 
     public SignInResponse signIn(SignInRequest request) throws IOException {
         SignInService service = new SignInServiceProxy();
-        return service.signIn(request);
+        SignInResponse response = service.signIn(request);
+        setCurrentUser(response.getUser());
+        return response;
     }
 }

@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -25,6 +26,8 @@ import edu.byu.cs.tweeter.client.view.asyncTasks.SearchTask;
 import edu.byu.cs.tweeter.client.view.cache.ImageCache;
 import edu.byu.cs.tweeter.client.view.main.adapters.SectionsPagerAdapter;
 import edu.byu.cs.tweeter.client.view.main.fragments.TweetDialogFragment;
+import edu.byu.cs.tweeter.model.service.request.GetUserRequest;
+import edu.byu.cs.tweeter.model.service.response.GetUserResponse;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
@@ -102,7 +105,8 @@ public class MainActivity extends AppCompatActivity implements SearchTask.Search
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             SearchTask searchTask = new SearchTask(presenter, this);
-            searchTask.execute(query);
+            GetUserRequest request = new GetUserRequest(query);
+            searchTask.execute(request);
         }
     }
 
@@ -145,11 +149,18 @@ public class MainActivity extends AppCompatActivity implements SearchTask.Search
     }
 
     @Override
-    public void searchComplete(User user) {
+    public void searchComplete(GetUserResponse response) {
+        User user = response.getUser();
         if (user != null) {
             startActivity(UserActivity.newIntent(this, user));
         } else {
             Toast.makeText(this, "Unable to find user.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void handleException(Exception e) {
+        Log.e(TAG, e.getMessage(), e);
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

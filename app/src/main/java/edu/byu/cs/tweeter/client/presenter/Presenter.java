@@ -1,8 +1,17 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import edu.byu.cs.tweeter.client.model.service.UserServiceProxy;
+import java.io.IOException;
+
+import edu.byu.cs.tweeter.client.model.service.CheckFollowServiceProxy;
+import edu.byu.cs.tweeter.client.model.service.CurrentStateService;
+import edu.byu.cs.tweeter.client.model.service.GetUserServiceProxy;
 import edu.byu.cs.tweeter.model.domain.User;
-import edu.byu.cs.tweeter.model.service.UserService;
+import edu.byu.cs.tweeter.model.service.CheckFollowService;
+import edu.byu.cs.tweeter.model.service.GetUserService;
+import edu.byu.cs.tweeter.model.service.request.CheckFollowRequest;
+import edu.byu.cs.tweeter.model.service.request.GetUserRequest;
+import edu.byu.cs.tweeter.model.service.response.CheckFollowResponse;
+import edu.byu.cs.tweeter.model.service.response.GetUserResponse;
 
 /**
  * A common base class for all presenters in the application.
@@ -15,32 +24,28 @@ public abstract class Presenter {
      * @return the user.
      */
     public User getCurrentUser() {
-        UserService service = new UserServiceProxy();
-        return service.getCurrentUser();
+        return CurrentStateService.getInstance().getCurrentUser();
     }
 
     public User getDisplayUser() {
-        UserService service = new UserServiceProxy();
-        return service.getDisplayUser();
+        return CurrentStateService.getInstance().getDisplayUser();
     }
 
-    public User getUserByAlias(String alias) {
-        UserService service = new UserServiceProxy();
-        return service.getUserByAlias(alias);
+    public GetUserResponse getUser(GetUserRequest request) throws IOException {
+        GetUserService service = new GetUserServiceProxy();
+        return service.getUser(request);
     }
 
-    public boolean doesUserFollowUser(User user1, User user2) {
-        UserService service = new UserServiceProxy();
-        return service.doesUserFollowUser(user1, user2);
+    public CheckFollowResponse checkFollow(CheckFollowRequest request) throws IOException {
+        CheckFollowService service = new CheckFollowServiceProxy();
+        return service.checkFollow(request);
     }
 
     public void setCurrentUser(User user) {
-        UserService service = new UserServiceProxy();
-        service.setCurrentUser(user);
+        CurrentStateService.getInstance().setCurrentUser(user);
     }
 
     public void setDisplayUser(User user) {
-        UserService service = new UserServiceProxy();
-        service.setDisplayUser(user);
+        CurrentStateService.getInstance().setDisplayUser(user);
     }
 }

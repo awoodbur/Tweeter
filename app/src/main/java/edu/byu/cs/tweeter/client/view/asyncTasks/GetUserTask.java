@@ -4,23 +4,23 @@ import android.os.AsyncTask;
 
 import java.io.IOException;
 
-import edu.byu.cs.tweeter.client.presenter.MainPresenter;
+import edu.byu.cs.tweeter.client.presenter.Presenter;
 import edu.byu.cs.tweeter.model.service.request.GetUserRequest;
 import edu.byu.cs.tweeter.model.service.response.GetUserResponse;
 
-public class SearchTask extends AsyncTask<GetUserRequest, Void, GetUserResponse> {
+public class GetUserTask extends AsyncTask<GetUserRequest, Void, GetUserResponse> {
 
-    private final MainPresenter presenter;
-    private final SearchObserver observer;
+    private final Presenter presenter;
+    private final GetUserObserver observer;
 
     private Exception exception;
 
-    public interface SearchObserver {
-        void searchComplete(GetUserResponse response);
+    public interface GetUserObserver {
+        void getUserComplete(GetUserResponse response);
         void handleException(Exception e);
     }
 
-    public SearchTask(MainPresenter presenter, SearchObserver observer) {
+    public GetUserTask(Presenter presenter, GetUserObserver observer) {
         this.presenter = presenter;
         this.observer = observer;
     }
@@ -40,7 +40,7 @@ public class SearchTask extends AsyncTask<GetUserRequest, Void, GetUserResponse>
     protected void onPostExecute(GetUserResponse response) {
         if (observer != null) {
             if (exception == null) {
-                observer.searchComplete(response);
+                observer.getUserComplete(response);
             } else {
                 observer.handleException(exception);
             }

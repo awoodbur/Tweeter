@@ -20,13 +20,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.byu.cs.tweeter.R;
+import edu.byu.cs.tweeter.client.view.asyncTasks.GetUserTask;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.FollowersRequest;
+import edu.byu.cs.tweeter.model.service.request.GetUserRequest;
 import edu.byu.cs.tweeter.model.service.response.FollowersResponse;
 import edu.byu.cs.tweeter.client.presenter.FollowersPresenter;
 import edu.byu.cs.tweeter.client.view.asyncTasks.GetFollowersTask;
 import edu.byu.cs.tweeter.client.view.cache.ImageCache;
 import edu.byu.cs.tweeter.client.view.main.UserActivity;
+import edu.byu.cs.tweeter.model.service.response.GetUserResponse;
 
 public class FollowersFragment extends Fragment implements FollowersPresenter.View {
 
@@ -64,7 +67,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
     /**
      * The ViewHolder for the RecyclerView that displays the Followers data.
      */
-    private class FollowersHolder extends RecyclerView.ViewHolder {
+    private class FollowersHolder extends RecyclerView.ViewHolder implements GetUserTask.GetUserObserver {
 
         private final ImageView userImage;
         private final TextView userAlias;
@@ -80,7 +83,9 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(UserActivity.newIntent(getActivity(), presenter.getUserByAlias(userAlias.getText().toString().substring(1))));
+                    GetUserTask getUserTask = new GetUserTask(presenter, FollowersHolder.this);
+                    GetUserRequest request = new GetUserRequest(userAlias.getText().toString().substring(1));
+                    getUserTask.execute(request);
                 }
             });
         }
@@ -89,6 +94,22 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
             userImage.setImageDrawable(ImageCache.getInstance().getImageDrawable(user));
             userAlias.setText(user.getAliasAt());
             userName.setText(user.getName());
+        }
+
+        @Override
+        public void getUserComplete(GetUserResponse response) {
+            User user = response.getUser();
+            if (user != null) {
+                startActivity(UserActivity.newIntent(getActivity(), user));
+            } else {
+                Toast.makeText(getActivity(), "Unable to find user.", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        public void handleException(Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

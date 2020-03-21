@@ -32,6 +32,8 @@ public class SignUpPresenter extends Presenter {
 
     public SignUpResponse signUp(SignUpRequest request) throws IOException {
         SignUpService service = new SignUpServiceProxy();
-        return service.signUp(request);
+        SignUpResponse response = service.signUp(request);
+        setCurrentUser(response.getUser());
+        return response;
     }
 }

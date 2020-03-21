@@ -17,11 +17,14 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import edu.byu.cs.tweeter.R;
+import edu.byu.cs.tweeter.client.view.asyncTasks.CheckFollowTask;
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.CheckFollowRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowUserRequest;
 import edu.byu.cs.tweeter.model.service.request.SignOutRequest;
 import edu.byu.cs.tweeter.model.service.request.UnfollowUserRequest;
+import edu.byu.cs.tweeter.model.service.response.CheckFollowResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowUserResponse;
 import edu.byu.cs.tweeter.model.service.response.Response;
 import edu.byu.cs.tweeter.client.presenter.UserPresenter;
@@ -34,7 +37,7 @@ import edu.byu.cs.tweeter.client.view.main.adapters.UserPagerAdapter;
 import edu.byu.cs.tweeter.model.service.response.SignOutResponse;
 import edu.byu.cs.tweeter.model.service.response.UnfollowUserResponse;
 
-public class UserActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, FollowUserTask.FollowUserObserver, UnfollowUserTask.UnfollowUserObserver, SignOutTask.LogoutObserver, UserPresenter.View {
+public class UserActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, FollowUserTask.FollowUserObserver, UnfollowUserTask.UnfollowUserObserver, SignOutTask.LogoutObserver, UserPresenter.View, CheckFollowTask.CheckFollowObserver {
 
     private static final String TAG = UserActivity.class.getName();
 
@@ -75,11 +78,9 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
         if (current_user.equals(display_user)) {
             mButton.setText(R.string.button_logout);
         } else {
-            if (presenter.doesUserFollowUser(current_user, display_user)) {
-                mButton.setText(R.string.button_unfollow);
-            } else {
-                mButton.setText(R.string.button_follow);
-            }
+            CheckFollowTask checkFollowTask = new CheckFollowTask(presenter, this);
+            CheckFollowRequest request = new CheckFollowRequest(current_user, display_user);
+            checkFollowTask.execute(request);
         }
 
         mButton.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +152,15 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
 
         if(drawables[0] != null) {
             profileImage.setImageDrawable(drawables[0]);
+        }
+    }
+
+    @Override
+    public void checkUserComplete(CheckFollowResponse response) {
+        if (response.isSuccess()) {
+            mButton.setText(R.string.button_unfollow);
+        } else {
+            mButton.setText(R.string.button_follow);
         }
     }
 
