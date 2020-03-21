@@ -226,7 +226,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
             List<User> followers = followersResponse.getFollowers();
 
             lastFollower = (followers.size() > 0) ? followers.get(followers.size() -1) : null;
-            hasMorePages = followersResponse.hasMorePages();
+            hasMorePages = followersResponse.getHasMorePages();
 
             isLoading = false;
             removeLoadingFooter();

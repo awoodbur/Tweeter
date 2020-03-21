@@ -2,15 +2,14 @@ package edu.byu.cs.tweeter.model.service.response;
 
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class AuthResponse extends Response {
-
+public class SignUpResponse extends Response {
     private User user;
 
-    public AuthResponse(String message) {
+    public SignUpResponse(String message) {
         super(false, message);
     }
 
-    public AuthResponse(User user) {
+    public SignUpResponse(User user) {
         super(true);
         this.user = user;
     }

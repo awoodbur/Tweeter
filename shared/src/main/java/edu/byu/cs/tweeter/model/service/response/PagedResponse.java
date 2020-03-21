@@ -24,7 +24,7 @@ public class PagedResponse extends Response {
      *
      * @return true if more data is available; otherwise, false.
      */
-    public boolean hasMorePages() {
+    public boolean getHasMorePages() {
         return hasMorePages;
     }
 }

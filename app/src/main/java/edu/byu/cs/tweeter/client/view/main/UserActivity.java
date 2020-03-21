@@ -4,10 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
@@ -15,18 +17,23 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import edu.byu.cs.tweeter.R;
+import edu.byu.cs.tweeter.client.view.main.login.SignInFragment;
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.SignOutRequest;
 import edu.byu.cs.tweeter.model.service.response.Response;
 import edu.byu.cs.tweeter.client.presenter.UserPresenter;
 import edu.byu.cs.tweeter.client.view.asyncTasks.FollowUserTask;
 import edu.byu.cs.tweeter.client.view.asyncTasks.LoadImageTask;
-import edu.byu.cs.tweeter.client.view.asyncTasks.LogoutTask;
+import edu.byu.cs.tweeter.client.view.asyncTasks.SignOutTask;
 import edu.byu.cs.tweeter.client.view.asyncTasks.UnfollowUserTask;
 import edu.byu.cs.tweeter.client.view.cache.ImageCache;
 import edu.byu.cs.tweeter.client.view.main.adapters.UserPagerAdapter;
+import edu.byu.cs.tweeter.model.service.response.SignOutResponse;
 
-public class UserActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, FollowUserTask.FollowUserObserver, UnfollowUserTask.UnfollowUserObserver, LogoutTask.LogoutObserver, UserPresenter.View {
+public class UserActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, FollowUserTask.FollowUserObserver, UnfollowUserTask.UnfollowUserObserver, SignOutTask.LogoutObserver, UserPresenter.View {
+
+    private static final String TAG = SignInFragment.class.getName();
 
     private UserPresenter presenter;
     private User current_user;
@@ -77,10 +84,9 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
             public void onClick(View v) {
                 String type = mButton.getText().toString();
                 if (type.equals("Logout")) {
-//                    presenter.setCurrentUser(null);
-//                    startActivity(LoginActivity.newIntent(UserActivity.this));
-                    LogoutTask logoutTask = new LogoutTask(presenter, UserActivity.this);
-                    logoutTask.execute(current_user);
+                    SignOutTask signOutTask = new SignOutTask(presenter, UserActivity.this);
+                    SignOutRequest request = new SignOutRequest(current_user);
+                    signOutTask.execute(request);
                 }
                 else if (type.equals("Follow")) {
                     FollowUserTask followUserTask = new FollowUserTask(presenter, UserActivity.this);
@@ -117,7 +123,7 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
     }
 
     @Override
-    public void logoutComplete(Response response) {
+    public void logoutComplete(SignOutResponse response) {
         startActivity(LoginActivity.newIntent(UserActivity.this));
     }
 
@@ -143,5 +149,11 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
         if(drawables[0] != null) {
             profileImage.setImageDrawable(drawables[0]);
         }
+    }
+
+    @Override
+    public void handleException(Exception e) {
+        Log.e(TAG, e.getMessage(), e);
+        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

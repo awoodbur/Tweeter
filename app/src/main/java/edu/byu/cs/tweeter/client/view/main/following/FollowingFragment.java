@@ -230,7 +230,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             List<User> followees = followingResponse.getFollowees();
 
             lastFollowee = (followees.size() > 0) ? followees.get(followees.size() -1) : null;
-            hasMorePages = followingResponse.hasMorePages();
+            hasMorePages = followingResponse.getHasMorePages();
 
             isLoading = false;
             removeLoadingFooter();

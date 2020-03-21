@@ -108,7 +108,7 @@ class FollowingDAOTest {
         Assertions.assertEquals(2, response.getFollowees().size());
         Assertions.assertTrue(response.getFollowees().contains(user9));
         Assertions.assertTrue(response.getFollowees().contains(user11));
-        Assertions.assertTrue(response.getHasMorePages());
+            Assertions.assertTrue(response.getHasMorePages());
 
         // Get and verify second page
         request = new FollowingRequest(user5, 2, response.getFollowees().get(1));

@@ -1,8 +1,11 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import edu.byu.cs.tweeter.client.model.service.UserService;
-import edu.byu.cs.tweeter.model.service.request.AuthRequest;
-import edu.byu.cs.tweeter.model.service.response.AuthResponse;
+import java.io.IOException;
+
+import edu.byu.cs.tweeter.client.model.service.SignInServiceProxy;
+import edu.byu.cs.tweeter.model.service.SignInService;
+import edu.byu.cs.tweeter.model.service.request.SignInRequest;
+import edu.byu.cs.tweeter.model.service.response.SignInResponse;
 
 /**
  * The presenter for the "sign in" functionality of the application.
@@ -27,7 +30,8 @@ public class SignInPresenter extends Presenter {
         this.view = view;
     }
 
-    public AuthResponse signIn(AuthRequest request) {
-        return UserService.getInstance().signIn(request);
+    public SignInResponse signIn(SignInRequest request) throws IOException {
+        SignInService service = new SignInServiceProxy();
+        return service.signIn(request);
     }
 }

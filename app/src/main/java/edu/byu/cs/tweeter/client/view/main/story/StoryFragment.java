@@ -279,7 +279,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
             List<Tweet> tweets = storyResponse.getTweets();
 
             lastTweet = (tweets.size() > 0) ? tweets.get(tweets.size() -1) : null;
-            hasMorePages = storyResponse.hasMorePages();
+            hasMorePages = storyResponse.getHasMorePages();
 
             isLoading = false;
             removeLoadingFooter();

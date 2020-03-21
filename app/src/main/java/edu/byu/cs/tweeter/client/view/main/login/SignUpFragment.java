@@ -3,6 +3,7 @@ package edu.byu.cs.tweeter.client.view.main.login;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,15 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.model.service.request.AuthRequest;
-import edu.byu.cs.tweeter.model.service.response.AuthResponse;
+import edu.byu.cs.tweeter.model.service.request.SignUpRequest;
 import edu.byu.cs.tweeter.client.presenter.SignUpPresenter;
 import edu.byu.cs.tweeter.client.view.asyncTasks.SignUpTask;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
+import edu.byu.cs.tweeter.model.service.response.SignUpResponse;
 
 public class SignUpFragment extends Fragment implements SignUpTask.SignUpObserver, SignUpPresenter.View {
+
+    private static final String TAG = SignInFragment.class.getName();
 
     private EditText mFirstNameField;
     private EditText mLastNameField;
@@ -53,21 +56,12 @@ public class SignUpFragment extends Fragment implements SignUpTask.SignUpObserve
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AuthResponse response = presenter.signUp(new AuthRequest(mFirstNameField.getText().toString(),
-//                        mLastNameField.getText().toString(),
-//                        mAlias.getText().toString(),
-//                        mPassword.getText().toString(), mImageURL.getText().toString()));
-//                if (response.isSuccess()) {
-//                    startActivity(MainActivity.newIntent(getActivity()));
-//                } else {
-//                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
                 SignUpTask signUpTask = new SignUpTask(presenter, SignUpFragment.this);
                 String alias = mAlias.getText().toString();
                 if (alias.charAt(0) == '@') {
                     alias = alias.substring(1);
                 }
-                AuthRequest request = new AuthRequest(mFirstNameField.getText().toString(),
+                SignUpRequest request = new SignUpRequest(mFirstNameField.getText().toString(),
                         mLastNameField.getText().toString(), alias,
                         mPassword.getText().toString(), mImageURL.getText().toString());
                 signUpTask.execute(request);
@@ -101,11 +95,17 @@ public class SignUpFragment extends Fragment implements SignUpTask.SignUpObserve
     };
 
     @Override
-    public void signUpComplete(AuthResponse response) {
+    public void signUpComplete(SignUpResponse response) {
         if (response.isSuccess()) {
             startActivity(MainActivity.newIntent(getActivity()));
         } else {
             Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void handleException(Exception e) {
+        Log.e(TAG, e.getMessage(), e);
+        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

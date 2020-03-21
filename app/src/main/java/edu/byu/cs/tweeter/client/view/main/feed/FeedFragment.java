@@ -279,7 +279,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
             List<Tweet> tweets = feedResponse.getTweets();
 
             lastTweet = (tweets.size() > 0) ? tweets.get(tweets.size() -1) : null;
-            hasMorePages = feedResponse.hasMorePages();
+            hasMorePages = feedResponse.getHasMorePages();
 
             isLoading = false;
             removeLoadingFooter();

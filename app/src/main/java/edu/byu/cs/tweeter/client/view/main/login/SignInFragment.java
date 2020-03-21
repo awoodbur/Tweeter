@@ -3,6 +3,7 @@ package edu.byu.cs.tweeter.client.view.main.login;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,15 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.model.service.request.AuthRequest;
-import edu.byu.cs.tweeter.model.service.response.AuthResponse;
 import edu.byu.cs.tweeter.client.presenter.SignInPresenter;
 import edu.byu.cs.tweeter.client.view.asyncTasks.SignInTask;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
+import edu.byu.cs.tweeter.model.service.request.SignInRequest;
+import edu.byu.cs.tweeter.model.service.response.SignInResponse;
 
 public class SignInFragment extends Fragment implements SignInTask.SignInObserver, SignInPresenter.View {
+
+    private static final String TAG = SignInFragment.class.getName();
 
     private EditText mAlias;
     private EditText mPassword;
@@ -44,18 +47,12 @@ public class SignInFragment extends Fragment implements SignInTask.SignInObserve
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                AuthResponse response = presenter.signIn(new AuthRequest(mAlias.getText().toString(), mPassword.getText().toString()));
-//                if (response.isSuccess()) {
-//                    startActivity(MainActivity.newIntent(getActivity()));
-//                } else {
-//                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
-//                }
                 SignInTask signInTask = new SignInTask(presenter, SignInFragment.this);
                 String alias = mAlias.getText().toString();
                 if (alias.charAt(0) == '@') {
                     alias = alias.substring(1);
                 }
-                AuthRequest request = new AuthRequest(alias, mPassword.getText().toString());
+                SignInRequest request = new SignInRequest(alias, mPassword.getText().toString());
                 signInTask.execute(request);
             }
         });
@@ -85,11 +82,17 @@ public class SignInFragment extends Fragment implements SignInTask.SignInObserve
     };
 
     @Override
-    public void signInComplete(AuthResponse response) {
+    public void signInComplete(SignInResponse response) {
         if (response.isSuccess()) {
             startActivity(MainActivity.newIntent(getActivity()));
         } else {
             Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void handleException(Exception e) {
+        Log.e(TAG, e.getMessage(), e);
+        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
     }
 }

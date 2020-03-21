@@ -2,17 +2,22 @@ package edu.byu.cs.tweeter.client.view.asyncTasks;
 
 import android.os.AsyncTask;
 
-import edu.byu.cs.tweeter.model.service.request.AuthRequest;
-import edu.byu.cs.tweeter.model.service.response.AuthResponse;
-import edu.byu.cs.tweeter.client.presenter.SignInPresenter;
+import java.io.IOException;
 
-public class SignInTask extends AsyncTask<AuthRequest, Void, AuthResponse> {
+import edu.byu.cs.tweeter.model.service.request.SignInRequest;
+import edu.byu.cs.tweeter.client.presenter.SignInPresenter;
+import edu.byu.cs.tweeter.model.service.response.SignInResponse;
+
+public class SignInTask extends AsyncTask<SignInRequest, Void, SignInResponse> {
 
     private final SignInPresenter presenter;
     private final SignInObserver observer;
 
+    private Exception exception;
+
     public interface SignInObserver {
-        void signInComplete(AuthResponse response);
+        void signInComplete(SignInResponse response);
+        void handleException(Exception e);
     }
 
     public SignInTask(SignInPresenter presenter, SignInObserver observer) {
@@ -21,14 +26,24 @@ public class SignInTask extends AsyncTask<AuthRequest, Void, AuthResponse> {
     }
 
     @Override
-    protected AuthResponse doInBackground(AuthRequest... authRequests) {
-        return presenter.signIn(authRequests[0]);
+    protected SignInResponse doInBackground(SignInRequest... signInRequests) {
+        SignInResponse response = null;
+        try {
+            response = presenter.signIn(signInRequests[0]);
+        } catch (IOException e) {
+            exception = e;
+        }
+        return response;
     }
 
     @Override
-    protected void onPostExecute(AuthResponse response) {
+    protected void onPostExecute(SignInResponse response) {
         if (observer != null) {
-            observer.signInComplete(response);
+            if (exception == null) {
+                observer.signInComplete(response);
+            } else {
+                observer.handleException(exception);
+            }
         }
     }
 }
