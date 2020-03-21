@@ -31,6 +31,8 @@ import edu.byu.cs.tweeter.client.view.main.fragments.TweetDialogFragment;
  */
 public class MainActivity extends AppCompatActivity implements SearchTask.SearchObserver, LoadImageTask.LoadImageObserver, MainPresenter.View {
 
+    private static final String TAG = MainActivity.class.getName();
+
     private MainPresenter presenter;
     private User user;
     private ImageView userImageView;

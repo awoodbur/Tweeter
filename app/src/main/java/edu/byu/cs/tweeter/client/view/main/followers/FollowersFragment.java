@@ -1,11 +1,13 @@
 package edu.byu.cs.tweeter.client.view.main.followers;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -27,6 +29,8 @@ import edu.byu.cs.tweeter.client.view.cache.ImageCache;
 import edu.byu.cs.tweeter.client.view.main.UserActivity;
 
 public class FollowersFragment extends Fragment implements FollowersPresenter.View {
+
+    private static final String TAG = FollowersFragment.class.getName();
 
     private static final int LOADING_DATA_VIEW = 0;
     private static final int ITEM_VIEW = 1;
@@ -231,6 +235,12 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
             isLoading = false;
             removeLoadingFooter();
             followersRecyclerViewAdapter.addItems(followers);
+        }
+
+        @Override
+        public void handleException(Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         /**

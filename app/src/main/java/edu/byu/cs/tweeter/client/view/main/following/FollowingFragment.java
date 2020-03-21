@@ -7,11 +7,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -31,6 +33,8 @@ import edu.byu.cs.tweeter.client.view.main.UserActivity;
  * The fragment that displays on the 'Following' tab.
  */
 public class FollowingFragment extends Fragment implements FollowingPresenter.View {
+
+    private static final String TAG = FollowingFragment.class.getName();
 
     private static final int LOADING_DATA_VIEW = 0;
     private static final int ITEM_VIEW = 1;
@@ -235,6 +239,12 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             isLoading = false;
             removeLoadingFooter();
             followingRecyclerViewAdapter.addItems(followees);
+        }
+
+        @Override
+        public void handleException(Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         /**

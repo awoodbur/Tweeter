@@ -5,6 +5,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,8 @@ import edu.byu.cs.tweeter.client.view.cache.ImageCache;
 import edu.byu.cs.tweeter.client.view.main.UserActivity;
 
 public class FeedFragment extends Fragment implements FeedPresenter.View {
+
+    private static final String TAG = FeedFragment.class.getName();
 
     private static final int LOADING_DATA_VIEW = 0;
     private static final int ITEM_VIEW = 1;
@@ -284,6 +287,12 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
             isLoading = false;
             removeLoadingFooter();
             feedRecyclerViewAdapter.addItems(tweets);
+        }
+
+        @Override
+        public void handleException(Exception e) {
+            Log.e(TAG, e.getMessage(), e);
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
         /**

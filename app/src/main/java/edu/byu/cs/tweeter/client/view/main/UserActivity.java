@@ -17,7 +17,6 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import edu.byu.cs.tweeter.R;
-import edu.byu.cs.tweeter.client.view.main.login.SignInFragment;
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.SignOutRequest;
@@ -33,7 +32,7 @@ import edu.byu.cs.tweeter.model.service.response.SignOutResponse;
 
 public class UserActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, FollowUserTask.FollowUserObserver, UnfollowUserTask.UnfollowUserObserver, SignOutTask.LogoutObserver, UserPresenter.View {
 
-    private static final String TAG = SignInFragment.class.getName();
+    private static final String TAG = UserActivity.class.getName();
 
     private UserPresenter presenter;
     private User current_user;

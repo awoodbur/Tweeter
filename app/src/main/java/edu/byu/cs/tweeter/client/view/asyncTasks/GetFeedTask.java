@@ -22,12 +22,15 @@ public class GetFeedTask extends AsyncTask<FeedRequest, Void, FeedResponse> {
     private final FeedPresenter presenter;
     private final GetTweetsObserver observer;
 
+    private Exception exception;
+
     /**
      * An observer interface to be implemented by observers who want to be notified when this task
      * completes.
      */
     public interface GetTweetsObserver {
         void tweetsRetrieved(FeedResponse feedResponse);
+        void handleException(Exception e);
     }
 
     /**
@@ -49,8 +52,13 @@ public class GetFeedTask extends AsyncTask<FeedRequest, Void, FeedResponse> {
      */
     @Override
     protected FeedResponse doInBackground(FeedRequest... feedRequests) {
-        FeedResponse response = presenter.getFeed(feedRequests[0]);
-        loadImages(response);
+        FeedResponse response = null;
+        try {
+            response = presenter.getFeed(feedRequests[0]);
+            loadImages(response);
+        } catch (IOException e) {
+            exception = e;
+        }
         return response;
     }
 
@@ -84,9 +92,12 @@ public class GetFeedTask extends AsyncTask<FeedRequest, Void, FeedResponse> {
      */
     @Override
     protected void onPostExecute(FeedResponse feedResponse) {
-
         if(observer != null) {
-            observer.tweetsRetrieved(feedResponse);
+            if (exception == null) {
+                observer.tweetsRetrieved(feedResponse);
+            } else {
+                observer.handleException(exception);
+            }
         }
     }
 }

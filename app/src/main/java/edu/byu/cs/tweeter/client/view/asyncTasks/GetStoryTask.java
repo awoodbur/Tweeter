@@ -22,12 +22,15 @@ public class GetStoryTask extends AsyncTask<StoryRequest, Void, StoryResponse> {
     private final StoryPresenter presenter;
     private final GetTweetsObserver observer;
 
+    private Exception exception;
+
     /**
      * An observer interface to be implemented by observers who want to be notified when this task
      * completes.
      */
     public interface GetTweetsObserver {
         void tweetsRetrieved(StoryResponse storyResponse);
+        void handleException(Exception e);
     }
 
     /**
@@ -49,8 +52,13 @@ public class GetStoryTask extends AsyncTask<StoryRequest, Void, StoryResponse> {
      */
     @Override
     protected StoryResponse doInBackground(StoryRequest... storyRequests) {
-        StoryResponse response = presenter.getStory(storyRequests[0]);
-        loadImages(response);
+        StoryResponse response = null;
+        try {
+            response = presenter.getStory(storyRequests[0]);
+            loadImages(response);
+        } catch (IOException e) {
+            exception = e;
+        }
         return response;
     }
 
@@ -86,7 +94,11 @@ public class GetStoryTask extends AsyncTask<StoryRequest, Void, StoryResponse> {
     protected void onPostExecute(StoryResponse storyResponse) {
 
         if(observer != null) {
-            observer.tweetsRetrieved(storyResponse);
+            if (exception == null) {
+                observer.tweetsRetrieved(storyResponse);
+            } else {
+                observer.handleException(exception);
+            }
         }
     }
 }

@@ -22,7 +22,7 @@ import edu.byu.cs.tweeter.model.service.response.SignUpResponse;
 
 public class SignUpFragment extends Fragment implements SignUpTask.SignUpObserver, SignUpPresenter.View {
 
-    private static final String TAG = SignInFragment.class.getName();
+    private static final String TAG = SignUpFragment.class.getName();
 
     private EditText mFirstNameField;
     private EditText mLastNameField;

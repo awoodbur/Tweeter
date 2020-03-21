@@ -21,12 +21,15 @@ public class GetFollowersTask extends AsyncTask<FollowersRequest, Void, Follower
     private final FollowersPresenter presenter;
     private final GetFollowersObserver observer;
 
+    private Exception exception;
+
     /**
      * An observer interface to be implemented by observers who want to be notified when this task
      * completes.
      */
     public interface GetFollowersObserver {
         void followersRetrieved(FollowersResponse followersResponse);
+        void handleException(Exception e);
     }
 
     /**
@@ -48,8 +51,13 @@ public class GetFollowersTask extends AsyncTask<FollowersRequest, Void, Follower
      */
     @Override
     protected FollowersResponse doInBackground(FollowersRequest... followersRequests) {
-        FollowersResponse response = presenter.getFollowers(followersRequests[0]);
-        loadImages(response);
+        FollowersResponse response = null;
+        try {
+            response = presenter.getFollowers(followersRequests[0]);
+            loadImages(response);
+        } catch (IOException e) {
+            exception = e;
+        }
         return response;
     }
 
@@ -83,7 +91,11 @@ public class GetFollowersTask extends AsyncTask<FollowersRequest, Void, Follower
     protected void onPostExecute(FollowersResponse followersResponse) {
 
         if(observer != null) {
-            observer.followersRetrieved(followersResponse);
+            if (exception == null) {
+                observer.followersRetrieved(followersResponse);
+            } else {
+                observer.handleException(exception);
+            }
         }
     }
 }

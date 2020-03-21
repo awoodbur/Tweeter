@@ -15,6 +15,8 @@ import edu.byu.cs.tweeter.client.view.main.adapters.LoginPagerAdapter;
 
 public class LoginActivity extends AppCompatActivity implements LoginPresenter.View {
 
+    private static final String TAG = LoginActivity.class.getName();
+
     private LoginPresenter presenter;
 
     @Override
