@@ -29,7 +29,7 @@ public class SignOutTask extends AsyncTask<SignOutRequest, Void, SignOutResponse
     protected SignOutResponse doInBackground(SignOutRequest... signOutRequests) {
         SignOutResponse response = null;
         try {
-            presenter.signOut(signOutRequests[0]);
+            response = presenter.signOut(signOutRequests[0]);
         } catch (IOException e) {
             exception = e;
         }

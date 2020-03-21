@@ -14,13 +14,16 @@ import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.FeedRequest;
+import edu.byu.cs.tweeter.model.service.request.FollowUserRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowersRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.SignInRequest;
 import edu.byu.cs.tweeter.model.service.request.SignOutRequest;
 import edu.byu.cs.tweeter.model.service.request.SignUpRequest;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
+import edu.byu.cs.tweeter.model.service.request.UnfollowUserRequest;
 import edu.byu.cs.tweeter.model.service.response.FeedResponse;
+import edu.byu.cs.tweeter.model.service.response.FollowUserResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowersResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowingResponse;
 import edu.byu.cs.tweeter.model.service.response.SignInResponse;
@@ -28,6 +31,7 @@ import edu.byu.cs.tweeter.model.service.response.SignOutResponse;
 import edu.byu.cs.tweeter.model.service.response.SignUpResponse;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
 import edu.byu.cs.tweeter.model.service.response.Response;
+import edu.byu.cs.tweeter.model.service.response.UnfollowUserResponse;
 
 /**
  * Acts as a Facade to the Tweeter server. All network requests to the server should go through
@@ -88,14 +92,14 @@ public class ServerFacade {
         return clientCommunicator.doPost(urlPath, request, null, Response.class);
     }
 
-    public Response followUser(Follow request, String urlPath) throws IOException {
+    public FollowUserResponse followUser(FollowUserRequest request, String urlPath) throws IOException {
         ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
-        return clientCommunicator.doPost(urlPath, request, null, Response.class);
+        return clientCommunicator.doPost(urlPath, request, null, FollowUserResponse.class);
     }
 
-    public Response unfollowUser(Follow request, String urlPath) throws IOException {
+    public UnfollowUserResponse unfollowUser(UnfollowUserRequest request, String urlPath) throws IOException {
         ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
-        return clientCommunicator.doPost(urlPath, request, null, Response.class);
+        return clientCommunicator.doPost(urlPath, request, null, UnfollowUserResponse.class);
     }
 
     /////////////////////////

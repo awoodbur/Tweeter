@@ -19,7 +19,10 @@ import com.google.android.material.tabs.TabLayout;
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.FollowUserRequest;
 import edu.byu.cs.tweeter.model.service.request.SignOutRequest;
+import edu.byu.cs.tweeter.model.service.request.UnfollowUserRequest;
+import edu.byu.cs.tweeter.model.service.response.FollowUserResponse;
 import edu.byu.cs.tweeter.model.service.response.Response;
 import edu.byu.cs.tweeter.client.presenter.UserPresenter;
 import edu.byu.cs.tweeter.client.view.asyncTasks.FollowUserTask;
@@ -29,6 +32,7 @@ import edu.byu.cs.tweeter.client.view.asyncTasks.UnfollowUserTask;
 import edu.byu.cs.tweeter.client.view.cache.ImageCache;
 import edu.byu.cs.tweeter.client.view.main.adapters.UserPagerAdapter;
 import edu.byu.cs.tweeter.model.service.response.SignOutResponse;
+import edu.byu.cs.tweeter.model.service.response.UnfollowUserResponse;
 
 public class UserActivity extends AppCompatActivity implements LoadImageTask.LoadImageObserver, FollowUserTask.FollowUserObserver, UnfollowUserTask.UnfollowUserObserver, SignOutTask.LogoutObserver, UserPresenter.View {
 
@@ -89,13 +93,13 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
                 }
                 else if (type.equals("Follow")) {
                     FollowUserTask followUserTask = new FollowUserTask(presenter, UserActivity.this);
-                    Follow follow = new Follow(current_user, display_user);
-                    followUserTask.execute(follow);
+                    FollowUserRequest request = new FollowUserRequest(current_user, display_user);
+                    followUserTask.execute(request);
                 }
                 else if (type.equals("Unfollow")) {
                     UnfollowUserTask unfollowUserTask = new UnfollowUserTask(presenter, UserActivity.this);
-                    Follow follow = new Follow(current_user, display_user);
-                    unfollowUserTask.execute(follow);                }
+                    UnfollowUserRequest request = new UnfollowUserRequest(current_user, display_user);
+                    unfollowUserTask.execute(request);                }
                 else {
                     // Error
                 }
@@ -127,12 +131,12 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
     }
 
     @Override
-    public void followUserComplete(Response response) {
+    public void followUserComplete(FollowUserResponse response) {
         mButton.setText(R.string.button_unfollow);
     }
 
     @Override
-    public void unfollowUserComplete(Response response) {
+    public void unfollowUserComplete(UnfollowUserResponse response) {
         mButton.setText(R.string.button_follow);
     }
 

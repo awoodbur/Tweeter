@@ -2,14 +2,18 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import java.io.IOException;
 
+import edu.byu.cs.tweeter.client.model.service.FollowUserServiceProxy;
 import edu.byu.cs.tweeter.client.model.service.SignOutServiceProxy;
-import edu.byu.cs.tweeter.client.model.service.UserServiceProxy;
-import edu.byu.cs.tweeter.model.domain.Follow;
+import edu.byu.cs.tweeter.client.model.service.UnfollowUserServiceProxy;
+import edu.byu.cs.tweeter.model.service.FollowUserService;
 import edu.byu.cs.tweeter.model.service.SignOutService;
-import edu.byu.cs.tweeter.model.service.UserService;
+import edu.byu.cs.tweeter.model.service.UnfollowUserService;
+import edu.byu.cs.tweeter.model.service.request.FollowUserRequest;
 import edu.byu.cs.tweeter.model.service.request.SignOutRequest;
-import edu.byu.cs.tweeter.model.service.response.Response;
+import edu.byu.cs.tweeter.model.service.request.UnfollowUserRequest;
+import edu.byu.cs.tweeter.model.service.response.FollowUserResponse;
 import edu.byu.cs.tweeter.model.service.response.SignOutResponse;
+import edu.byu.cs.tweeter.model.service.response.UnfollowUserResponse;
 
 /**
  * The presenter for the user activity.
@@ -34,14 +38,14 @@ public class UserPresenter extends Presenter {
         this.view = view;
     }
 
-    public Response followUser(Follow follow) {
-        UserService service = new UserServiceProxy();
-        return service.followUser(follow);
+    public FollowUserResponse followUser(FollowUserRequest request) throws IOException {
+        FollowUserService service = new FollowUserServiceProxy();
+        return service.followUser(request);
     }
 
-    public Response unfollowUser(Follow follow) {
-        UserService service = new UserServiceProxy();
-        return service.unfollowUser(follow);
+    public UnfollowUserResponse unfollowUser(UnfollowUserRequest request) throws IOException {
+        UnfollowUserService service = new UnfollowUserServiceProxy();
+        return service.unfollowUser(request);
     }
 
     public SignOutResponse signOut(SignOutRequest request) throws IOException {
