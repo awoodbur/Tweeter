@@ -2,8 +2,11 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import org.junit.jupiter.api.BeforeEach;
 
+import java.io.IOException;
+
 import edu.byu.cs.tweeter.model.domain.Follow;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.FollowUserRequest;
 
 class MainPresenterTest {
 
@@ -12,12 +15,12 @@ class MainPresenterTest {
     MainPresenter presenter;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         user1 = new User("Tester", "Testerson", "test1", "");
         user2 = new User("Tester", "Testerson", "test2", "");
 
         UserPresenter follower = new UserPresenter(null);
-        follower.followUser(new Follow(user1, user2));
-        follower.followUser(new Follow(user2, user1));
+        follower.followUser(new FollowUserRequest(user1, user2));
+        follower.followUser(new FollowUserRequest(user2, user1));
     }
 }

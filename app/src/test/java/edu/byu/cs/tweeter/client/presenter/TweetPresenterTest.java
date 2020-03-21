@@ -3,8 +3,11 @@ package edu.byu.cs.tweeter.client.presenter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.ShareTweetRequest;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
 import edu.byu.cs.tweeter.model.service.response.Response;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
@@ -30,8 +33,9 @@ class TweetPresenterTest {
     }
 
     @Test
-    void shareTweet() {
-        Response response = presenter.shareTweet(tweet);
+    void shareTweet() throws IOException  {
+        ShareTweetRequest tweet_request = new ShareTweetRequest(tweet);
+        Response response = presenter.shareTweet(tweet_request);
         assertTrue(response.isSuccess());
 
         StoryResponse storyResponse = story.getStory(new StoryRequest(user, 1, null));

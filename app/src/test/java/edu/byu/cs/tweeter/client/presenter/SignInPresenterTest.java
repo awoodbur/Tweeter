@@ -3,23 +3,26 @@ package edu.byu.cs.tweeter.client.presenter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import edu.byu.cs.tweeter.model.service.request.AuthRequest;
-import edu.byu.cs.tweeter.model.service.response.AuthResponse;
+import java.io.IOException;
+
+import edu.byu.cs.tweeter.model.service.request.SignInRequest;
+import edu.byu.cs.tweeter.model.service.request.SignUpRequest;
+import edu.byu.cs.tweeter.model.service.response.SignInResponse;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SignInPresenterTest {
 
-    AuthRequest signin;
-    AuthRequest signup;
+    SignInRequest signin;
+    SignUpRequest signup;
     SignInPresenter presenter;
     private String alias;
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws IOException {
         alias = "test";
-        signin = new AuthRequest(alias, "password");
-        signup = new AuthRequest("Tester", "Testerson", alias, "password", "");
+        signin = new SignInRequest(alias, "password");
+        signup = new SignUpRequest("Tester", "Testerson", alias, "password", "");
         SignUpPresenter create = new SignUpPresenter(null);
         create.signUp(signup);
 
@@ -27,8 +30,8 @@ class SignInPresenterTest {
     }
 
     @Test
-    void signIn() {
-        AuthResponse response = presenter.signIn(signin);
+    void signIn() throws IOException {
+        SignInResponse response = presenter.signIn(signin);
         assertTrue(response.isSuccess());
         assertEquals(alias, presenter.getCurrentUser().getAlias());
     }

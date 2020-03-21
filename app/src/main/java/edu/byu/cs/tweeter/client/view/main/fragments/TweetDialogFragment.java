@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -15,11 +16,16 @@ import org.jetbrains.annotations.NotNull;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.model.domain.Tweet;
+import edu.byu.cs.tweeter.model.service.request.ShareTweetRequest;
 import edu.byu.cs.tweeter.model.service.response.Response;
 import edu.byu.cs.tweeter.client.presenter.TweetPresenter;
 import edu.byu.cs.tweeter.client.view.asyncTasks.ShareTweetTask;
+import edu.byu.cs.tweeter.model.service.response.ShareTweetResponse;
 
 public class TweetDialogFragment extends DialogFragment implements ShareTweetTask.ShareTweetObserver, TweetPresenter.View {
+
+    private static final String TAG = TweetDialogFragment.class.getName();
+
 
     private EditText mEditText;
     private TweetPresenter presenter;
@@ -51,8 +57,8 @@ public class TweetDialogFragment extends DialogFragment implements ShareTweetTas
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ShareTweetTask shareTweetTask = new ShareTweetTask(presenter, TweetDialogFragment.this);
-                Tweet tweet = new Tweet(presenter.getCurrentUser(), tweetTextbox.getText().toString());
-                shareTweetTask.execute(tweet);
+                ShareTweetRequest request = new ShareTweetRequest(new Tweet(presenter.getCurrentUser(), tweetTextbox.getText().toString()));
+                shareTweetTask.execute(request);
             }
         });
         builder.setNegativeButton(R.string.button_cancel, new DialogInterface.OnClickListener() {
@@ -66,27 +72,13 @@ public class TweetDialogFragment extends DialogFragment implements ShareTweetTas
     }
 
     @Override
-    public void tweetShared(Response response) {
+    public void tweetShared(ShareTweetResponse response) {
         Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.fragment_tweet, container);
-//    }
-//
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        mEditText = view.findViewById(R.id.fragment_tweet_textbox);
-//
-//        String title = getArguments().getString("title", "Enter Name");
-//        getDialog().setTitle(title);
-//
-//        mEditText.requestFocus();
-//        getDialog().getWindow().setSoftInputMode(
-//                WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
-//    }
+    @Override
+    public void handleException(Exception e) {
+        Log.e(TAG, e.getMessage(), e);
+        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+    }
 }

@@ -1,9 +1,13 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import edu.byu.cs.tweeter.client.model.service.TweetServiceProxy;
+import java.io.IOException;
+
+import edu.byu.cs.tweeter.client.model.service.ShareTweetServiceProxy;
 import edu.byu.cs.tweeter.model.domain.Tweet;
-import edu.byu.cs.tweeter.model.service.TweetService;
+import edu.byu.cs.tweeter.model.service.ShareTweetService;
+import edu.byu.cs.tweeter.model.service.request.ShareTweetRequest;
 import edu.byu.cs.tweeter.model.service.response.Response;
+import edu.byu.cs.tweeter.model.service.response.ShareTweetResponse;
 
 public class TweetPresenter extends Presenter {
 
@@ -15,8 +19,8 @@ public class TweetPresenter extends Presenter {
 
     public TweetPresenter(View view) { this.view = view; }
 
-    public Response shareTweet(Tweet tweet) {
-        TweetService service = new TweetServiceProxy();
-        return service.shareTweet(tweet);
+    public ShareTweetResponse shareTweet(ShareTweetRequest request) throws IOException {
+        ShareTweetService service = new ShareTweetServiceProxy();
+        return service.shareTweet(request);
     }
 }

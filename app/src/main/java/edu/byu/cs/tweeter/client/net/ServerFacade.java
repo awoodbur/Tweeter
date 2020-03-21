@@ -1,18 +1,7 @@
 package edu.byu.cs.tweeter.client.net;
 
 import java.io.IOException;
-import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
-import edu.byu.cs.tweeter.BuildConfig;
-import edu.byu.cs.tweeter.model.domain.Follow;
-import edu.byu.cs.tweeter.model.domain.Tweet;
-import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.FeedRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowUserRequest;
 import edu.byu.cs.tweeter.model.service.request.FollowersRequest;
@@ -21,6 +10,7 @@ import edu.byu.cs.tweeter.model.service.request.SignInRequest;
 import edu.byu.cs.tweeter.model.service.request.SignOutRequest;
 import edu.byu.cs.tweeter.model.service.request.SignUpRequest;
 import edu.byu.cs.tweeter.model.service.request.StoryRequest;
+import edu.byu.cs.tweeter.model.service.request.ShareTweetRequest;
 import edu.byu.cs.tweeter.model.service.request.UnfollowUserRequest;
 import edu.byu.cs.tweeter.model.service.response.FeedResponse;
 import edu.byu.cs.tweeter.model.service.response.FollowUserResponse;
@@ -30,7 +20,7 @@ import edu.byu.cs.tweeter.model.service.response.SignInResponse;
 import edu.byu.cs.tweeter.model.service.response.SignOutResponse;
 import edu.byu.cs.tweeter.model.service.response.SignUpResponse;
 import edu.byu.cs.tweeter.model.service.response.StoryResponse;
-import edu.byu.cs.tweeter.model.service.response.Response;
+import edu.byu.cs.tweeter.model.service.response.ShareTweetResponse;
 import edu.byu.cs.tweeter.model.service.response.UnfollowUserResponse;
 
 /**
@@ -87,9 +77,9 @@ public class ServerFacade {
         return clientCommunicator.doPost(urlPath, request, null, SignOutResponse.class);
     }
 
-    public Response shareTweet(Tweet request, String urlPath) throws IOException {
+    public ShareTweetResponse shareTweet(ShareTweetRequest request, String urlPath) throws IOException {
         ClientCommunicator clientCommunicator = new ClientCommunicator(SERVER_URL);
-        return clientCommunicator.doPost(urlPath, request, null, Response.class);
+        return clientCommunicator.doPost(urlPath, request, null, ShareTweetResponse.class);
     }
 
     public FollowUserResponse followUser(FollowUserRequest request, String urlPath) throws IOException {

@@ -2,17 +2,22 @@ package edu.byu.cs.tweeter.client.view.asyncTasks;
 
 import android.os.AsyncTask;
 
-import edu.byu.cs.tweeter.model.domain.Tweet;
-import edu.byu.cs.tweeter.model.service.response.Response;
-import edu.byu.cs.tweeter.client.presenter.TweetPresenter;
+import java.io.IOException;
 
-public class ShareTweetTask extends AsyncTask<Tweet, Void, Response> {
+import edu.byu.cs.tweeter.model.service.request.ShareTweetRequest;
+import edu.byu.cs.tweeter.client.presenter.TweetPresenter;
+import edu.byu.cs.tweeter.model.service.response.ShareTweetResponse;
+
+public class ShareTweetTask extends AsyncTask<ShareTweetRequest, Void, ShareTweetResponse> {
 
     private final TweetPresenter presenter;
     private final ShareTweetObserver observer;
 
+    private Exception exception;
+
     public interface ShareTweetObserver {
-        void tweetShared(Response response);
+        void tweetShared(ShareTweetResponse response);
+        void handleException(Exception e);
     }
 
     public ShareTweetTask(TweetPresenter presenter, ShareTweetObserver observer) {
@@ -21,15 +26,24 @@ public class ShareTweetTask extends AsyncTask<Tweet, Void, Response> {
     }
 
     @Override
-    protected Response doInBackground(Tweet... tweets) {
-        Response response = presenter.shareTweet(tweets[0]);
+    protected ShareTweetResponse doInBackground(ShareTweetRequest... shareTweetRequests) {
+        ShareTweetResponse response = null;
+        try {
+            response = presenter.shareTweet(shareTweetRequests[0]);
+        } catch (IOException e) {
+            exception = e;
+        }
         return response;
     }
 
     @Override
-    protected void onPostExecute(Response response) {
+    protected void onPostExecute(ShareTweetResponse response) {
         if (observer != null) {
-            observer.tweetShared(response);
+            if (exception == null) {
+                observer.tweetShared(response);
+            } else {
+                observer.handleException(exception);
+            }
         }
     }
 }
