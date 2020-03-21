@@ -13,7 +13,7 @@
         android:screenOrientation="portrait"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".view.main.MainActivity"
+            android:name=".client.view.main.MainActivity"
             android:label="@string/title_activity_main"
             android:launchMode="singleTop"
             android:theme="@style/AppTheme.NoActionBar">
@@ -26,8 +26,8 @@
             <meta-data android:name="android.app.searchable"
                 android:resource="@xml/searchable"/>
         </activity>
-        <activity android:name=".view.main.LoginActivity" />
-        <activity android:name=".view.main.UserActivity" />
+        <activity android:name=".client.view.main.LoginActivity" />
+        <activity android:name=".client.view.main.UserActivity" />
     </application>
 
 </manifest>

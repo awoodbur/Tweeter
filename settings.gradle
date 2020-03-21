@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':shared', ':server'
 rootProject.name='Tweeter'

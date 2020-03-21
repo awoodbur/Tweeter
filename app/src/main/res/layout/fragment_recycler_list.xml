@@ -5,7 +5,7 @@
     android:id="@+id/fragment_recycler_list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.main.following.FollowingFragment">
+    tools:context=".client.view.main.following.FollowingFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
