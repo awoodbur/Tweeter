@@ -157,7 +157,7 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
 
     @Override
     public void checkUserComplete(CheckFollowResponse response) {
-        if (response.isSuccess()) {
+        if (response.follows()) {
             mButton.setText(R.string.button_unfollow);
         } else {
             mButton.setText(R.string.button_follow);
