@@ -4,8 +4,10 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class UnfollowUserRequest {
 
-    private final User follower;
-    private final User followee;
+    private User follower;
+    private User followee;
+
+    private UnfollowUserRequest() {}
 
     public UnfollowUserRequest(User follower, User followee) {
         this.follower = follower;
@@ -18,5 +20,13 @@ public class UnfollowUserRequest {
 
     public User getFollowee() {
         return followee;
+    }
+
+    public void setFollower(User follower) {
+        this.follower = follower;
+    }
+
+    public void setFollowee(User followee) {
+        this.followee = followee;
     }
 }

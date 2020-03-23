@@ -38,6 +38,10 @@ public class Database {
     }
 
     private Database() {
+        resetDatabase();
+    }
+
+    public void resetDatabase() {
         initializeUsers();
         initializeTweets();
         initializeFollowers();
@@ -133,7 +137,15 @@ public class Database {
     }
 
     public int getTweetIndex(Tweet tweet) {
-        return tweetsTable.indexOf(tweet);
+        if (tweet == null) {
+            return 0;
+        }
+        int idx = tweetsTable.indexOf(tweet);
+        if (idx == -1) {
+            return 0;
+        } else {
+            return idx;
+        }
     }
 
     public void sortTweets() {
@@ -149,7 +161,15 @@ public class Database {
     }
 
     public int getFolloweeIndex(User user, User followee) {
-        return followingTable.get(user).indexOf(followee);
+        if (followee == null) {
+            return 0;
+        }
+        int idx = followingTable.get(user).indexOf(followee);
+        if (idx == -1) {
+            return 0;
+        } else {
+            return idx;
+        }
     }
 
     public void addUserToFollowing(User user, User userToFollow) {
@@ -173,7 +193,7 @@ public class Database {
     public boolean doesUserFollowUser(User userFollowing, User userFollowed) {
         List<User> following = followingTable.get(userFollowing);
         if (following != null) {
-            following.contains(userFollowed);
+            return following.contains(userFollowed);
         }
         return false;
     }
@@ -187,7 +207,15 @@ public class Database {
     }
 
     public int getFollowerIndex(User user, User follower) {
-        return followersTable.get(user).indexOf(follower);
+        if (follower == null) {
+            return 0;
+        }
+        int idx = followersTable.get(user).indexOf(follower);
+        if (idx == -1) {
+            return 0;
+        } else {
+            return idx;
+        }
     }
 
     public void addFolloweeToUser(User followeeToAdd, User user) {

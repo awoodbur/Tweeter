@@ -70,4 +70,8 @@ public class TweetsDAO {
 
         return new StoryResponse(responseTweets, hasMorePages);
     }
+
+    public void reset() {
+        Database.getInstance().resetDatabase();
+    }
 }

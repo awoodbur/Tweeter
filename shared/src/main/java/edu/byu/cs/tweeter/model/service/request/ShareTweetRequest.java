@@ -6,11 +6,17 @@ public class ShareTweetRequest {
 
     private Tweet tweet;
 
+    private ShareTweetRequest() {}
+
     public ShareTweetRequest(Tweet tweet) {
         this.tweet = tweet;
     }
 
     public Tweet getTweet() {
         return tweet;
+    }
+
+    public void setTweet(Tweet tweet) {
+        this.tweet = tweet;
     }
 }

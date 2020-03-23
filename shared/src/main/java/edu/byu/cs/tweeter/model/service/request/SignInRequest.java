@@ -2,8 +2,10 @@ package edu.byu.cs.tweeter.model.service.request;
 
 public class SignInRequest {
 
-    private final String alias;
-    private final String password;
+    private String alias;
+    private String password;
+
+    private SignInRequest() {}
 
     public SignInRequest(String alias, String password) {
         this.alias = alias;
@@ -16,5 +18,13 @@ public class SignInRequest {
 
     public String getPassword() {
         return password;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }

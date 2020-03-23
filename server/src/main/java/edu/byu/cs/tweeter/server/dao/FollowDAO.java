@@ -68,4 +68,8 @@ public class FollowDAO {
     public CheckFollowResponse checkFollow(CheckFollowRequest request) {
         return new CheckFollowResponse(Database.getInstance().doesUserFollowUser(request.getFollowee(), request.getFollower()));
     }
+
+    public void reset() {
+        Database.getInstance().resetDatabase();
+    }
 }

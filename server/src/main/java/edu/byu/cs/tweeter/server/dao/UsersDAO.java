@@ -51,4 +51,8 @@ public class UsersDAO {
     public GetUserResponse getUser(GetUserRequest request) {
         return new GetUserResponse(Database.getInstance().getUser(request.getAlias()));
     }
+
+    public void reset() {
+        Database.getInstance().resetDatabase();
+    }
 }

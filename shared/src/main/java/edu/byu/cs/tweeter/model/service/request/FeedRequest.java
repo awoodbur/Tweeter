@@ -5,9 +5,11 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class FeedRequest {
 
-    private final User user;
-    private final int limit;
-    private final Tweet lastTweet;
+    private User user;
+    private int limit;
+    private Tweet lastTweet;
+
+    private FeedRequest() {}
 
     public FeedRequest(User user, int limit, Tweet lastTweet) {
         this.user = user;
@@ -20,4 +22,16 @@ public class FeedRequest {
     public int getLimit() { return limit; }
 
     public Tweet getLastTweet() { return lastTweet; }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setLimit(int limit) {
+        this.limit = limit;
+    }
+
+    public void setLastTweet(Tweet lastTweet) {
+        this.lastTweet = lastTweet;
+    }
 }

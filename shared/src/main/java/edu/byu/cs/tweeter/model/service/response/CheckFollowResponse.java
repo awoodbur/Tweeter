@@ -2,7 +2,7 @@ package edu.byu.cs.tweeter.model.service.response;
 
 public class CheckFollowResponse extends Response {
 
-    private boolean follows;
+    private boolean following;
 
     public CheckFollowResponse(String message) {
         super(false, message);
@@ -10,10 +10,10 @@ public class CheckFollowResponse extends Response {
 
     public CheckFollowResponse(boolean follows) {
         super(true);
-        this.follows = follows;
+        this.following = follows;
     }
 
-    public boolean follows() {
-        return follows;
+    public boolean isFollowing() {
+        return following;
     }
 }
