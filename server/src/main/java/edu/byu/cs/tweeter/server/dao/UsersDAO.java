@@ -25,7 +25,7 @@ public class UsersDAO {
         String password = Database.getInstance().getUserPassword(user);
         if (password.equals(request.getPassword())) {
             Database.getInstance().authUser(user, "<auth_token>");
-            return new SignInResponse(user);
+            return new SignInResponse(user, "<auth_token>");
         } else {
             return new SignInResponse("Invalid password");
         }
@@ -39,7 +39,7 @@ public class UsersDAO {
         } else {
             Database.getInstance().addUser(user, request.getPassword());
             Database.getInstance().authUser(user, "<auth_token>");
-            return new SignUpResponse(user);
+            return new SignUpResponse(user, "<auth_token>");
         }
     }
 

@@ -73,7 +73,7 @@ public class TweetDialogFragment extends DialogFragment implements ShareTweetTas
 
     @Override
     public void tweetShared(ShareTweetResponse response) {
-        Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
     }
 
     @Override

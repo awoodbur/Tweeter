@@ -34,6 +34,7 @@ public class SignUpPresenter extends Presenter {
         SignUpService service = new SignUpServiceProxy();
         SignUpResponse response = service.signUp(request);
         setCurrentUser(response.getUser());
+        setAuthToken(response.getToken());
         return response;
     }
 }

@@ -31,6 +31,8 @@ public abstract class Presenter {
         return CurrentStateService.getInstance().getDisplayUser();
     }
 
+    public String getAuthToken() { return CurrentStateService.getInstance().getAuthToken(); }
+
     public GetUserResponse getUser(GetUserRequest request) throws IOException {
         GetUserService service = new GetUserServiceProxy();
         return service.getUser(request);
@@ -47,5 +49,9 @@ public abstract class Presenter {
 
     public void setDisplayUser(User user) {
         CurrentStateService.getInstance().setDisplayUser(user);
+    }
+
+    public void setAuthToken(String token) {
+        CurrentStateService.getInstance().setAuthToken(token);
     }
 }

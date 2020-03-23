@@ -8,21 +8,23 @@ public class Tweet implements  Comparable<Tweet>, Serializable {
 
     private User author;
     private String content;
-    private Timestamp date;
+    private long date;
 
     private Tweet() {}
 
     public Tweet(User author, String content) {
         this.author = author;
         this.content = content;
-        this.date = new Timestamp(System.currentTimeMillis());
+        this.date = new Timestamp(System.currentTimeMillis()).getTime();
     }
 
     public User getAuthor() { return author; }
 
     public String getContent() { return content; }
 
-    public String getDate() { return date.toString(); }
+    public String getDate() { return getTimestamp().toString(); }
+
+    public Timestamp getTimestamp() { return new Timestamp(date); }
 
     public void setAuthor(User author) {
         this.author = author;
@@ -32,7 +34,7 @@ public class Tweet implements  Comparable<Tweet>, Serializable {
         this.content = content;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -41,7 +43,7 @@ public class Tweet implements  Comparable<Tweet>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tweet tweet = (Tweet) o;
-        return content.equals(tweet.content) && author.equals(tweet.author) && date.equals(tweet.date);
+        return content.equals(tweet.content) && author.equals(tweet.author) && date == tweet.date;
     }
 
     @Override
@@ -59,6 +61,6 @@ public class Tweet implements  Comparable<Tweet>, Serializable {
 
     @Override
     public int compareTo(Tweet tweet) {
-        return this.getDate().compareTo(tweet.getDate());
+        return this.getTimestamp().compareTo(tweet.getTimestamp());
     }
 }

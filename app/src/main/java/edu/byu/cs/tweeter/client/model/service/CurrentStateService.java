@@ -25,6 +25,8 @@ public class CurrentStateService {
      */
     private User displayUser;
 
+    private String authToken;
+
     /**
      * Return the singleton instance of this class.
      *
@@ -66,5 +68,13 @@ public class CurrentStateService {
 
     public void setDisplayUser(User displayUser) {
         this.displayUser = displayUser;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 }

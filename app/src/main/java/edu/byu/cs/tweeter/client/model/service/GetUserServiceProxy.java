@@ -9,7 +9,7 @@ import edu.byu.cs.tweeter.model.service.response.GetUserResponse;
 
 public class GetUserServiceProxy implements GetUserService {
 
-    private static final String URL_PATH = "/getuserbyalias";
+    private static final String URL_PATH = "/getuser";
 
     private final ServerFacade serverFacade = new ServerFacade();
 
