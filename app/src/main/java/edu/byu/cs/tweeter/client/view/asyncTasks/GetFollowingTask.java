@@ -72,8 +72,12 @@ public class GetFollowingTask extends AsyncTask<FollowingRequest, Void, Followin
             Drawable drawable;
 
             try {
-                drawable = ImageUtils.drawableFromUrl(user.getImageUrl());
-            } catch (IOException e) {
+                if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()) {
+                    drawable = ImageUtils.drawableFromUrl(user.getImageUrl());
+                } else {
+                    drawable = null;
+                }
+                } catch (IOException e) {
                 Log.e(this.getClass().getName(), e.toString(), e);
                 drawable = null;
             }

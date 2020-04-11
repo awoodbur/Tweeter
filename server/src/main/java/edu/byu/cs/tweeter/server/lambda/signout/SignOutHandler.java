@@ -11,7 +11,16 @@ public class SignOutHandler implements RequestHandler<SignOutRequest, SignOutRes
 
     @Override
     public SignOutResponse handleRequest(SignOutRequest request, Context context) {
-        SignOutServiceImpl service = new SignOutServiceImpl();
+        if (request.getUser() == null) {
+            throw new RuntimeException("400");
+        }
+
+        SignOutServiceImpl service;
+        try {
+            service = new SignOutServiceImpl();
+        } catch (Exception e) {
+            throw new RuntimeException("500");
+        }
         return service.signOut(request);
     }
 }

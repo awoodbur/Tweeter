@@ -22,9 +22,9 @@ public class Tweet implements  Comparable<Tweet>, Serializable {
 
     public String getContent() { return content; }
 
-    public String getDate() { return getTimestamp().toString(); }
-
-    public Timestamp getTimestamp() { return new Timestamp(date); }
+    public long getDate() {
+        return date;
+    }
 
     public void setAuthor(User author) {
         this.author = author;
@@ -61,6 +61,8 @@ public class Tweet implements  Comparable<Tweet>, Serializable {
 
     @Override
     public int compareTo(Tweet tweet) {
-        return this.getTimestamp().compareTo(tweet.getTimestamp());
+        Timestamp date1 = new Timestamp(this.getDate());
+        Timestamp date2 = new Timestamp(tweet.getDate());
+        return date1.compareTo(date2);
     }
 }

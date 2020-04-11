@@ -11,7 +11,16 @@ public class ShareTweetHandler implements RequestHandler<ShareTweetRequest, Shar
 
     @Override
     public ShareTweetResponse handleRequest(ShareTweetRequest request, Context context) {
-        ShareTweetServiceImpl service = new ShareTweetServiceImpl();
+        if (request.getTweet() == null) {
+            throw new RuntimeException("400");
+        }
+
+        ShareTweetServiceImpl service;
+        try {
+            service = new ShareTweetServiceImpl();
+        } catch (Exception e) {
+            throw new RuntimeException("500");
+        }
         return service.shareTweet(request);
     }
 }

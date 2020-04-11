@@ -35,7 +35,7 @@ public class ServerFacade {
 
     // TODO: Set this the the invoke URL of your API. Find it by going to your API in AWS, clicking
     //  on stages in the right-side menu, and clicking on the stage you deployed your API to.
-    private static final String SERVER_URL = "https://8eoiuw4yhi.execute-api.us-west-2.amazonaws.com/dev";
+    private static final String SERVER_URL = "https://8eoiuw4yhi.execute-api.us-west-2.amazonaws.com/v1";
 
     /**
      * Returns the users that the user specified in the request is following. Uses information in

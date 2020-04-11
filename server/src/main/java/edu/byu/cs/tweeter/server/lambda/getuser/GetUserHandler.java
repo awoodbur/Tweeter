@@ -11,7 +11,16 @@ public class GetUserHandler implements RequestHandler<GetUserRequest, GetUserRes
 
     @Override
     public GetUserResponse handleRequest(GetUserRequest request, Context context) {
-        GetUserServiceImpl service = new GetUserServiceImpl();
+        if (request.getAlias() == null || request.getAlias().isEmpty()) {
+            throw new RuntimeException("400");
+        }
+
+        GetUserServiceImpl service;
+        try {
+            service = new GetUserServiceImpl();
+        } catch (Exception e) {
+            throw new RuntimeException("500");
+        }
         return service.getUser(request);
     }
 }

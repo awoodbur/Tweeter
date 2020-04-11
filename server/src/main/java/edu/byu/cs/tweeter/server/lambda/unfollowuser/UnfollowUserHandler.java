@@ -11,7 +11,16 @@ public class UnfollowUserHandler implements RequestHandler<UnfollowUserRequest, 
 
     @Override
     public UnfollowUserResponse handleRequest(UnfollowUserRequest request, Context context) {
-        UnfollowUserServiceImpl service = new UnfollowUserServiceImpl();
+        if (request.getFollower() == null || request.getFollowee() == null) {
+            throw new RuntimeException("400");
+        }
+
+        UnfollowUserServiceImpl service;
+        try {
+            service = new UnfollowUserServiceImpl();
+        } catch (Exception e) {
+            throw new RuntimeException("500");
+        }
         return service.unfollowUser(request);
     }
 }

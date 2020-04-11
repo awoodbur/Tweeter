@@ -28,16 +28,25 @@ class GetFollowersHandlerTest {
 
     @Test
     void getFollowers() {
-        User follower = new User("kirk");
+        User follower = new User("spock");
         FollowersRequest request = new FollowersRequest(follower, 10, null);
         FollowersResponse response = handler.handleRequest(request, null);
         List<User> followers = new ArrayList<>();
-        followers.add(new User("spock"));
+        followers.add(new User("kirk"));
         followers.add(new User("bones"));
-        followers.add(new User("sulu"));
         followers.add(new User("uhura"));
-        followers.add(new User("scotty"));
-        followers.add(new User("chekov"));
         assertEquals(followers, response.getFollowers());
+    }
+
+    @Test
+    void getFollowersPaged() {
+        User follower = new User("kirk");
+        FollowersRequest setup = new FollowersRequest(follower, 10, null);
+        FollowersResponse setup_resp = handler.handleRequest(setup, null);
+        User lastFollower = setup_resp.getFollowers().get(9);
+
+        FollowersRequest request = new FollowersRequest(follower, 10, lastFollower);
+        FollowersResponse response = handler.handleRequest(request, null);
+        assertNotEquals(lastFollower, response.getFollowers().get(0));
     }
 }

@@ -38,4 +38,16 @@ class GetFollowingHandlerTest {
         followees.add(new User("scotty"));
         assertEquals(followees, response.getFollowees());
     }
+
+    @Test
+    void getFollowingPaged() {
+        User follower = new User("bones");
+        FollowingRequest setup = new FollowingRequest(follower, 10, null);
+        FollowingResponse setup_resp = handler.handleRequest(setup, null);
+        User lastFollower = setup_resp.getFollowees().get(9);
+
+        FollowingRequest request = new FollowingRequest(follower, 10, lastFollower);
+        FollowingResponse response = handler.handleRequest(request, null);
+        assertNotEquals(lastFollower, response.getFollowees().get(0));
+    }
 }

@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,7 +104,8 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
             userImage.setImageDrawable(ImageCache.getInstance().getImageDrawable(user));
             userAlias.setText(user.getAliasAt());
             userName.setText(user.getName());
-            tweetDate.setText(tweet.getDate());
+            String date = new Timestamp(tweet.getDate()).toString();
+            tweetDate.setText(date);
             tweetContent.setText(parseAlias(tweet.getContent()));
             tweetContent.setMovementMethod(LinkMovementMethod.getInstance());
         }

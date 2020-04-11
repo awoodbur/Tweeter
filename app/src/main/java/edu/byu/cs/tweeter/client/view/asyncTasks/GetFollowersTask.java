@@ -72,7 +72,11 @@ public class GetFollowersTask extends AsyncTask<FollowersRequest, Void, Follower
             Drawable drawable;
 
             try {
-                drawable = ImageUtils.drawableFromUrl(user.getImageUrl());
+                if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()) {
+                    drawable = ImageUtils.drawableFromUrl(user.getImageUrl());
+                } else {
+                    drawable = null;
+                }
             } catch (IOException e) {
                 Log.e(this.getClass().getName(), e.toString(), e);
                 drawable = null;

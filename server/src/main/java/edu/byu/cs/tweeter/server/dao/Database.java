@@ -28,6 +28,16 @@ public class Database {
     private User scotty;
     private User chekov;
 
+    private User test1;
+    private User test2;
+    private User test3;
+    private User test4;
+    private User test5;
+    private User test6;
+    private User test7;
+    private User test8;
+    private User test9;
+
     private final String DEFAULT_PASSWORD = "password";
 
     public static Database getInstance() {
@@ -60,6 +70,17 @@ public class Database {
         scotty = new User("James", "Montgomery", "scotty", "https://www.startrek.com/sites/default/files/styles/content_full/public/images/2019-07/51425b752a0b402ed3effc83fc4bbb74.jpg?itok=ogw5GJPk");
         chekov = new User("Pavel", "Chekov", "chekov", "https://vignette.wikia.nocookie.net/memoryalpha/images/b/b2/Pavel_Chekov%2C_2268.jpg/revision/latest?cb=20090225005414&path-prefix=en");
 
+        test1 = new User("test1", "test1", "test1", "");
+        test2 = new User("test2", "test2", "test2", "");
+        test3 = new User("test3", "test3", "test3", "");
+        test4 = new User("test4", "test4", "test4", "");
+        test5 = new User("test5", "test5", "test5", "");
+        test6 = new User("test6", "test6", "test6", "");
+        test7 = new User("test7", "test7", "test7", "");
+        test8 = new User("test8", "test8", "test8", "");
+        test9 = new User("test9", "test9", "test9", "");
+
+
         usersTable.put(kirk, DEFAULT_PASSWORD);
         usersTable.put(spock, DEFAULT_PASSWORD);
         usersTable.put(bones, DEFAULT_PASSWORD);
@@ -67,6 +88,16 @@ public class Database {
         usersTable.put(uhura, DEFAULT_PASSWORD);
         usersTable.put(scotty, DEFAULT_PASSWORD);
         usersTable.put(chekov, DEFAULT_PASSWORD);
+
+        usersTable.put(test1, DEFAULT_PASSWORD);
+        usersTable.put(test2, DEFAULT_PASSWORD);
+        usersTable.put(test3, DEFAULT_PASSWORD);
+        usersTable.put(test4, DEFAULT_PASSWORD);
+        usersTable.put(test5, DEFAULT_PASSWORD);
+        usersTable.put(test6, DEFAULT_PASSWORD);
+        usersTable.put(test7, DEFAULT_PASSWORD);
+        usersTable.put(test8, DEFAULT_PASSWORD);
+        usersTable.put(test9, DEFAULT_PASSWORD);
     }
 
     private void initializeTweets() {
@@ -83,13 +114,14 @@ public class Database {
     private void initializeFollowers() {
         followersTable = new HashMap<>();
 
-        followersTable.put(kirk, new ArrayList<>(Arrays.asList(spock, bones, sulu, uhura, scotty, chekov)));
+        followersTable.put(kirk, new ArrayList<>(Arrays.asList(spock, bones, sulu, uhura, scotty, chekov, test1, test2, test3, test4, test5, test6, test7, test8, test9)));
         followersTable.put(spock, new ArrayList<>(Arrays.asList(kirk, bones, uhura)));
         followersTable.put(bones, new ArrayList<>(Arrays.asList(kirk, scotty)));
         followersTable.put(sulu, new ArrayList<>(Arrays.asList(bones, chekov)));
         followersTable.put(uhura, new ArrayList<>(Arrays.asList(spock, bones)));
         followersTable.put(scotty, new ArrayList<>(Arrays.asList(kirk, bones, chekov)));
         followersTable.put(chekov, new ArrayList<>(Arrays.asList(bones, sulu, scotty)));
+
     }
 
     private void initializeFollowing() {
@@ -97,7 +129,7 @@ public class Database {
 
         followingTable.put(kirk, new ArrayList<>(Arrays.asList(spock, bones, scotty)));
         followingTable.put(spock, new ArrayList<>(Arrays.asList(kirk, uhura)));
-        followingTable.put(bones, new ArrayList<>(Arrays.asList(kirk, spock, sulu, uhura, scotty, chekov)));
+        followingTable.put(bones, new ArrayList<>(Arrays.asList(kirk, spock, sulu, uhura, scotty, chekov, test1, test2, test3, test4, test5, test6, test7, test8, test9)));
         followingTable.put(sulu, new ArrayList<>(Arrays.asList(kirk, chekov)));
         followingTable.put(uhura, new ArrayList<>(Arrays.asList(kirk, spock)));
         followingTable.put(scotty, new ArrayList<>(Arrays.asList(kirk, bones, chekov)));
@@ -144,12 +176,12 @@ public class Database {
         if (idx == -1) {
             return 0;
         } else {
-            return idx;
+            return idx + 1;
         }
     }
 
     public void sortTweets() {
-        Collections.sort(tweetsTable, Collections.<Tweet>reverseOrder());
+        Collections.sort(tweetsTable);
     }
 
     /////////////////
@@ -168,7 +200,7 @@ public class Database {
         if (idx == -1) {
             return 0;
         } else {
-            return idx;
+            return idx + 1;
         }
     }
 
@@ -214,7 +246,7 @@ public class Database {
         if (idx == -1) {
             return 0;
         } else {
-            return idx;
+            return idx + 1;
         }
     }
 

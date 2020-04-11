@@ -4,7 +4,6 @@ import edu.byu.cs.tweeter.model.service.CheckFollowService;
 import edu.byu.cs.tweeter.model.service.request.CheckFollowRequest;
 import edu.byu.cs.tweeter.model.service.response.CheckFollowResponse;
 import edu.byu.cs.tweeter.server.dao.CheckFollowDAO;
-import edu.byu.cs.tweeter.server.dao.FollowDAO;
 
 public class CheckFollowServiceImpl implements CheckFollowService {
 

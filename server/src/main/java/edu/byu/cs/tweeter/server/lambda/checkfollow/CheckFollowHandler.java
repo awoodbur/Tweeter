@@ -11,7 +11,16 @@ public class CheckFollowHandler implements RequestHandler<CheckFollowRequest, Ch
 
     @Override
     public CheckFollowResponse handleRequest(CheckFollowRequest request, Context context) {
-        CheckFollowServiceImpl service = new CheckFollowServiceImpl();
+        if (request.getFollower() == null || request.getFollowee() == null) {
+            throw new RuntimeException("400");
+        }
+
+        CheckFollowServiceImpl service;
+        try {
+            service = new CheckFollowServiceImpl();
+        } catch (Exception e) {
+            throw new RuntimeException("500");
+        }
         return service.checkFollow(request);
     }
 }

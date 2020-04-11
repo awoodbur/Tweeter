@@ -11,7 +11,17 @@ public class SignInHandler implements RequestHandler<SignInRequest, SignInRespon
 
     @Override
     public SignInResponse handleRequest(SignInRequest request, Context context) {
-        SignInServiceImpl service = new SignInServiceImpl();
+        if (request.getAlias() == null || request.getAlias().isEmpty()
+            || request.getPassword() == null || request.getPassword().isEmpty()) {
+            throw new RuntimeException("400");
+        }
+
+        SignInServiceImpl service;
+        try {
+            service = new SignInServiceImpl();
+        } catch (Exception e) {
+            throw new RuntimeException("500");
+        }
         return service.signIn(request);
     }
 }

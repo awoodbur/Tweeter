@@ -26,7 +26,6 @@ public class TweetDialogFragment extends DialogFragment implements ShareTweetTas
 
     private static final String TAG = TweetDialogFragment.class.getName();
 
-
     private EditText mEditText;
     private TweetPresenter presenter;
 

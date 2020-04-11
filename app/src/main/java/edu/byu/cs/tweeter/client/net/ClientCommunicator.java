@@ -1,5 +1,7 @@
 package edu.byu.cs.tweeter.client.net;
 
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -12,6 +14,8 @@ import java.util.Map;
 import edu.byu.cs.tweeter.client.json.Serializer;
 
 class ClientCommunicator {
+
+    private static final String TAG = ClientCommunicator.class.getName();
 
     private static final int TIMEOUT_MILLIS = 10000;
 
@@ -83,6 +87,13 @@ class ClientCommunicator {
             requestStrategy.sendRequest(connection);
 
             String response = getResponse(connection);
+            Log.d(TAG, response);
+            if (connection.getResponseCode() == 400) {
+                throw new IOException("400 ERROR: Invalid request object");
+            }
+            if (connection.getResponseCode() == 500) {
+                throw new IOException("500 ERROR: Internal server error");
+            }
             return Serializer.deserialize(response, returnType);
         } finally {
             if(connection != null) {
