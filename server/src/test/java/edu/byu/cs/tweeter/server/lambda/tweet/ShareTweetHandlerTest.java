@@ -48,4 +48,10 @@ class ShareTweetHandlerTest {
         assertEquals(user1, check.getTweets().get(0).getAuthor());
         assertEquals(content, check.getTweets().get(0).getContent());
     }
+
+    @Test
+    void testTweet() {
+        ShareTweetRequest request = new ShareTweetRequest(tweet, "token");
+        System.out.println(request.getTweet().toString());
+    }
 }

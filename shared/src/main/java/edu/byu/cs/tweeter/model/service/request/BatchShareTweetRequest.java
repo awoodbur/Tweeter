@@ -1,18 +1,21 @@
 package edu.byu.cs.tweeter.model.service.request;
 
 import java.io.Serializable;
+import java.util.List;
 
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class ShareTweetRequest implements Serializable {
+public class BatchShareTweetRequest implements Serializable {
 
+    private List<User> followers;
     private Tweet tweet;
     private String token;
 
-    private ShareTweetRequest() {}
+    private BatchShareTweetRequest() {}
 
-    public ShareTweetRequest(Tweet tweet, String token) {
+    public BatchShareTweetRequest(List<User> followers, Tweet tweet, String token) {
+        this.followers = followers;
         this.tweet = tweet;
         this.token = token;
     }
@@ -31,5 +34,13 @@ public class ShareTweetRequest implements Serializable {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public List<User> getFollowers() {
+        return followers;
+    }
+
+    public void setFollowers(List<User> followers) {
+        this.followers = followers;
     }
 }

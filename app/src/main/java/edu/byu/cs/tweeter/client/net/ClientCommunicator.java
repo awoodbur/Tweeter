@@ -11,7 +11,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Map;
 
-import edu.byu.cs.tweeter.client.json.Serializer;
+import edu.byu.cs.tweeter.model.json.Serializer;
 
 class ClientCommunicator {
 
@@ -89,10 +89,16 @@ class ClientCommunicator {
             String response = getResponse(connection);
             Log.d(TAG, response);
             if (connection.getResponseCode() == 400) {
-                throw new IOException("400 ERROR: Invalid request object");
+                throw new IOException("400 ERROR: Object Not Found");
+            }
+            if (connection.getResponseCode() == 401) {
+                throw new IOException("401 ERROR: Access Denied");
             }
             if (connection.getResponseCode() == 500) {
-                throw new IOException("500 ERROR: Internal server error");
+                throw new IOException("500 ERROR: Internal Server Error");
+            }
+            if (connection.getResponseCode() == 501) {
+                throw new IOException("501 ERROR: Internal Server Error");
             }
             return Serializer.deserialize(response, returnType);
         } finally {

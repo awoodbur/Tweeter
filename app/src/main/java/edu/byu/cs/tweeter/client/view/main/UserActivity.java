@@ -167,6 +167,11 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
     @Override
     public void handleException(Exception e) {
         Log.e(TAG, e.getMessage(), e);
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        if (e.getMessage() != null && e.getMessage().equals("401 ERROR: Access Denied")) {
+            presenter.setAuthToken(null);
+            startActivity(LoginActivity.newIntent(UserActivity.this));
+        } else {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }

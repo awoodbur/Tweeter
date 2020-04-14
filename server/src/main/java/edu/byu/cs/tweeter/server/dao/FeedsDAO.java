@@ -13,6 +13,7 @@ import java.util.Map;
 
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.service.request.BatchShareTweetRequest;
 import edu.byu.cs.tweeter.model.service.request.FeedRequest;
 import edu.byu.cs.tweeter.model.service.request.ShareTweetRequest;
 import edu.byu.cs.tweeter.model.service.response.FeedResponse;
@@ -107,5 +108,26 @@ public class FeedsDAO {
     public void deleteTweet(User owner, long timestamp) {
         Table table = dynamoDB.getTable(TableName);
         table.deleteItem(HandleAttr, owner.getAlias(), TimestampAttr, timestamp);
+    }
+
+    public void batchShareTweet(BatchShareTweetRequest request) {
+        Tweet tweet = request.getTweet();
+        User author = tweet.getAuthor();
+
+        List<Item> items = new ArrayList<>();
+        for (User user : request.getFollowers()) {
+            Item item = new Item().withPrimaryKey(HandleAttr, user.getAlias(), TimestampAttr, tweet.getDate())
+                    .withString(ContentAttr, tweet.getContent())
+                    .withString(FNameAttr, author.getFirstName())
+                    .withString(LNameAttr, author.getLastName())
+                    .withString(AuthorAttr, author.getAlias())
+                    .withString(ImageAttr, author.getImageUrl());
+            items.add(item);
+        }
+
+        TableWriteItems forumTableWriteItems = new TableWriteItems(TableName)
+                .withItemsToPut(items);
+
+        BatchWriteItemOutcome outcome = dynamoDB.batchWriteItem(forumTableWriteItems);
     }
 }

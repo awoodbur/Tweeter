@@ -11,6 +11,8 @@ dependencies {
     implementation 'org.jetbrains:annotations-java5:15.0'
     implementation 'com.amazonaws:aws-java-sdk-core:1.11.761'
     implementation 'com.amazonaws:aws-java-sdk-dynamodb:1.11.761'
+    implementation 'com.amazonaws:aws-java-sdk-sqs:1.11.761'
+    implementation 'com.amazonaws:aws-lambda-java-events:2.2.7'
 }
 
 sourceCompatibility = "8"
