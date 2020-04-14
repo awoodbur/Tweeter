@@ -16,6 +16,8 @@ public class SignInServiceImpl extends ServiceImpl implements SignInService {
         AuthsDAO authsDAO = new AuthsDAO();
         UsersDAO usersDAO = new UsersDAO();
 
+        request.setPassword(generateHash(request.getPassword()));
+
         SignInResponse response = usersDAO.signIn(request);
         if (response.isSuccess()) {
             String token = UUID.randomUUID().toString();

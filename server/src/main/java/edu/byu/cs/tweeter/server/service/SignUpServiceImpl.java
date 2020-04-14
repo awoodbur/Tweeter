@@ -16,6 +16,8 @@ public class SignUpServiceImpl extends ServiceImpl implements SignUpService {
         AuthsDAO authsDAO = new AuthsDAO();
         UsersDAO usersDAO = new UsersDAO();
 
+        request.setPassword(generateHash(request.getPassword()));
+
         SignUpResponse response = usersDAO.signUp(request);
         if (response.isSuccess()) {
             String token = UUID.randomUUID().toString();

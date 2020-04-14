@@ -17,6 +17,7 @@ class SignUpHandlerTest {
     private User user1;
     private User user2;
     private String password;
+    private String hashed_password;
 
     @BeforeEach
     void setUp() {
@@ -25,8 +26,9 @@ class SignUpHandlerTest {
         user1 = new User("test99", "test99", "test99", "test99");
         user2 = new User("test100", "test100", "test100", "test100");
         password = "password";
+        hashed_password = "5f4dcc3b5aa765d61d8327deb882cf99";
         UsersDAO usersDAO = new UsersDAO();
-        usersDAO.signUp(new SignUpRequest(user1.getFirstName(), user1.getLastName(), user1.getAlias(), password, user1.getImageUrl()));
+        usersDAO.signUp(new SignUpRequest(user1.getFirstName(), user1.getLastName(), user1.getAlias(), hashed_password, user1.getImageUrl()));
     }
 
     @AfterEach
