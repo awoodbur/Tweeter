@@ -34,11 +34,11 @@ class TweetPresenterTest {
 
     @Test
     void shareTweet() throws IOException  {
-        ShareTweetRequest tweet_request = new ShareTweetRequest(tweet);
+        ShareTweetRequest tweet_request = new ShareTweetRequest(tweet, "token");
         Response response = presenter.shareTweet(tweet_request);
         assertTrue(response.isSuccess());
 
-        StoryResponse storyResponse = story.getStory(new StoryRequest(user, 1, null));
+        StoryResponse storyResponse = story.getStory(new StoryRequest(user, 1, null, "token"));
         assertEquals(tweet, storyResponse.getTweets().get(0));
     }
 }

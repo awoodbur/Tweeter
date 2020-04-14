@@ -86,13 +86,13 @@ public class FeedsDAO {
         return new FeedResponse(tweets, hasMore);
     }
 
-    public ShareTweetResponse shareTweet(ShareTweetRequest request) {
+    public ShareTweetResponse shareTweet(ShareTweetRequest request, User owner) {
         Table table = dynamoDB.getTable(TableName);
 
         User author = request.getTweet().getAuthor();
 
         Item item = new Item()
-                .withPrimaryKey(HandleAttr, "spock")
+                .withPrimaryKey(HandleAttr, owner.getAlias())
                 .withString(FNameAttr, author.getFirstName())
                 .withString(LNameAttr, author.getLastName())
                 .withString(ImageAttr, author.getImageUrl())
@@ -102,5 +102,10 @@ public class FeedsDAO {
         table.putItem(item);
 
         return new ShareTweetResponse();
+    }
+
+    public void deleteTweet(User owner, long timestamp) {
+        Table table = dynamoDB.getTable(TableName);
+        table.deleteItem(HandleAttr, owner.getAlias(), TimestampAttr, timestamp);
     }
 }

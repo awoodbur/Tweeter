@@ -107,8 +107,8 @@ public class FollowsDAO {
 
         if (request.getLastFollower() != null) {
             Map<String, AttributeValue> startKey = new HashMap<>();
-            startKey.put(FollowerHandleAttr, new AttributeValue().withS(request.getFollowee().getAlias()));
-            startKey.put(FolloweeHandleAttr, new AttributeValue().withS(request.getLastFollower().getAlias()));
+            startKey.put(FolloweeHandleAttr, new AttributeValue().withS(request.getFollowee().getAlias()));
+            startKey.put(FollowerHandleAttr, new AttributeValue().withS(request.getLastFollower().getAlias()));
 
             queryRequest = queryRequest.withExclusiveStartKey(startKey);
         }

@@ -50,6 +50,7 @@ public class UserPresenter extends Presenter {
 
     public SignOutResponse signOut(SignOutRequest request) throws IOException {
         SignOutService service = new SignOutServiceProxy();
+        setAuthToken(null);
         return service.signOut(request);
     }
 }

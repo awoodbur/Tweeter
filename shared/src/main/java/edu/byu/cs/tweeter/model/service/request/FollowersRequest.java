@@ -2,15 +2,14 @@ package edu.byu.cs.tweeter.model.service.request;
 
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FollowersRequest extends Request {
+public class FollowersRequest {
 
     private User followee;
     private int limit;
     private User lastFollower;
+    private String token;
 
-    private FollowersRequest() {
-        super("<token>");
-    }
+    private FollowersRequest() {}
 
     /**
      * Creates an instance.
@@ -22,10 +21,10 @@ public class FollowersRequest extends Request {
      *                     previous request).
      */
     public FollowersRequest(User followee, int limit, User lastFollower, String token) {
-        super(token);
         this.followee = followee;
         this.limit = limit;
         this.lastFollower = lastFollower;
+        this.token = token;
     }
 
     /**
@@ -56,6 +55,10 @@ public class FollowersRequest extends Request {
         return lastFollower;
     }
 
+    public String getToken() {
+        return token;
+    }
+
     public void setFollowee(User followee) {
         this.followee = followee;
     }
@@ -66,5 +69,9 @@ public class FollowersRequest extends Request {
 
     public void setLastFollower(User lastFollower) {
         this.lastFollower = lastFollower;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

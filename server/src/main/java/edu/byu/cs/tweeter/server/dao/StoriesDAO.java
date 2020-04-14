@@ -101,4 +101,9 @@ public class StoriesDAO {
 
         return new ShareTweetResponse();
     }
+
+    public void deleteTweet(User author, long timestamp) {
+        Table table = dynamoDB.getTable(TableName);
+        table.deleteItem(HandleAttr, author.getAlias(), TimestampAttr, timestamp);
+    }
 }

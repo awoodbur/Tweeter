@@ -5,16 +5,22 @@ import java.sql.Timestamp;
 import edu.byu.cs.tweeter.server.dao.AuthsDAO;
 
 public class ServiceImpl {
-
     public void validateToken(String token) {
-        long valid_length = 3600000L; // Tokens valid for 1 hour
+        long diff = 3600000L;   // Tokens valid for one hour
+
+        if (token == null || token.isEmpty()) {
+            throw new RuntimeException("401");
+        }
 
         AuthsDAO authsDAO = new AuthsDAO();
-        long timestamp = Long.parseLong(authsDAO.validateToken(token));
-        long curr_time = new Timestamp(System.currentTimeMillis()).getTime();
+        String resp = authsDAO.validateToken(token);
+        if (resp == null || resp.isEmpty()) {
+            throw new RuntimeException("401");
+        }
 
-        if (curr_time - timestamp > valid_length) {
-            authsDAO.deleteToken(token);
+        long timestamp = Long.parseLong(resp);
+        long curr_time = new Timestamp(System.currentTimeMillis()).getTime();
+        if (curr_time - timestamp > diff) {
             throw new RuntimeException("401");
         }
     }

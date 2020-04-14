@@ -7,33 +7,46 @@ import org.junit.jupiter.api.Test;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.SignUpRequest;
 import edu.byu.cs.tweeter.model.service.response.SignUpResponse;
+import edu.byu.cs.tweeter.server.dao.UsersDAO;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SignUpHandlerTest {
 
     private SignUpHandler handler;
+    private User user1;
+    private User user2;
+    private String password;
 
     @BeforeEach
     void setUp() {
         handler = new SignUpHandler();
+
+        user1 = new User("test99", "test99", "test99", "test99");
+        user2 = new User("test100", "test100", "test100", "test100");
+        password = "password";
+        UsersDAO usersDAO = new UsersDAO();
+        usersDAO.signUp(new SignUpRequest(user1.getFirstName(), user1.getLastName(), user1.getAlias(), password, user1.getImageUrl()));
     }
 
     @AfterEach
     void tearDown() {
+        UsersDAO usersDAO = new UsersDAO();
+        usersDAO.deleteUser(user1);
+        usersDAO.deleteUser(user2);
     }
 
     @Test
     void signUpExists() {
-        SignUpRequest request = new SignUpRequest("james", "kirk", "kirk", "password", "", "token");
+        SignUpRequest request = new SignUpRequest(user1.getFirstName(), user1.getLastName(), user1.getAlias(), password, user1.getImageUrl());
         SignUpResponse response = handler.handleRequest(request, null);
         assertEquals("User already exists", response.getMessage());
     }
 
     @Test
     void signUp() {
-        SignUpRequest request = new SignUpRequest("test", "test", "test", "password", "", "token");
+        SignUpRequest request = new SignUpRequest(user2.getFirstName(), user2.getLastName(), user2.getAlias(), password, user2.getImageUrl());
         SignUpResponse response = handler.handleRequest(request, null);
-        assertEquals(new User("test"), response.getUser());
+        assertEquals(user2, response.getUser());
     }
 }

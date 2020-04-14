@@ -27,12 +27,12 @@ class StoryPresenterTest {
         user = new User("Tester", "Testerson", "test", "");
         tweet = new Tweet(user, content);
 
-        request = new StoryRequest(user, 10, null);
+        request = new StoryRequest(user, 10, null, "token");
 
         presenter = new StoryPresenter(null);
 
         TweetPresenter tweeter = new TweetPresenter(null);
-        ShareTweetRequest tweet_request = new ShareTweetRequest(tweet);
+        ShareTweetRequest tweet_request = new ShareTweetRequest(tweet, "token");
         tweeter.shareTweet(tweet_request);
     }
 

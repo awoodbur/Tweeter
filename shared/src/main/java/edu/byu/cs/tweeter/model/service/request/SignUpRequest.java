@@ -1,6 +1,6 @@
 package edu.byu.cs.tweeter.model.service.request;
 
-public class SignUpRequest extends Request {
+public class SignUpRequest {
 
     private String firstName;
     private String lastName;
@@ -8,12 +8,9 @@ public class SignUpRequest extends Request {
     private String password;
     private String imageURL;
 
-    private SignUpRequest() {
-        super("<token>");
-    }
+    private SignUpRequest() {}
 
-    public SignUpRequest(String firstName, String lastName, String alias, String password, String imageURL, String token) {
-        super(token);
+    public SignUpRequest(String firstName, String lastName, String alias, String password, String imageURL) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.alias = alias;

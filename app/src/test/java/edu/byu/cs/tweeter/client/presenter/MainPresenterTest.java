@@ -20,7 +20,7 @@ class MainPresenterTest {
         user2 = new User("Tester", "Testerson", "test2", "");
 
         UserPresenter follower = new UserPresenter(null);
-        follower.followUser(new FollowUserRequest(user1, user2));
-        follower.followUser(new FollowUserRequest(user2, user1));
+        follower.followUser(new FollowUserRequest(user1, user2, "token"));
+        follower.followUser(new FollowUserRequest(user2, user1, "token"));
     }
 }

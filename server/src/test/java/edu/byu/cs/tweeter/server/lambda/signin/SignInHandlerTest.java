@@ -6,41 +6,52 @@ import org.junit.jupiter.api.Test;
 
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.SignInRequest;
+import edu.byu.cs.tweeter.model.service.request.SignUpRequest;
 import edu.byu.cs.tweeter.model.service.response.SignInResponse;
+import edu.byu.cs.tweeter.server.dao.UsersDAO;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class SignInHandlerTest {
 
     private SignInHandler handler;
+    private User user1;
+    private String password;
 
     @BeforeEach
     void setUp() {
         handler = new SignInHandler();
+
+        user1 = new User("test99", "test99", "test99", "test99");
+        password = "password";
+        UsersDAO usersDAO = new UsersDAO();
+        usersDAO.signUp(new SignUpRequest(user1.getFirstName(), user1.getLastName(), user1.getAlias(), password, user1.getImageUrl()));
     }
 
     @AfterEach
     void tearDown() {
+        UsersDAO usersDAO = new UsersDAO();
+        usersDAO.deleteUser(user1);
     }
 
     @Test
     void signInNew() {
-        SignInRequest request = new SignInRequest("none", "none", "token");
+        SignInRequest request = new SignInRequest(user1.getAlias() + "new", password);
         SignInResponse response = handler.handleRequest(request, null);
         assertEquals("User not found", response.getMessage());
     }
 
     @Test
-    void signInBadPass() {
-        SignInRequest request = new SignInRequest("kirk", "bad password", "token");
+    void signInWrongPass() {
+        SignInRequest request = new SignInRequest(user1.getAlias(), password + "wrong");
         SignInResponse response = handler.handleRequest(request, null);
         assertEquals("Invalid password", response.getMessage());
     }
 
     @Test
     void signIn() {
-        SignInRequest request = new SignInRequest("kirk", "password", "token");
+        SignInRequest request = new SignInRequest(user1.getAlias(), password);
         SignInResponse response = handler.handleRequest(request, null);
-        assertEquals(new User("kirk"), response.getUser());
+        assertEquals(user1, response.getUser());
     }
 }

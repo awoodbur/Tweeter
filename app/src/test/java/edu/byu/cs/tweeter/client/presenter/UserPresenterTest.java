@@ -29,8 +29,8 @@ class UserPresenterTest {
     void setUp() {
         user1 = new User("Tester", "Testerson", "test1", "");
         user2 = new User("Tester", "Testerson", "test2", "");
-        follow = new FollowUserRequest(user1, user2);
-        unfollow = new UnfollowUserRequest(user2, user1);
+        follow = new FollowUserRequest(user1, user2, "token");
+        unfollow = new UnfollowUserRequest(user2, user1, "token");
 
         presenter = new UserPresenter(null);
         following = new FollowingPresenter(null);
@@ -40,7 +40,7 @@ class UserPresenterTest {
     void followUser() throws IOException  {
         Response response = presenter.followUser(follow);
         assertTrue(response.isSuccess());
-        FollowingResponse followingResponse = following.getFollowing(new FollowingRequest(user1, 1, null));
+        FollowingResponse followingResponse = following.getFollowing(new FollowingRequest(user1, 1, null, "token"));
         assertEquals(user2, followingResponse.getFollowees().get(0));
     }
 
@@ -48,7 +48,7 @@ class UserPresenterTest {
     void unfollowUser() throws IOException{
         Response response = presenter.unfollowUser(unfollow);
         assertTrue(response.isSuccess());
-        FollowingResponse followingResponse = following.getFollowing(new FollowingRequest(user2, 1, null));
+        FollowingResponse followingResponse = following.getFollowing(new FollowingRequest(user2, 1, null, "token"));
         assertEquals(0, followingResponse.getFollowees().size());
     }
 }

@@ -1,16 +1,13 @@
 package edu.byu.cs.tweeter.model.service.request;
 
-public class SignInRequest extends Request {
+public class SignInRequest {
 
     private String alias;
     private String password;
 
-    private SignInRequest() {
-        super("<token>");
-    }
+    private SignInRequest() {}
 
-    public SignInRequest(String alias, String password, String token) {
-        super(token);
+    public SignInRequest(String alias, String password) {
         this.alias = alias;
         this.password = password;
     }

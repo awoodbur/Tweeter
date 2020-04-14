@@ -76,11 +76,6 @@ public class UsersDAO {
         return new SignUpResponse(user, "token");
     }
 
-    // TODO: Move this to auth DAO
-    public SignOutResponse signOut(SignOutRequest request) {
-        return new SignOutResponse();
-    }
-
     public GetUserResponse getUser(GetUserRequest request) {
         Table table = dynamoDB.getTable(TableName);
 
@@ -95,5 +90,10 @@ public class UsersDAO {
         String image_url = item.getString(ImageAttr);
 
         return new GetUserResponse(new User(first_name, last_name, alias, image_url));
+    }
+
+    public void deleteUser(User user) {
+        Table table = dynamoDB.getTable(TableName);
+        table.deleteItem(HandleAttr, user.getAlias());
     }
 }

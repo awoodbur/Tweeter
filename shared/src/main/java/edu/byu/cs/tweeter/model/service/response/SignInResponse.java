@@ -11,6 +11,11 @@ public class SignInResponse extends Response {
         super(false, message);
     }
 
+    public SignInResponse(User user) {
+        super(true);
+        this.user = user;
+    }
+
     public SignInResponse(User user, String token) {
         super(true);
         this.user = user;
@@ -21,5 +26,9 @@ public class SignInResponse extends Response {
 
     public String getToken() {
         return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }

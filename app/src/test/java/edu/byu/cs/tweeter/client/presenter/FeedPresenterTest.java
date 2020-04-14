@@ -30,16 +30,16 @@ class FeedPresenterTest {
         user2 = new User("Tester", "Testerson", "test2", "");
 
         UserPresenter follower = new UserPresenter(null);
-        follower.followUser(new FollowUserRequest(user1, user2));
+        follower.followUser(new FollowUserRequest(user1, user2, "token"));
 
         content = "Test tweet";
         tweet = new Tweet(user2, content);
 
-        request = new FeedRequest(user1, 1, null);
+        request = new FeedRequest(user1, 1, null, "token");
         presenter = new FeedPresenter(null);
 
         TweetPresenter tweeter = new TweetPresenter(null);
-        ShareTweetRequest tweet_request = new ShareTweetRequest(tweet);
+        ShareTweetRequest tweet_request = new ShareTweetRequest(tweet, "token");
         tweeter.shareTweet(tweet_request);
     }
 

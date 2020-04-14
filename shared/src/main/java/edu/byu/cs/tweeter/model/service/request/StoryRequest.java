@@ -3,21 +3,20 @@ package edu.byu.cs.tweeter.model.service.request;
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class StoryRequest extends Request {
+public class StoryRequest {
 
     private User user;
     private int limit;
     private Tweet lastTweet;
+    private String token;
 
-    private StoryRequest() {
-        super("<token>");
-    }
+    private StoryRequest() {}
 
     public StoryRequest(User user, int limit, Tweet lastTweet, String token) {
-        super(token);
         this.user = user;
         this.limit = limit;
         this.lastTweet = lastTweet;
+        this.token = token;
     }
 
     public User getUser() { return user; }
@@ -25,6 +24,10 @@ public class StoryRequest extends Request {
     public int getLimit() { return limit; }
 
     public Tweet getLastTweet() { return lastTweet; }
+
+    public String getToken() {
+        return token;
+    }
 
     public void setUser(User user) {
         this.user = user;
@@ -36,5 +39,9 @@ public class StoryRequest extends Request {
 
     public void setLastTweet(Tweet lastTweet) {
         this.lastTweet = lastTweet;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 }
