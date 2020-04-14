@@ -52,7 +52,7 @@ public class SignInFragment extends Fragment implements SignInTask.SignInObserve
                 if (alias.charAt(0) == '@') {
                     alias = alias.substring(1);
                 }
-                SignInRequest request = new SignInRequest(alias, mPassword.getText().toString());
+                SignInRequest request = new SignInRequest(alias, mPassword.getText().toString(), presenter.getAuthToken());
                 signInTask.execute(request);
             }
         });

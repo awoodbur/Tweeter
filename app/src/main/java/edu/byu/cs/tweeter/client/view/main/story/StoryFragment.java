@@ -94,8 +94,9 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
                 @Override
                 public void onClick(View view) {
                     GetUserTask getUserTask = new GetUserTask(presenter, StoryHolder.this);
-                    GetUserRequest request = new GetUserRequest(userAlias.getText().toString().substring(1));
-                    getUserTask.execute(request);                }
+                    GetUserRequest request = new GetUserRequest(userAlias.getText().toString().substring(1), presenter.getAuthToken());
+                    getUserTask.execute(request);
+                }
             });
         }
 
@@ -158,7 +159,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
                 String alias = spanned.subSequence(start+1, end).toString();
 
                 GetUserTask getUserTask = new GetUserTask(presenter, StoryHolder.this);
-                GetUserRequest request = new GetUserRequest(alias);
+                GetUserRequest request = new GetUserRequest(alias, presenter.getAuthToken());
                 getUserTask.execute(request);
             }
         }
@@ -287,7 +288,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
             addLoadingFooter();
 
             GetStoryTask getStoryTask = new GetStoryTask(presenter, this);
-            StoryRequest request = new StoryRequest(presenter.getDisplayUser(), PAGE_SIZE, lastTweet);
+            StoryRequest request = new StoryRequest(presenter.getDisplayUser(), PAGE_SIZE, lastTweet, presenter.getAuthToken());
             getStoryTask.execute(request);
         }
 

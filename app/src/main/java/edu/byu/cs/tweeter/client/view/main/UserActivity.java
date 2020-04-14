@@ -79,7 +79,7 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
             mButton.setText(R.string.button_logout);
         } else {
             CheckFollowTask checkFollowTask = new CheckFollowTask(presenter, this);
-            CheckFollowRequest request = new CheckFollowRequest(current_user, display_user);
+            CheckFollowRequest request = new CheckFollowRequest(current_user, display_user, presenter.getAuthToken());
             checkFollowTask.execute(request);
         }
 
@@ -89,17 +89,17 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
                 String type = mButton.getText().toString();
                 if (type.equals("Logout")) {
                     SignOutTask signOutTask = new SignOutTask(presenter, UserActivity.this);
-                    SignOutRequest request = new SignOutRequest(current_user);
+                    SignOutRequest request = new SignOutRequest(current_user, presenter.getAuthToken());
                     signOutTask.execute(request);
                 }
                 else if (type.equals("Follow")) {
                     FollowUserTask followUserTask = new FollowUserTask(presenter, UserActivity.this);
-                    FollowUserRequest request = new FollowUserRequest(current_user, display_user);
+                    FollowUserRequest request = new FollowUserRequest(current_user, display_user, presenter.getAuthToken());
                     followUserTask.execute(request);
                 }
                 else if (type.equals("Unfollow")) {
                     UnfollowUserTask unfollowUserTask = new UnfollowUserTask(presenter, UserActivity.this);
-                    UnfollowUserRequest request = new UnfollowUserRequest(current_user, display_user);
+                    UnfollowUserRequest request = new UnfollowUserRequest(current_user, display_user, presenter.getAuthToken());
                     unfollowUserTask.execute(request);                }
                 else {
                     // Error

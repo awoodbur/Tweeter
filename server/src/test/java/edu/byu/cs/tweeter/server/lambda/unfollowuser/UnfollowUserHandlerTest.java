@@ -40,14 +40,14 @@ class UnfollowUserHandlerTest {
         FollowUserHandler setup_handler = new FollowUserHandler();
         User user1 = new User("kirk");
         User user2 = new User("test", "test", "test", "");
-        FollowUserRequest setup = new FollowUserRequest(user1, user2);
+        FollowUserRequest setup = new FollowUserRequest(user1, user2, "token");
         FollowUserResponse setup_resp = setup_handler.handleRequest(setup, null);
 
-        UnfollowUserRequest request = new UnfollowUserRequest(user1, user2);
+        UnfollowUserRequest request = new UnfollowUserRequest(user1, user2, "token");
         UnfollowUserResponse response = handler.handleRequest(request, null);
 
         GetFollowingHandler check_following_handler = new GetFollowingHandler();
-        FollowingRequest check_following = new FollowingRequest(user1, 10, null);
+        FollowingRequest check_following = new FollowingRequest(user1, 10, null, "token");
         FollowingResponse check_following_resp = check_following_handler.handleRequest(check_following, null);
         List<User> followees = new ArrayList<>();
         followees.add(new User("spock"));
@@ -56,7 +56,7 @@ class UnfollowUserHandlerTest {
         assertEquals(followees, check_following_resp.getFollowees());
 
         GetFollowersHandler check_followers_handler = new GetFollowersHandler();
-        FollowersRequest check_followers = new FollowersRequest(user2, 10, null);
+        FollowersRequest check_followers = new FollowersRequest(user2, 10, null, "token");
         FollowersResponse check_followers_resp = check_followers_handler.handleRequest(check_followers, null);
         List<User> followers = new ArrayList<>();
         assertEquals(followers, check_followers_resp.getFollowers());

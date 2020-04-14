@@ -1,12 +1,15 @@
 package edu.byu.cs.tweeter.model.service.request;
 
-public class GetUserRequest {
+public class GetUserRequest extends Request {
 
     private String alias;
 
-    private GetUserRequest() {}
+    private GetUserRequest() {
+        super("<token>");
+    }
 
-    public GetUserRequest(String alias) {
+    public GetUserRequest(String alias, String token) {
+        super(token);
         this.alias = alias;
     }
 

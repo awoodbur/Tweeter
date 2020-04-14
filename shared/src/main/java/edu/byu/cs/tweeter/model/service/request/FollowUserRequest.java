@@ -2,14 +2,17 @@ package edu.byu.cs.tweeter.model.service.request;
 
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FollowUserRequest {
+public class FollowUserRequest extends Request {
 
     private User follower;
     private User followee;
 
-    private  FollowUserRequest() {}
+    private  FollowUserRequest() {
+        super("<token>");
+    }
 
-    public FollowUserRequest(User follower, User followee) {
+    public FollowUserRequest(User follower, User followee, String token) {
+        super(token);
         this.follower = follower;
         this.followee = followee;
     }

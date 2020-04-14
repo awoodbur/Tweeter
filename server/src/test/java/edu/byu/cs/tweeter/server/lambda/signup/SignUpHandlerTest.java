@@ -25,14 +25,14 @@ class SignUpHandlerTest {
 
     @Test
     void signUpExists() {
-        SignUpRequest request = new SignUpRequest("james", "kirk", "kirk", "password", "");
+        SignUpRequest request = new SignUpRequest("james", "kirk", "kirk", "password", "", "token");
         SignUpResponse response = handler.handleRequest(request, null);
         assertEquals("User already exists", response.getMessage());
     }
 
     @Test
     void signUp() {
-        SignUpRequest request = new SignUpRequest("test", "test", "test", "password", "");
+        SignUpRequest request = new SignUpRequest("test", "test", "test", "password", "", "token");
         SignUpResponse response = handler.handleRequest(request, null);
         assertEquals(new User("test"), response.getUser());
     }

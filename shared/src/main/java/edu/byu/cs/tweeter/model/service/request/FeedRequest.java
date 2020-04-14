@@ -3,15 +3,18 @@ package edu.byu.cs.tweeter.model.service.request;
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FeedRequest {
+public class FeedRequest extends Request {
 
     private User user;
     private int limit;
     private Tweet lastTweet;
 
-    private FeedRequest() {}
+    private FeedRequest() {
+        super("<token>");
+    }
 
-    public FeedRequest(User user, int limit, Tweet lastTweet) {
+    public FeedRequest(User user, int limit, Tweet lastTweet, String token) {
+        super(token);
         this.user = user;
         this.limit = limit;
         this.lastTweet = lastTweet;

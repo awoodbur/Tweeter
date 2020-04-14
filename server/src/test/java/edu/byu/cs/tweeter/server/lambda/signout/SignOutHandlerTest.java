@@ -29,11 +29,11 @@ class SignOutHandlerTest {
     @Test
     void signOut() {
         SignInHandler setup_handler = new SignInHandler();
-        SignInRequest setup = new SignInRequest("kirk", "password");
+        SignInRequest setup = new SignInRequest("kirk", "password", "token");
         SignInResponse setup_resp = setup_handler.handleRequest(setup, null);
         User user = setup_resp.getUser();
 
-        SignOutRequest request = new SignOutRequest(user);
+        SignOutRequest request = new SignOutRequest(user, "token");
         SignOutResponse response = handler.handleRequest(request, null);
         assertTrue(response.isSuccess());
     }

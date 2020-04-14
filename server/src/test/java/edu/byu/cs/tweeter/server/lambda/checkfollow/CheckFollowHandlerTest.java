@@ -34,18 +34,18 @@ class CheckFollowHandlerTest {
         FollowUserHandler setup_handler = new FollowUserHandler();
         User user1 = new User("kirk");
         User user2 = new User("test", "test", "test", "");
-        FollowUserRequest setup = new FollowUserRequest(user1, user2);
+        FollowUserRequest setup = new FollowUserRequest(user1, user2, "token");
         FollowUserResponse setup_resp = setup_handler.handleRequest(setup, null);
 
-        CheckFollowRequest check = new CheckFollowRequest(user2, user1);
+        CheckFollowRequest check = new CheckFollowRequest(user2, user1, "token");
         CheckFollowResponse checked = handler.handleRequest(check, null);
         assertTrue(checked.isFollowing());
 
         UnfollowUserHandler setup2_handler = new UnfollowUserHandler();
-        UnfollowUserRequest setup2 = new UnfollowUserRequest(user1, user2);
+        UnfollowUserRequest setup2 = new UnfollowUserRequest(user1, user2, "token");
         UnfollowUserResponse setup_resp2 = setup2_handler.handleRequest(setup2, null);
 
-        CheckFollowRequest check2 = new CheckFollowRequest(user2, user1);
+        CheckFollowRequest check2 = new CheckFollowRequest(user2, user1, "token");
         CheckFollowResponse checked2 = handler.handleRequest(check2, null);
         assertFalse(checked2.isFollowing());
     }

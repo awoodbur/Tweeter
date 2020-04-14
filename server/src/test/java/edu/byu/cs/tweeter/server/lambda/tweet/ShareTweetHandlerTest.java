@@ -31,11 +31,11 @@ class ShareTweetHandlerTest {
     void shareTweet() {
         User user = new User("test");
         Tweet tweet = new Tweet(user, "12345");
-        ShareTweetRequest request = new ShareTweetRequest(tweet);
+        ShareTweetRequest request = new ShareTweetRequest(tweet, "token");
         ShareTweetResponse response = handler.handleRequest(request, null);
 
         GetStoryHandler check_handler = new GetStoryHandler();
-        StoryRequest check = new StoryRequest(user, 10, null);
+        StoryRequest check = new StoryRequest(user, 10, null, "token");
         StoryResponse checked = check_handler.handleRequest(check, null);
         assertEquals(1, checked.getTweets().size());
         assertEquals(user, checked.getTweets().get(0).getAuthor());

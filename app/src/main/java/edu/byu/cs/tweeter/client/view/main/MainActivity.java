@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements SearchTask.Search
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             SearchTask searchTask = new SearchTask(presenter, this);
-            GetUserRequest request = new GetUserRequest(query);
+            GetUserRequest request = new GetUserRequest(query, presenter.getAuthToken());
             searchTask.execute(request);
         }
     }

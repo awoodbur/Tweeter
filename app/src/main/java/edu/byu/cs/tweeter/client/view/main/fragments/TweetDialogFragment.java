@@ -56,7 +56,7 @@ public class TweetDialogFragment extends DialogFragment implements ShareTweetTas
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ShareTweetTask shareTweetTask = new ShareTweetTask(presenter, TweetDialogFragment.this);
-                ShareTweetRequest request = new ShareTweetRequest(new Tweet(presenter.getCurrentUser(), tweetTextbox.getText().toString()));
+                ShareTweetRequest request = new ShareTweetRequest(new Tweet(presenter.getCurrentUser(), tweetTextbox.getText().toString()), presenter.getAuthToken());
                 shareTweetTask.execute(request);
             }
         });

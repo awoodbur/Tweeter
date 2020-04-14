@@ -6,13 +6,15 @@ import edu.byu.cs.tweeter.model.domain.User;
  * Contains all the information needed to make a request to have the server return the next page of
  * followees for a specified follower.
  */
-public class FollowingRequest {
+public class FollowingRequest extends Request {
 
     private User follower;
     private int limit;
     private User lastFollowee;
 
-    private FollowingRequest() {}
+    private FollowingRequest() {
+        super("<token>");
+    }
 
     /**
      * Creates an instance.
@@ -23,7 +25,8 @@ public class FollowingRequest {
      *                     there was no previous request or if no followees were returned in the
      *                     previous request).
      */
-    public FollowingRequest(User follower, int limit, User lastFollowee) {
+    public FollowingRequest(User follower, int limit, User lastFollowee, String token) {
+        super(token);
         this.follower = follower;
         this.limit = limit;
         this.lastFollowee = lastFollowee;

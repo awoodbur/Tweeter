@@ -88,7 +88,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
                 @Override
                 public void onClick(View view) {
                     GetUserTask getUserTask = new GetUserTask(presenter, FollowingHolder.this);
-                    GetUserRequest request = new GetUserRequest(userAlias.getText().toString().substring(1));
+                    GetUserRequest request = new GetUserRequest(userAlias.getText().toString().substring(1), presenter.getAuthToken());
                     getUserTask.execute(request);                }
             });
         }
@@ -239,7 +239,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
             addLoadingFooter();
 
             GetFollowingTask getFollowingTask = new GetFollowingTask(presenter, this);
-            FollowingRequest request = new FollowingRequest(presenter.getDisplayUser(), PAGE_SIZE, lastFollowee);
+            FollowingRequest request = new FollowingRequest(presenter.getDisplayUser(), PAGE_SIZE, lastFollowee, presenter.getAuthToken());
             getFollowingTask.execute(request);
         }
 

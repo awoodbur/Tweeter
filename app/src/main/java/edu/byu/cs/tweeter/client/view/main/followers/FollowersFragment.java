@@ -84,7 +84,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
                 @Override
                 public void onClick(View view) {
                     GetUserTask getUserTask = new GetUserTask(presenter, FollowersHolder.this);
-                    GetUserRequest request = new GetUserRequest(userAlias.getText().toString().substring(1));
+                    GetUserRequest request = new GetUserRequest(userAlias.getText().toString().substring(1), presenter.getAuthToken());
                     getUserTask.execute(request);
                 }
             });
@@ -236,7 +236,7 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
             addLoadingFooter();
 
             GetFollowersTask getFollowersTask = new GetFollowersTask(presenter, this);
-            FollowersRequest request = new FollowersRequest(presenter.getDisplayUser(), PAGE_SIZE, lastFollower);
+            FollowersRequest request = new FollowersRequest(presenter.getDisplayUser(), PAGE_SIZE, lastFollower, presenter.getAuthToken());
             getFollowersTask.execute(request);
         }
 

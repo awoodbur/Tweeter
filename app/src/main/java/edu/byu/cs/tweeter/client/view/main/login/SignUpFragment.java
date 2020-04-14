@@ -63,7 +63,8 @@ public class SignUpFragment extends Fragment implements SignUpTask.SignUpObserve
                 }
                 SignUpRequest request = new SignUpRequest(mFirstNameField.getText().toString(),
                         mLastNameField.getText().toString(), alias,
-                        mPassword.getText().toString(), mImageURL.getText().toString());
+                        mPassword.getText().toString(), mImageURL.getText().toString(),
+                        presenter.getAuthToken());
                 signUpTask.execute(request);
             }
         });

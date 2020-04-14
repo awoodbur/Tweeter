@@ -27,7 +27,7 @@ class GetStoryHandlerTest {
     @Test
     void getStory() {
         User user = new User("kirk");
-        StoryRequest request = new StoryRequest(user, 10, null);
+        StoryRequest request = new StoryRequest(user, 10, null, "token");
         StoryResponse response = handler.handleRequest(request, null);
         assertEquals(10, response.getTweets().size());
         assertEquals(user, response.getTweets().get(0).getAuthor());
@@ -37,11 +37,11 @@ class GetStoryHandlerTest {
     @Test
     void getStoryPage() {
         User user = new User("kirk");
-        StoryRequest setup = new StoryRequest(user, 10, null);
+        StoryRequest setup = new StoryRequest(user, 10, null, "token");
         StoryResponse setup_resp = handler.handleRequest(setup, null);
         Tweet lastTweet = setup_resp.getTweets().get(9);
 
-        StoryRequest request = new StoryRequest(user, 10, lastTweet);
+        StoryRequest request = new StoryRequest(user, 10, lastTweet, "token");
         StoryResponse response = handler.handleRequest(request, null);
         assertNotEquals(lastTweet, response.getTweets().get(0));
     }

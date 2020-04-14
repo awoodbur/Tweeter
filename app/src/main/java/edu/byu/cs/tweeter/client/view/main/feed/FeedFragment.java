@@ -94,7 +94,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View  {
                 @Override
                 public void onClick(View view) {
                     GetUserTask getUserTask = new GetUserTask(presenter, FeedHolder.this);
-                    GetUserRequest request = new GetUserRequest(userAlias.getText().toString().substring(1));
+                    GetUserRequest request = new GetUserRequest(userAlias.getText().toString().substring(1), presenter.getAuthToken());
                     getUserTask.execute(request);
                 }
             });
@@ -159,7 +159,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View  {
                 String alias = spanned.subSequence(start+1, end).toString();
 
                 GetUserTask getUserTask = new GetUserTask(presenter, FeedHolder.this);
-                GetUserRequest request = new GetUserRequest(alias);
+                GetUserRequest request = new GetUserRequest(alias, presenter.getAuthToken());
                 getUserTask.execute(request);
             }
         }
@@ -288,7 +288,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View  {
             addLoadingFooter();
 
             GetFeedTask getFeedTask = new GetFeedTask(presenter, this);
-            FeedRequest request = new FeedRequest(presenter.getDisplayUser(), PAGE_SIZE, lastTweet);
+            FeedRequest request = new FeedRequest(presenter.getDisplayUser(), PAGE_SIZE, lastTweet, presenter.getAuthToken());
             getFeedTask.execute(request);
         }
 

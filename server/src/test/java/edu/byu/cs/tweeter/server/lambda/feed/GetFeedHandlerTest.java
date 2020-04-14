@@ -27,7 +27,7 @@ class GetFeedHandlerTest {
     @Test
     void getFeed() {
         User user = new User("kirk");
-        FeedRequest request = new FeedRequest(user, 100, null);
+        FeedRequest request = new FeedRequest(user, 100, null, "token");
         FeedResponse response = handler.handleRequest(request, null);
         assertEquals(75, response.getTweets().size());
     }
@@ -35,11 +35,11 @@ class GetFeedHandlerTest {
     @Test
     void getFeedPaged() {
         User user = new User("kirk");
-        FeedRequest setup = new FeedRequest(user, 10, null);
+        FeedRequest setup = new FeedRequest(user, 10, null, "token");
         FeedResponse setup_resp = handler.handleRequest(setup, null);
         Tweet lastTweet = setup_resp.getTweets().get(9);
 
-        FeedRequest request = new FeedRequest(user, 10, lastTweet);
+        FeedRequest request = new FeedRequest(user, 10, lastTweet, "token");
         FeedResponse response = handler.handleRequest(request, null);
         assertNotEquals(lastTweet, response.getTweets().get(0));
     }

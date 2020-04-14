@@ -29,7 +29,7 @@ class GetFollowingHandlerTest {
     @Test
     void getFollowing() {
         User follower = new User("kirk");
-        FollowingRequest request = new FollowingRequest(follower, 10, null);
+        FollowingRequest request = new FollowingRequest(follower, 10, null, "token");
         FollowingResponse response = handler.handleRequest(request, null);
 
         List<User> followees = new ArrayList<>();
@@ -42,11 +42,11 @@ class GetFollowingHandlerTest {
     @Test
     void getFollowingPaged() {
         User follower = new User("bones");
-        FollowingRequest setup = new FollowingRequest(follower, 10, null);
+        FollowingRequest setup = new FollowingRequest(follower, 10, null, "token");
         FollowingResponse setup_resp = handler.handleRequest(setup, null);
         User lastFollower = setup_resp.getFollowees().get(9);
 
-        FollowingRequest request = new FollowingRequest(follower, 10, lastFollower);
+        FollowingRequest request = new FollowingRequest(follower, 10, lastFollower, "token");
         FollowingResponse response = handler.handleRequest(request, null);
         assertNotEquals(lastFollower, response.getFollowees().get(0));
     }

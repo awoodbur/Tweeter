@@ -18,6 +18,12 @@ public class Tweet implements  Comparable<Tweet>, Serializable {
         this.date = new Timestamp(System.currentTimeMillis()).getTime();
     }
 
+    public Tweet(User author, String content, long date) {
+        this.author = author;
+        this.content = content;
+        this.date = date;
+    }
+
     public User getAuthor() { return author; }
 
     public String getContent() { return content; }

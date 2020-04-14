@@ -25,7 +25,7 @@ class GetUserHandlerTest {
 
     @Test
     void getUser() {
-        GetUserRequest request = new GetUserRequest("kirk");
+        GetUserRequest request = new GetUserRequest("kirk", "token");
         GetUserResponse response = handler.handleRequest(request, null);
         assertEquals(new User("kirk"), response.getUser());
     }

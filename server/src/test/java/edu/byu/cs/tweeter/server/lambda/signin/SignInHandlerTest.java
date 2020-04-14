@@ -25,21 +25,21 @@ class SignInHandlerTest {
 
     @Test
     void signInNew() {
-        SignInRequest request = new SignInRequest("none", "none");
+        SignInRequest request = new SignInRequest("none", "none", "token");
         SignInResponse response = handler.handleRequest(request, null);
         assertEquals("User not found", response.getMessage());
     }
 
     @Test
     void signInBadPass() {
-        SignInRequest request = new SignInRequest("kirk", "bad password");
+        SignInRequest request = new SignInRequest("kirk", "bad password", "token");
         SignInResponse response = handler.handleRequest(request, null);
         assertEquals("Invalid password", response.getMessage());
     }
 
     @Test
     void signIn() {
-        SignInRequest request = new SignInRequest("kirk", "password");
+        SignInRequest request = new SignInRequest("kirk", "password", "token");
         SignInResponse response = handler.handleRequest(request, null);
         assertEquals(new User("kirk"), response.getUser());
     }
