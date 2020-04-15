@@ -32,8 +32,7 @@ public class ShareTweetHandler implements RequestHandler<ShareTweetRequest, Shar
 
         SendMessageRequest sendMessageRequest = new SendMessageRequest()
                 .withQueueUrl(queueURL)
-                .withMessageBody(Serializer.serialize(request))
-                .withDelaySeconds(5);
+                .withMessageBody(Serializer.serialize(request));
         AmazonSQS sqs = AmazonSQSClientBuilder.defaultClient();
         SendMessageResult sendMessageResult = sqs.sendMessage(sendMessageRequest);
         System.out.println(sendMessageResult.getMessageId());

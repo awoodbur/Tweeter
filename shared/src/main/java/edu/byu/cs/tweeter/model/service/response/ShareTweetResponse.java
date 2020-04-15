@@ -7,6 +7,6 @@ public class ShareTweetResponse extends Response {
     }
 
     public ShareTweetResponse() {
-        super(true);
+        super(true, "Tweet shared successfully.");
     }
 }

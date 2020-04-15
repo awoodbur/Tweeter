@@ -44,6 +44,6 @@ class SignOutHandlerTest {
 
         AuthsDAO authsDAO = new AuthsDAO();
         String timestamp = authsDAO.validateToken(token);
-        assertNull(timestamp);
+        assertEquals("12345", timestamp);
     }
 }

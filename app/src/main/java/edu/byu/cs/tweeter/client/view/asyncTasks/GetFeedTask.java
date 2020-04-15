@@ -68,20 +68,22 @@ public class GetFeedTask extends AsyncTask<FeedRequest, Void, FeedResponse> {
      * @param response the response from the tweet request.
      */
     private void loadImages(FeedResponse response) {
-        for(Tweet tweet : response.getTweets()) {
+        if (response != null) {
+            for (Tweet tweet : response.getTweets()) {
 
-            User user = tweet.getAuthor();
+                User user = tweet.getAuthor();
 
-            Drawable drawable;
+                Drawable drawable;
 
-            try {
-                drawable = ImageUtils.drawableFromUrl(user.getImageUrl());
-            } catch (IOException e) {
-                Log.e(this.getClass().getName(), e.toString(), e);
-                drawable = null;
+                try {
+                    drawable = ImageUtils.drawableFromUrl(user.getImageUrl());
+                } catch (IOException e) {
+                    Log.e(this.getClass().getName(), e.toString(), e);
+                    drawable = null;
+                }
+
+                ImageCache.getInstance().cacheImage(user, drawable);
             }
-
-            ImageCache.getInstance().cacheImage(user, drawable);
         }
     }
 

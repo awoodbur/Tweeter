@@ -10,7 +10,7 @@ import edu.byu.cs.tweeter.server.service.FeedServiceImpl;
 public class GetFeedHandler implements RequestHandler<FeedRequest, FeedResponse> {
     @Override
     public FeedResponse handleRequest(FeedRequest request, Context context) {
-        if (request.getUser() == null || request.getLimit() <= 0 || request.getLimit() > 25) {
+        if (request.getUser() == null || request.getLimit() <= 0) {
             throw new RuntimeException("400");
         }
 

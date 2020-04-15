@@ -28,8 +28,8 @@ class SignUpHandlerTest {
     void setUp() {
         handler = new SignUpHandler();
 
-        user1 = new User("test99", "test99", "test99", "test99");
-        user2 = new User("test100", "test100", "test100", "test100");
+        user1 = new User("test99", "test99", "test99", "https://cs340-tweeter.s3-us-west-2.amazonaws.com/profile-pics/crewman.jpg");
+        user2 = new User("test100", "test100", "test100", "https://cs340-tweeter.s3-us-west-2.amazonaws.com/profile-pics/crewman.jpg");
         password = "password";
         hashed_password = "5f4dcc3b5aa765d61d8327deb882cf99";
         tokens = new ArrayList<>();

@@ -11,7 +11,7 @@ public class GetStoryHandler implements RequestHandler<StoryRequest, StoryRespon
 
     @Override
     public StoryResponse handleRequest(StoryRequest request, Context context) {
-        if (request.getUser() == null || request.getLimit() <= 0 || request.getLimit() > 25) {
+        if (request.getUser() == null || request.getLimit() <= 0) {
             throw new RuntimeException("400");
         }
 

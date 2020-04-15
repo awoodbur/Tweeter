@@ -67,22 +67,24 @@ public class GetFollowersTask extends AsyncTask<FollowersRequest, Void, Follower
      * @param response the response from the follower request.
      */
     private void loadImages(FollowersResponse response) {
-        for(User user : response.getFollowers()) {
+        if (response != null) {
+            for (User user : response.getFollowers()) {
 
-            Drawable drawable;
+                Drawable drawable;
 
-            try {
-                if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()) {
-                    drawable = ImageUtils.drawableFromUrl(user.getImageUrl());
-                } else {
+                try {
+                    if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()) {
+                        drawable = ImageUtils.drawableFromUrl(user.getImageUrl());
+                    } else {
+                        drawable = null;
+                    }
+                } catch (IOException e) {
+                    Log.e(this.getClass().getName(), e.toString(), e);
                     drawable = null;
                 }
-            } catch (IOException e) {
-                Log.e(this.getClass().getName(), e.toString(), e);
-                drawable = null;
-            }
 
-            ImageCache.getInstance().cacheImage(user, drawable);
+                ImageCache.getInstance().cacheImage(user, drawable);
+            }
         }
     }
 

@@ -87,6 +87,10 @@ class ClientCommunicator {
             requestStrategy.sendRequest(connection);
 
             String response = getResponse(connection);
+            Log.d(TAG, "Error code: " + connection.getResponseCode());
+            if (response.contains("errorMessage")) {
+                throw new IOException("401 ERROR: Access Denied");
+            }
             Log.d(TAG, response);
             if (connection.getResponseCode() == 400) {
                 throw new IOException("400 ERROR: Object Not Found");

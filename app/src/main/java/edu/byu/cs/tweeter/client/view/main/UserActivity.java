@@ -80,7 +80,8 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
         } else {
             mButton.setText(R.string.button_loading);
             CheckFollowTask checkFollowTask = new CheckFollowTask(presenter, this);
-            CheckFollowRequest request = new CheckFollowRequest(current_user, display_user, presenter.getAuthToken());
+//            CheckFollowRequest request = new CheckFollowRequest(current_user, display_user, presenter.getAuthToken());
+            CheckFollowRequest request = new CheckFollowRequest(display_user, current_user, presenter.getAuthToken());
             checkFollowTask.execute(request);
         }
 

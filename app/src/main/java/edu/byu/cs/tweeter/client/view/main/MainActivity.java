@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import edu.byu.cs.tweeter.R;
+import edu.byu.cs.tweeter.client.view.asyncTasks.ShareTweetTask;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.client.presenter.MainPresenter;
 import edu.byu.cs.tweeter.client.view.asyncTasks.LoadImageTask;
@@ -28,6 +29,7 @@ import edu.byu.cs.tweeter.client.view.main.adapters.SectionsPagerAdapter;
 import edu.byu.cs.tweeter.client.view.main.fragments.TweetDialogFragment;
 import edu.byu.cs.tweeter.model.service.request.GetUserRequest;
 import edu.byu.cs.tweeter.model.service.response.GetUserResponse;
+import edu.byu.cs.tweeter.model.service.response.ShareTweetResponse;
 
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.

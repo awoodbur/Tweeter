@@ -11,7 +11,7 @@ public class GetFollowersHandler implements RequestHandler<FollowersRequest, Fol
 
     @Override
     public FollowersResponse handleRequest(FollowersRequest request, Context context) {
-        if (request.getFollowee() == null || request.getLimit() <= 0 || request.getLimit() > 25) {
+            if (request.getFollowee() == null || request.getLimit() <= 0) {
             throw new RuntimeException("400");
         }
 

@@ -16,7 +16,7 @@
         android:contentDescription="@string/profile_desc"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/mark" />
+        app:srcCompat="@drawable/profile" />
 
     <ImageView
         android:id="@+id/activity_main_icon"

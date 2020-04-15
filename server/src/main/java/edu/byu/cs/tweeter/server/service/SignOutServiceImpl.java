@@ -11,7 +11,7 @@ public class SignOutServiceImpl extends ServiceImpl implements SignOutService {
     @Override
     public SignOutResponse signOut(SignOutRequest request) {
         AuthsDAO dao = new AuthsDAO();
-        dao.deleteToken(request.getToken());
+//        dao.deleteToken(request.getToken());
         return new SignOutResponse();
     }
 }

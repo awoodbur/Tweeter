@@ -47,8 +47,7 @@ public class StatusQueueHandler implements RequestHandler<SQSEvent, Void> {
                 BatchShareTweetRequest batch = new BatchShareTweetRequest(response.getFollowers(), body.getTweet(), token);
                 SendMessageRequest sendMessageRequest = new SendMessageRequest()
                         .withQueueUrl(queueURL)
-                        .withMessageBody(Serializer.serialize(batch))
-                        .withDelaySeconds(5);
+                        .withMessageBody(Serializer.serialize(batch));
                 AmazonSQS sqs = AmazonSQSClientBuilder.defaultClient();
                 SendMessageResult sendMessageResult = sqs.sendMessage(sendMessageRequest);
                 System.out.println(sendMessageResult.getMessageId());
