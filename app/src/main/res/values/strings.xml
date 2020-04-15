@@ -34,4 +34,6 @@
     <string name="button_logout">Logout</string>
     <string name="button_share">Share</string>
     <string name="button_cancel">Cancel</string>
+    <string name="button_loading">Loading</string>
+    <string name="default_image_url">https://cs340-tweeter.s3-us-west-2.amazonaws.com/profile-pics/jg.jpg</string>
 </resources>

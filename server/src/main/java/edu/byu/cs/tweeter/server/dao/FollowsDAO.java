@@ -77,7 +77,7 @@ public class FollowsDAO {
                 String first_name = item.get(FolloweeFNameAttr).getS();
                 String last_name = item.get(FolloweeLNameAttr).getS();
                 String image_url = item.get(FolloweeImageAttr).getS();
-                followees.add(new User(alias, first_name, last_name, image_url));
+                followees.add(new User(first_name, last_name, alias, image_url));
             }
         }
 
@@ -122,7 +122,7 @@ public class FollowsDAO {
                 String first_name = item.get(FollowerFNameAttr).getS();
                 String last_name = item.get(FollowerLNameAttr).getS();
                 String image_url = item.get(FollowerImageAttr).getS();
-                followers.add(new User(alias, first_name, last_name, image_url));
+                followers.add(new User(first_name, last_name, alias, image_url));
             }
         }
 

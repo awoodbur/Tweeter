@@ -16,7 +16,13 @@ public class SignUpServiceImpl extends ServiceImpl implements SignUpService {
         AuthsDAO authsDAO = new AuthsDAO();
         UsersDAO usersDAO = new UsersDAO();
 
-        request.setPassword(generateHash(request.getPassword()));
+        try {
+            request.setPassword(generateHash(request.getPassword()));
+            request.setImageURL(uploadImage(request.getImageURL(), request.getAlias()));
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("500");
+        }
 
         SignUpResponse response = usersDAO.signUp(request);
         if (response.isSuccess()) {

@@ -22,7 +22,7 @@ public class StatusQueueHandler implements RequestHandler<SQSEvent, Void> {
     @Override
     public Void handleRequest(SQSEvent event, Context context) {
         int page_size = 25;
-        String queueURL = "";
+        String queueURL = "https://sqs.us-west-2.amazonaws.com/754276193250/UpdateFeedQueue";
 
         FollowersServiceImpl service;
         try {

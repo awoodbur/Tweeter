@@ -22,6 +22,7 @@ import java.util.List;
 
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.view.asyncTasks.GetUserTask;
+import edu.byu.cs.tweeter.client.view.main.LoginActivity;
 import edu.byu.cs.tweeter.model.domain.User;
 import edu.byu.cs.tweeter.model.service.request.FollowingRequest;
 import edu.byu.cs.tweeter.model.service.request.GetUserRequest;
@@ -112,7 +113,16 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         @Override
         public void handleException(Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            if (e.getMessage() != null && e.getMessage().equals("401 ERROR: Access Denied")) {
+                presenter.setAuthToken(null);
+                startActivity(LoginActivity.newIntent(getActivity()));
+            } else {
+                try {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                } catch (NullPointerException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
     }
 
@@ -264,7 +274,16 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         @Override
         public void handleException(Exception e) {
             Log.e(TAG, e.getMessage(), e);
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            if (e.getMessage() != null && e.getMessage().equals("401 ERROR: Access Denied")) {
+                presenter.setAuthToken(null);
+                startActivity(LoginActivity.newIntent(getActivity()));
+            } else {
+                try {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                } catch (NullPointerException ex) {
+                    ex.printStackTrace();
+                }
+            }
         }
 
         /**

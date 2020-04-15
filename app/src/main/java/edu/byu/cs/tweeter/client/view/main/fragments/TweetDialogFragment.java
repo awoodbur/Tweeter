@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment;
 import org.jetbrains.annotations.NotNull;
 
 import edu.byu.cs.tweeter.R;
+import edu.byu.cs.tweeter.client.view.main.LoginActivity;
 import edu.byu.cs.tweeter.model.domain.Tweet;
 import edu.byu.cs.tweeter.model.service.request.ShareTweetRequest;
 import edu.byu.cs.tweeter.model.service.response.Response;
@@ -72,12 +73,26 @@ public class TweetDialogFragment extends DialogFragment implements ShareTweetTas
 
     @Override
     public void tweetShared(ShareTweetResponse response) {
-//        Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_SHORT).show();
+        Log.d(TAG, response.getMessage());
+        try {
+            Toast.makeText(getContext(), response.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
     public void handleException(Exception e) {
         Log.e(TAG, e.getMessage(), e);
-        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        if (e.getMessage() != null && e.getMessage().equals("401 ERROR: Access Denied")) {
+            presenter.setAuthToken(null);
+            startActivity(LoginActivity.newIntent(getActivity()));
+        } else {
+            try {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            } catch (NullPointerException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }

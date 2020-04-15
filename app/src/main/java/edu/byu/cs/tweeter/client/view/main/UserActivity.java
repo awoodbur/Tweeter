@@ -78,6 +78,7 @@ public class UserActivity extends AppCompatActivity implements LoadImageTask.Loa
         if (current_user.equals(display_user)) {
             mButton.setText(R.string.button_logout);
         } else {
+            mButton.setText(R.string.button_loading);
             CheckFollowTask checkFollowTask = new CheckFollowTask(presenter, this);
             CheckFollowRequest request = new CheckFollowRequest(current_user, display_user, presenter.getAuthToken());
             checkFollowTask.execute(request);

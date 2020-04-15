@@ -161,6 +161,11 @@ public class MainActivity extends AppCompatActivity implements SearchTask.Search
     @Override
     public void handleException(Exception e) {
         Log.e(TAG, e.getMessage(), e);
-        Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        if (e.getMessage() != null && e.getMessage().equals("401 ERROR: Access Denied")) {
+            presenter.setAuthToken(null);
+            startActivity(LoginActivity.newIntent(MainActivity.this));
+        } else {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }

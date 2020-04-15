@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import edu.byu.cs.tweeter.R;
 import edu.byu.cs.tweeter.client.presenter.SignInPresenter;
 import edu.byu.cs.tweeter.client.view.asyncTasks.SignInTask;
+import edu.byu.cs.tweeter.client.view.main.LoginActivity;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.service.request.SignInRequest;
 import edu.byu.cs.tweeter.model.service.response.SignInResponse;
@@ -93,6 +94,15 @@ public class SignInFragment extends Fragment implements SignInTask.SignInObserve
     @Override
     public void handleException(Exception e) {
         Log.e(TAG, e.getMessage(), e);
-        Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+        if (e.getMessage() != null && e.getMessage().equals("401 ERROR: Access Denied")) {
+            presenter.setAuthToken(null);
+            startActivity(LoginActivity.newIntent(getActivity()));
+        } else {
+            try {
+                Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            } catch (NullPointerException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
